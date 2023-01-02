@@ -27,9 +27,8 @@ import reportWebVitals from 'reportWebVitals';
 // Initialize languages
 import './locales/i18n';
 
-import './app/pages/Game/PhaserGame'
-import {HomePage} from "./app/pages/HomePage/Loadable";
-
+import { HomePage } from './app/pages/HomePage/Loadable';
+import { Button, Code, MantineProvider, Title } from '@mantine/core';
 
 const store = configureAppStore();
 const root = ReactDOM.createRoot(
@@ -40,7 +39,9 @@ root.render(
   <Provider store={store}>
     <HelmetProvider>
       <React.StrictMode>
-        <App />
+        <MantineProvider>
+          <App />
+        </MantineProvider>
       </React.StrictMode>
     </HelmetProvider>
   </Provider>,

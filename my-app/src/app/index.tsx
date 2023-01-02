@@ -15,6 +15,17 @@ import { GlobalStyle } from 'styles/global-styles';
 import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
+import { LoginPage } from './pages/Account/Login/Loadable';
+import { RegisterPage } from './pages/Account/Register/Loadable';
+import {
+  Assets,
+  General,
+  InvestDetail,
+  Investment,
+  Profile,
+} from './pages/Account/Information/Loadable';
+import { ProjectPage, ProjectDetailPage } from './pages/Project/Loadable';
+import { TradePage } from './pages/Trade/Loadable';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -30,6 +41,22 @@ export function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/trade" element={<TradePage />} />
+        <Route path="/projects" element={<ProjectPage />} />
+        <Route
+          path="/projects/detail/:project"
+          element={<ProjectDetailPage />}
+        />
+        <Route path="/account/login" element={<LoginPage />} />
+        <Route path="/account/register" element={<RegisterPage />} />
+        <Route path="/account/general" element={<General />} />
+        <Route path="/account/profile" element={<Profile />} />
+        <Route path="/account/assets" element={<Assets />} />
+        <Route path="/account/investment" element={<Investment />} />
+        <Route
+          path="/account/investment/detail/:project"
+          element={<InvestDetail />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <GlobalStyle />
