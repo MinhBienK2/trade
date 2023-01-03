@@ -98,3 +98,11 @@ export function getProjectData(projectId: number): ProjectData | undefined {
   }
   return undefined;
 }
+
+export function getProjectNameList(): string[] {
+  let data = new Array<string>();
+  for (let i = 0; i < sampleProjectData.length; i++) {
+    data.push(sampleProjectData[i].project);
+  }
+  return data;
+}
