@@ -29,6 +29,7 @@ import './locales/i18n';
 
 import { HomePage } from './app/pages/HomePage/Loadable';
 import { Button, Code, MantineProvider, Title } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 
 const store = configureAppStore();
 const root = ReactDOM.createRoot(
@@ -40,7 +41,9 @@ root.render(
     <HelmetProvider>
       <React.StrictMode>
         <MantineProvider>
-          <App />
+          <ModalsProvider>
+            <App />
+          </ModalsProvider>
         </MantineProvider>
       </React.StrictMode>
     </HelmetProvider>

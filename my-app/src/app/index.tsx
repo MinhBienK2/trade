@@ -25,7 +25,11 @@ import {
   Profile,
 } from './pages/Account/Information/Loadable';
 import { ProjectPage, ProjectDetailPage } from './pages/Project/Loadable';
-import { TradePage } from './pages/Trade/Loadable';
+import {
+  TradePage,
+  HistoryTransaction,
+  HistoryDetail,
+} from './pages/Trade/Loadable';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -57,6 +61,8 @@ export function App() {
           path="/account/investment/detail/:project"
           element={<InvestDetail />}
         />
+        <Route path="/history" element={<HistoryTransaction />} />
+        <Route path="/history/detail/:historyId" element={<HistoryDetail />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <GlobalStyle />

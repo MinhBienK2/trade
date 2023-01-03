@@ -10,9 +10,14 @@ export interface ProjectData {
   currentTradingValue: number;
 }
 
+export interface ValueSelectForm {
+  value: string;
+  label: string;
+}
+
 export const sampleProjectData: ProjectData[] = [
   {
-    projectId: 1,
+    projectId: 0,
     project: 'Gochie',
     price: 100000,
     totalShare: 10000,
@@ -23,9 +28,9 @@ export const sampleProjectData: ProjectData[] = [
     currentTradingValue: 0,
   },
   {
-    projectId: 2,
+    projectId: 1,
     project: 'Godoo',
-    price: 100000,
+    price: 130000,
     totalShare: 10000,
     totalValue: 1000000000,
     maxTradingShare: 3000,
@@ -34,9 +39,20 @@ export const sampleProjectData: ProjectData[] = [
     currentTradingValue: 0,
   },
   {
-    projectId: 3,
+    projectId: 2,
     project: 'Dichvule',
-    price: 100000,
+    price: 9000,
+    totalShare: 5000,
+    totalValue: 500000000,
+    maxTradingShare: 1500,
+    maxTradingValue: 150000000,
+    currentTradingShare: 0,
+    currentTradingValue: 0,
+  },
+  {
+    projectId: 3,
+    project: 'IzHouse',
+    price: 140000,
     totalShare: 5000,
     totalValue: 500000000,
     maxTradingShare: 1500,
@@ -46,19 +62,19 @@ export const sampleProjectData: ProjectData[] = [
   },
   {
     projectId: 4,
-    project: 'IzHouse',
-    price: 100000,
-    totalShare: 5000,
-    totalValue: 500000000,
-    maxTradingShare: 1500,
-    maxTradingValue: 150000000,
+    project: 'EarlyBird',
+    price: 120000,
+    totalShare: 15000,
+    totalValue: 1500000000,
+    maxTradingShare: 45000,
+    maxTradingValue: 450000000,
     currentTradingShare: 0,
     currentTradingValue: 0,
   },
   {
     projectId: 5,
-    project: 'EarlyBird',
-    price: 100000,
+    project: 'Mystikos',
+    price: 110000,
     totalShare: 15000,
     totalValue: 1500000000,
     maxTradingShare: 45000,
@@ -68,19 +84,8 @@ export const sampleProjectData: ProjectData[] = [
   },
   {
     projectId: 6,
-    project: 'Mystikos',
-    price: 100000,
-    totalShare: 15000,
-    totalValue: 1500000000,
-    maxTradingShare: 45000,
-    maxTradingValue: 450000000,
-    currentTradingShare: 0,
-    currentTradingValue: 0,
-  },
-  {
-    projectId: 7,
     project: 'Game',
-    price: 100000,
+    price: 150000,
     totalShare: 18000,
     totalValue: 1800000000,
     maxTradingShare: 54000,
@@ -99,10 +104,13 @@ export function getProjectData(projectId: number): ProjectData | undefined {
   return undefined;
 }
 
-export function getProjectNameList(): string[] {
-  let data = new Array<string>();
+export function getProjectNameList(): ValueSelectForm[] {
+  let data = new Array<ValueSelectForm>();
   for (let i = 0; i < sampleProjectData.length; i++) {
-    data.push(sampleProjectData[i].project);
+    data.push({
+      value: String(sampleProjectData[i].projectId),
+      label: sampleProjectData[i].project,
+    });
   }
   return data;
 }
