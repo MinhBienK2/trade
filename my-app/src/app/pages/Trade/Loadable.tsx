@@ -9,6 +9,11 @@ export const TradePage = lazyLoad(
   module => module.TradePage,
 );
 
+export const FormTrade = lazyLoad(
+  () => import('./FormTrade'),
+  module => module.FormTrade,
+);
+
 export const HistoryTransaction = lazyLoad(
   () => import('./HistoryTransaction'),
   module => module.HistoryTransaction,

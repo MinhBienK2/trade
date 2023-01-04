@@ -63,6 +63,10 @@ export function App() {
         />
         <Route path="/history" element={<HistoryTransaction />} />
         <Route path="/history/detail/:historyId" element={<HistoryDetail />} />
+        <Route
+          path="/history-esop/detail/:historyId"
+          element={<HistoryDetail />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <GlobalStyle />

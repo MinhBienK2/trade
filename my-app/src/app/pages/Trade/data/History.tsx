@@ -1,55 +1,97 @@
 import React from 'react';
 
-export interface HistoryTransaction {
-  id: number;
-  userId: number;
-  service: 'add' | 'buy stock' | 'sell stock';
-  previousBalance: number;
-  exchange: number;
-  curentBalance: number;
-  timestamp: string;
-  detail: string;
-}
+import { HistoryTransaction } from 'store/app/wallet/response';
 
 export const dataHistory: HistoryTransaction[] = [
   {
     id: 0,
     userId: 1,
-    service: 'add',
-    previousBalance: 20000,
+    project: 'gochie',
+    service: 'ADD',
+    previousBalance: 2000,
     exchange: 200,
-    curentBalance: 20200,
-    timestamp: 'no',
+    currentBalance: 20200,
+    timestamp: 1672801752,
     detail: 'ok',
   },
   {
     id: 1,
     userId: 1,
-    service: 'buy stock',
-    previousBalance: 20000,
+    project: 'Godoo',
+    service: 'BUY STOCK',
     exchange: 200,
-    curentBalance: 19800,
-    timestamp: 'no',
+    previousBalance: 2000,
+    currentBalance: 19800,
+    timestamp: 1672800000,
     detail: 'ok',
   },
   {
     id: 2,
     userId: 1,
-    service: 'add',
-    previousBalance: 20000,
+    project: 'Dichvule',
+    service: 'ADD',
     exchange: 200,
-    curentBalance: 20200,
-    timestamp: 'no',
+    previousBalance: 2000,
+    currentBalance: 20200,
+    timestamp: 1670001752,
     detail: 'ok',
   },
   {
     id: 3,
     userId: 1,
-    service: 'sell stock',
-    previousBalance: 20000,
+    project: 'Gochie',
+    service: 'SELL STOCK',
     exchange: 200,
-    curentBalance: 20200,
-    timestamp: 'no',
+    previousBalance: 2000,
+    currentBalance: 20200,
+    timestamp: 1672809752,
+    detail: 'ok',
+  },
+];
+
+export const dataHistoryESOP: HistoryTransaction[] = [
+  {
+    id: 0,
+    userId: 1,
+    project: 'IzHouse',
+    service: 'ADD',
+    exchange: 200,
+    previousBalance: 2000,
+    currentBalance: 20200,
+    timestamp: 1672801152,
+    detail: 'ok',
+  },
+  {
+    id: 1,
+    userId: 1,
+    project: 'EarlyBird',
+    service: 'BUY STOCK',
+    exchange: 200,
+    previousBalance: 2000,
+    currentBalance: 19800,
+    timestamp: 1672801792,
+    detail: 'ok',
+  },
+  {
+    id: 2,
+    userId: 1,
+    project: 'Mystikos',
+    service: 'ADD',
+    exchange: 200,
+    previousBalance: 2000,
+    currentBalance: 20200,
+    timestamp: 1672821752,
+    detail: 'ok',
+  },
+  {
+    id: 3,
+    userId: 1,
+    project: 'Gochie',
+    service: 'SELL STOCK',
+    exchange: 200,
+    previousBalance: 2000,
+    currentBalance: 20200,
+    timestamp: 1622801752,
     detail: 'ok',
   },
 ];

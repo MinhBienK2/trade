@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> should render and match the snapshot 1`] = `
+<BrowserRouter>
+  <Helmet
+    defaultTitle="React Boilerplate"
+    defer={true}
+    encodeSpecialCharacters={true}
+    htmlAttributes={
+      Object {
+        "lang": undefined,
+      }
+    }
+    prioritizeSeoTags={false}
+    titleTemplate="%s - React Boilerplate"
+  >
+    <meta
+      content="A React Boilerplate application"
+      name="description"
+    />
+  </Helmet>
+  <Routes>
+    <Route
+      element={<Unknown />}
+      path="/"
+    />
+    <Route
+      element={<Unknown />}
+      path="/trade"
+    />
+    <Route
+      element={<Unknown />}
+      path="/projects"
+    />
+    <Route
+      element={<Unknown />}
+      path="/projects/detail/:project"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/login"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/register"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/general"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/profile"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/assets"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/investment"
+    />
+    <Route
+      element={<Unknown />}
+      path="/account/investment/detail/:project"
+    />
+    <Route
+      element={<Unknown />}
+      path="/history"
+    />
+    <Route
+      element={<Unknown />}
+      path="/history/detail/:historyId"
+    />
+    <Route
+      element={<Unknown />}
+      path="*"
+    />
+  </Routes>
+  <Memo(l) />
+</BrowserRouter>
+`;
