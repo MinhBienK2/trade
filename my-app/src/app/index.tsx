@@ -30,6 +30,10 @@ import {
   HistoryTransaction,
   HistoryDetail,
 } from './pages/Trade/Loadable';
+import {
+  PreventRouter,
+  PreventRouterLogin,
+} from 'app/components/auth/PreventRouter';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -44,28 +48,117 @@ export function App() {
       </Helmet>
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/trade" element={<TradePage />} />
-        <Route path="/projects" element={<ProjectPage />} />
+        <Route
+          path="/"
+          element={
+            <PreventRouter>
+              <HomePage />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/trade"
+          element={
+            <PreventRouter>
+              <TradePage />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <PreventRouter>
+              <ProjectPage />
+            </PreventRouter>
+          }
+        />
         <Route
           path="/projects/detail/:project"
-          element={<ProjectDetailPage />}
+          element={
+            <PreventRouter>
+              <ProjectDetailPage />
+            </PreventRouter>
+          }
         />
-        <Route path="/account/login" element={<LoginPage />} />
-        <Route path="/account/register" element={<RegisterPage />} />
-        <Route path="/account/general" element={<General />} />
-        <Route path="/account/profile" element={<Profile />} />
-        <Route path="/account/assets" element={<Assets />} />
-        <Route path="/account/investment" element={<Investment />} />
+        <Route
+          path="/login"
+          element={
+            <PreventRouterLogin>
+              <LoginPage />
+            </PreventRouterLogin>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PreventRouterLogin>
+              <RegisterPage />
+            </PreventRouterLogin>
+          }
+        />
+        <Route
+          path="/account/general"
+          element={
+            <PreventRouter>
+              <General />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/account/profile"
+          element={
+            <PreventRouter>
+              <Profile />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/account/assets"
+          element={
+            <PreventRouter>
+              <Assets />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/account/investment"
+          element={
+            <PreventRouter>
+              <Investment />
+            </PreventRouter>
+          }
+        />
         <Route
           path="/account/investment/detail/:project"
-          element={<InvestDetail />}
+          element={
+            <PreventRouter>
+              <InvestDetail />
+            </PreventRouter>
+          }
         />
-        <Route path="/history" element={<HistoryTransaction />} />
-        <Route path="/history/detail/:historyId" element={<HistoryDetail />} />
+        <Route
+          path="/history"
+          element={
+            <PreventRouter>
+              <HistoryTransaction />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/history/detail/:historyId"
+          element={
+            <PreventRouter>
+              <HistoryDetail />
+            </PreventRouter>
+          }
+        />
         <Route
           path="/history-esop/detail/:historyId"
-          element={<HistoryDetail />}
+          element={
+            <PreventRouter>
+              <HistoryDetail />
+            </PreventRouter>
+          }
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

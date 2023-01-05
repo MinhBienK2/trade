@@ -1,7 +1,7 @@
 export interface Profile {
   name: string;
-  investorType: 'Strategy Investor' | 'Finance Investor' | 'Team';
-  position: 'investor' | 'teck' | 'BA';
+  investorType: string;
+  position: string;
   response: {
     loading;
     error: number;

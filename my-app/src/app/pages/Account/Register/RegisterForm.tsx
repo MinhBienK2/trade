@@ -1,9 +1,7 @@
 import * as React from 'react';
-
+import PhoneInput from 'react-phone-input-2';
 import {
-  TextInput,
   Button,
-  Group,
   PasswordInput,
   Box,
   Text,
@@ -12,20 +10,33 @@ import {
   Center,
   Divider,
   Stack,
+  createStyles,
 } from '@mantine/core';
-import { IconLock, IconUser } from '@tabler/icons';
+import { IconLock } from '@tabler/icons';
 import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 
+import { useUserSlice } from 'store/app/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectErrorRegister, selectLoading } from 'store/app/user/selector';
+import { LoginData } from 'store/app/user/response';
+
+import 'react-phone-input-2/lib/bootstrap.css';
+
 export function RegisterForm() {
+  const { actions } = useUserSlice();
+  const dispatch = useDispatch();
+  const loading = useSelector(selectLoading);
+  const errorResponseRegister = useSelector(selectErrorRegister);
+  const { classes } = useStyle();
   const form = useForm({
     initialValues: {
-      account: '',
+      phoneNumber: '',
       password: '',
       confirm_password: '',
     },
     validate: {
-      account: value =>
+      phoneNumber: value =>
         value.length < 6 ? 'Account is at least 8 characters.' : null,
       password: value =>
         value.length < 6 ? 'Password is at least 8 characters.' : null,
@@ -34,29 +45,49 @@ export function RegisterForm() {
     },
   });
 
-  const registerAccount = () => {
-    console.log('submitForm', form.values);
-    form.validate();
+  const handleCLickButton = () => {
+    dispatch(actions.resetResponseError({ type: 'register' }));
+  };
+
+  const registerAccount = values => {
+    const body: LoginData = {
+      phoneNumber: values.phoneNumber,
+      password: values.password,
+    };
+
+    dispatch(actions.requestRegister(body));
   };
   const navigate = useNavigate();
   const linkToLoginPage = () => {
-    navigate('/account/login');
+    navigate('/login');
   };
 
   return (
     <Box sx={{ minWidth: '300px', minHeight: '300px' }}>
-      <form>
+      <form onSubmit={form.onSubmit(values => registerAccount(values))}>
         <Center>
           <Title>EASY INVEST</Title>
         </Center>
         <Divider my="sm" />
         <Stack>
-          <TextInput
-            icon={<IconUser />}
-            label={<Text size={'lg'}>Account</Text>}
-            placeholder="Input your account"
-            {...form.getInputProps('account')}
-          />
+          <Box>
+            <Text className={classes.labelPhone}>Phone Number</Text>
+            <PhoneInput
+              placeholder="Enter phone number"
+              enableSearch
+              country="vn"
+              countryCodeEditable={false}
+              value={form.values.phoneNumber}
+              onChange={value =>
+                form.setFieldValue('phoneNumber', String(value))
+              }
+            />
+          </Box>
+
+          {errorResponseRegister === 10 && (
+            <Text c={'red'}>Số điện thoại đã tồn tại </Text>
+          )}
+
           <PasswordInput
             icon={<IconLock />}
             label={<Text size={'lg'}>Password</Text>}
@@ -70,7 +101,13 @@ export function RegisterForm() {
             {...form.getInputProps('confirm_password')}
           />
           <Stack mt="md">
-            <Button onClick={registerAccount}>Register</Button>
+            <Button
+              loading={loading}
+              type={'submit'}
+              onClick={handleCLickButton}
+            >
+              Register
+            </Button>
             <Center>
               <Anchor onClick={linkToLoginPage}>Already Have An Account</Anchor>
             </Center>
@@ -80,3 +117,15 @@ export function RegisterForm() {
     </Box>
   );
 }
+
+const useStyle = createStyles(theme => ({
+  labelPhone: {
+    fontFamily:
+      '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
+    color: 'black',
+    fontSize: '18px',
+    lineHeight: 1.55,
+    fontWeight: 500,
+    marginBottom: '3px',
+  },
+}));

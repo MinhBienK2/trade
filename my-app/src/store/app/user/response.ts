@@ -1,29 +1,23 @@
 import { ErrorResponse } from 'utils/http/response';
 
-// profile
-export interface Profile {
-  userId: number;
-  role?: number;
-  fullname?: string;
-  avatar?: string;
-  gender?: number;
-  date_of_birth?: string;
-  shopping_preferences?: number[];
+export interface UserResponse extends ErrorResponse {
+  data: {
+    id: number;
+    role: number;
+    createTime: number;
+    status: number;
+    token: string;
+    username: string;
+  };
+}
+export interface LoginData {
+  phoneNumber: string;
+  password: string;
 }
 export interface ProfileResponse extends ErrorResponse {
   data: {
-    userId: number;
-    role: number;
-    fullname: string;
-    gender: number;
-    avatar: string;
-    date_of_birth: string;
-    shopping_preferences: number[];
+    name: number;
+    investorType: string;
+    position: string;
   };
-}
-export interface UploadResponse extends ErrorResponse {
-  data?: string[];
-}
-export interface GetFileNameResponse extends ErrorResponse {
-  data?: { filename: string };
 }

@@ -1,0 +1,2 @@
+export const RESPONSE_SUCCESS_ERROR = 0;
+export const RESPONSE_SYSTEM_ERROR = 1;

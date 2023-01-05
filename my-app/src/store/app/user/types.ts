@@ -1,6 +1,6 @@
 export interface User {
   isLogin: boolean;
-  username: string;
+  phoneNumber: string;
   password: string;
   id: number;
   token: string;
@@ -12,7 +12,6 @@ export interface User {
     login: {
       error: number;
       message: string;
-      remember_password: boolean;
     };
     register: {
       error: number;
@@ -20,10 +19,4 @@ export interface User {
     };
   };
   language: 'vi' | 'en';
-}
-
-export interface LoginData {
-  username: string;
-  password: string;
-  remember_password: boolean;
 }

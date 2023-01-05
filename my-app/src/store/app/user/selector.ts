@@ -13,7 +13,7 @@ export const selectIsLogin = createSelector(
 export const selectToken = createSelector([selectDomain], user => user.token);
 export const selectUsername = createSelector(
   [selectDomain],
-  user => user.username,
+  user => user.phoneNumber,
 );
 export const selectPassword = createSelector(
   [selectDomain],

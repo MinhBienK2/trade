@@ -4,5 +4,5 @@ export interface ErrorResponse {
 }
 
 export interface BaseResponse extends ErrorResponse {
-  data: {};
+  data?: {};
 }

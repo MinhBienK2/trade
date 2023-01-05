@@ -1,105 +1,116 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
-import { selectUser } from './selector';
-import { User } from './types';
+import {
+  call,
+  put,
+  select,
+  takeLatest,
+  delay,
+  cancelled,
+} from 'redux-saga/effects';
+import { ErrorResponse } from 'utils/http/response';
 import { userActions as actions } from '.';
 
-import { BaseResponse } from 'utils/http/response';
-import { apiPost, apiGet } from '../../../utils/http/request';
-import { getWallet, logoutWallet } from '../wallet/saga';
-import { checkProfile, handleResetProfile } from '../profile/saga';
-import { handleResetThirdParty } from '../thirdParty/saga';
+import { apiPost } from '../../../utils/http/request';
+import { UserResponse } from './response';
+import { selectId, selectToken } from './selector';
 
-export function* handleSetToken(payload: { id: number; token: string }) {
-  yield put(actions.resetToken(payload));
-}
-export function* handleSetUsername(payload: { username: string }) {
-  yield put(actions.setUsername(payload));
-}
+import { RESPONSE_SUCCESS_ERROR } from 'const/common';
+import {
+  RESPONSE_ERROR_PASSWORD_NOT_AXISTS,
+  RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS,
+} from 'const/register';
 
-export function* login() {
+export function* login(action) {
   try {
-    // Select username from store
-    const user: User = yield select(selectUser);
-    const data: any = {
-      username: user.username,
-      password: user.password,
+    const body: any = {
+      username: action.payload.phoneNumber,
+      password: action.payload.password,
     };
-    // call api check login
-    const loginResponse: BaseResponse = yield apiPost('/v1/login', data, {
-      'content-type': 'appication/json',
-    });
 
-    // check profile axist ?
-    yield checkProfile(loginResponse);
-    //get coin and diamond of user
-    if (loginResponse.data) yield getWallet(loginResponse);
+    const { data }: { data: UserResponse } = yield call(
+      apiPost,
+      '/v1/login',
+      body,
+      {
+        'content-type': 'appication/json',
+      },
+    );
 
-    yield put(actions.response({ response: loginResponse, type: 'login' }));
+    console.log(data);
+    if (data.error === RESPONSE_SUCCESS_ERROR)
+      yield put(actions.response({ response: data, type: 'login' }));
+    else if (
+      data.error === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS ||
+      data.error === RESPONSE_ERROR_PASSWORD_NOT_AXISTS
+    ) {
+      yield put(
+        actions.setResponseLogin({ error: data.error, message: data.message }),
+      );
+      yield put(actions.resetLoading());
+    }
   } catch (err: any) {
     console.log('Error: ', err);
-    const response: BaseResponse = {
-      error: 1,
-      message: 'system_error',
-      data: '',
-    };
-    yield put(actions.response({ response, type: 'login' }));
+  } finally {
+    if (yield cancelled()) {
+      console.log('saga cancel!');
+    }
   }
 }
 
-export function* register() {
+export function* register(action) {
   try {
-    // Select username from store
-    const user: User = yield select(selectUser);
-    const data: any = {
-      username: user.username,
-      password: user.password,
+    const body: any = {
+      username: action.payload.phoneNumber,
+      password: action.payload.password,
     };
-    const response: BaseResponse = yield apiPost('/v1/register', data, {
-      'content-type': 'appication/json',
-    });
-    // check profile axist ?
-    yield checkProfile(response);
+    const { data }: { data: UserResponse } = yield call(
+      apiPost,
+      '/v1/register',
+      body,
+      {
+        'content-type': 'appication/json',
+      },
+    );
 
-    yield put(actions.response({ response, type: 'register' }));
+    console.log(data);
+    if (data.error === 0) {
+      yield put(actions.response({ response: data, type: 'register' }));
+    } else if (data.error === 10) {
+      yield put(
+        actions.setResponseRegister({
+          error: data.error,
+          message: data.message,
+        }),
+      );
+      yield put(actions.resetLoading());
+    }
   } catch (err: any) {
-    const response: BaseResponse = {
-      error: 1,
-      message: 'system_error',
-      data: undefined,
-    };
-    yield put(actions.response({ response, type: 'register' }));
+    console.log(err);
   }
 }
 
 export function* Logout() {
   try {
-    const user: User = yield select(selectUser);
+    const userId = yield select(selectId);
+    const token = yield select(selectToken);
     const dataHeader: any = {
-      userid: user.id,
-      token: user.token,
+      userid: userId,
+      token: token,
     };
 
-    const response: BaseResponse = yield apiPost(
+    const { data }: { data: ErrorResponse } = yield call(
+      apiPost,
       '/v1/logout',
       null,
       dataHeader,
     );
 
-    if (response.error === 0) {
-      yield logoutWallet();
-      yield handleResetProfile();
-      yield handleResetThirdParty();
-      yield put(actions.responseLogout(response));
-    }
+    // if (data.error === 0) {
+    //   yield handleResetProfile();
+    //   yield put(actions.responseLogout(response));
+    // }
   } catch (err: any) {
-    const response: BaseResponse = {
-      error: 1,
-      message: 'system_error',
-      data: undefined,
-    };
-    // random choise type
-    yield put(actions.response({ response, type: 'login' }));
+    console.log(err);
   }
 }
 

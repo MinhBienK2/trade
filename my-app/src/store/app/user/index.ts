@@ -1,13 +1,14 @@
 import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { LoginData, User } from './types';
+import { User } from './types';
+import { LoginData, UserResponse } from './response';
 import { userSaga } from './saga';
 import { BaseResponse } from 'utils/http/response';
 
 export const initialState: User = {
   isLogin: false,
-  username: '',
+  phoneNumber: '',
   password: '',
   token: '',
   status: 0,
@@ -23,7 +24,6 @@ export const initialState: User = {
     login: {
       error: -1,
       message: '',
-      remember_password: true,
     },
   },
   language: 'vi',
@@ -37,24 +37,55 @@ const slice = createSlice({
     setUserId(state: User, action: PayloadAction<{ id: number }>) {
       state.id = action.payload.id;
     },
-    setUsername(state: User, action: PayloadAction<{ username: string }>) {
-      state.username = action.payload.username;
+    setPhoneNumber(
+      state: User,
+      action: PayloadAction<{ phoneNumber: string }>,
+    ) {
+      state.phoneNumber = action.payload.phoneNumber;
     },
-
+    setResponseRegister(
+      state: User,
+      action: PayloadAction<{ error: number; message: string }>,
+    ) {
+      state.response.register.error = action.payload.error;
+      state.response.register.message = action.payload.message;
+    },
+    setResponseLogin(
+      state: User,
+      action: PayloadAction<{ error: number; message: string }>,
+    ) {
+      state.response.login.error = action.payload.error;
+      state.response.login.message = action.payload.message;
+    },
     // reset simple property
     resetLoading(state: User) {
       state.response.loading = false;
     },
+    resetToken(
+      state: User,
+      action: PayloadAction<{ id: number; token: string }>,
+    ) {
+      state.token = action.payload.token;
+      state.response.loading = false;
+    },
+    resetResponseError(
+      state: User,
+      action: PayloadAction<{ type: 'login' | 'register' }>,
+    ) {
+      if (action.payload.type === 'login') {
+        state.response.login.error = -1;
+        state.response.login.message = '';
+      } else if (action.payload.type === 'register') {
+        state.response.register.error = -1;
+        state.response.register.message = '';
+      }
+    },
+
     // login register
     requestLogin(state: User, action: PayloadAction<LoginData>) {
-      state.username = action.payload.username;
-      state.password = action.payload.password;
-      state.response.login.remember_password = action.payload.remember_password;
       state.response.loading = true;
     },
     requestRegister(state: User, action: PayloadAction<LoginData>) {
-      state.username = action.payload.username;
-      state.password = action.payload.password;
       state.response.loading = true;
     },
     //call before call api
@@ -66,23 +97,16 @@ const slice = createSlice({
     response(
       state: User,
       action: PayloadAction<{
-        response: BaseResponse;
+        response: UserResponse;
         type?: 'login' | 'register';
       }>,
     ) {
-      // if had error
-      state.response[`${action.payload.type}`].error =
-        action.payload.response.error;
-      state.response[`${action.payload.type}`].message =
-        action.payload.response.message;
-      // success
-      if (action.payload.response.error === 0) {
-        state.isLogin = true;
-        state.id = action.payload.response.data.id;
-        state.token = action.payload.response.data.token;
-        state.status = action.payload.response.data.status;
-        state.createTime = action.payload.response.data.createTime;
-      }
+      state.id = action.payload.response.data.id;
+      state.token = action.payload.response.data.token;
+      state.status = action.payload.response.data.status;
+      state.createTime = action.payload.response.data.createTime;
+
+      state.isLogin = true;
       state.response.loading = false;
     },
     responseLogout(state: User, action: PayloadAction<BaseResponse>) {
@@ -95,27 +119,20 @@ const slice = createSlice({
       state.response.login.error = -1;
       state.response.login.message = '';
     },
-    resetToken(
-      state: User,
-      action: PayloadAction<{ id: number; token: string }>,
-    ) {
-      state.token = action.payload.token;
-      state.response.loading = false;
-    },
-    resetErrorResponse(
-      state: User,
-      action: PayloadAction<{ type?: 'login' | 'register' }>,
-    ) {
-      if (action.payload.type) {
-        state.response[`${action.payload.type}`].error = -1;
-        state.response[`${action.payload.type}`].message = '';
-      } else {
-        state.response.login.error = -1;
-        state.response.login.message = '';
-        state.response.register.error = -1;
-        state.response.register.message = '';
-      }
-    },
+    // resetErrorResponse(
+    //   state: User,
+    //   action: PayloadAction<{ type?: 'login' | 'register' }>,
+    // ) {
+    //   if (action.payload.type) {
+    //     state.response[`${action.payload.type}`].error = -1;
+    //     state.response[`${action.payload.type}`].message = '';
+    //   } else {
+    //     state.response.login.error = -1;
+    //     state.response.login.message = '';
+    //     state.response.register.error = -1;
+    //     state.response.register.message = '';
+    //   }
+    // },
   },
 });
 
