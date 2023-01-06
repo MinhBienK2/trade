@@ -1,3 +1,12 @@
 {
-  "title": "welcome"
+  "Account": {
+    "profile": {
+      "strategy_investor": "Strategy Investor",
+      "finance_investor": "Finance Investor",
+      "team": "Team",
+      "position_investor": "Investor",
+      "position_tech": "Tech",
+      "position_business_analyst": "Business analyst"
+    }
+  }
 }

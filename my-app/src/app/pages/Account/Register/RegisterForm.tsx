@@ -69,7 +69,7 @@ export function RegisterForm() {
           <Title>EASY INVEST</Title>
         </Center>
         <Divider my="sm" />
-        <Stack>
+        <Stack spacing={8}>
           <Box>
             <Text className={classes.labelPhone}>Phone Number</Text>
             <PhoneInput
@@ -93,12 +93,20 @@ export function RegisterForm() {
             label={<Text size={'lg'}>Password</Text>}
             placeholder="Input your password"
             {...form.getInputProps('password')}
+            classNames={{
+              innerInput: classes.innerInput,
+              input: classes.input,
+            }}
           />
           <PasswordInput
             icon={<IconLock />}
             label={<Text size={'lg'}>Confirm Password</Text>}
             placeholder="Confirm your password"
             {...form.getInputProps('confirm_password')}
+            classNames={{
+              innerInput: classes.innerInput,
+              input: classes.input,
+            }}
           />
           <Stack mt="md">
             <Button
@@ -127,5 +135,11 @@ const useStyle = createStyles(theme => ({
     lineHeight: 1.55,
     fontWeight: 500,
     marginBottom: '3px',
+  },
+  innerInput: {
+    height: '57px',
+  },
+  input: {
+    height: '57px',
   },
 }));

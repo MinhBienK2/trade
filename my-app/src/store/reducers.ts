@@ -12,12 +12,14 @@ import { InjectedReducersType } from 'utils/types/injector-typings';
 
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { userTransform, profileTransform, walletTransform } from './transform';
 
 const persistConfig = {
   key: 'state',
   version: 1,
   storage,
   blacklist: [],
+  transforms: [userTransform, profileTransform, walletTransform],
 };
 
 export function createReducer(injectedReducers: InjectedReducersType = {}) {

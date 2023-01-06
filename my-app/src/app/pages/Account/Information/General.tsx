@@ -8,14 +8,22 @@ import {
   IconPhone,
   IconPigMoney,
   IconUserCircle,
+  IconLogout,
 } from '@tabler/icons';
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useUserSlice } from 'store/app/user';
+import { selectPhoneNumber } from 'store/app/user/selector';
 import { PageRow } from './Components/PageRow';
 import { PageRowButton } from './Components/PageRowButton';
 import { PageTitle } from './Components/PageTitle';
 
 export function General() {
+  const { actions } = useUserSlice();
+  const phoneNumber = useSelector(selectPhoneNumber);
+
+  const dispatch = useDispatch();
   const navitation = useNavigate();
   function moveToHomePage() {
     navitation('/');
@@ -29,6 +37,10 @@ export function General() {
   function moveToInvestmentPage() {
     navitation('/account/investment');
   }
+  function handleLogout() {
+    dispatch(actions.requestLogout());
+  }
+
   return (
     <Center sx={{ height: '100vh' }}>
       <Paper
@@ -42,7 +54,7 @@ export function General() {
       >
         <Stack>
           <PageTitle text="Account" back={moveToHomePage} />
-          <PageRow leftIcon={<IconPhone />} text="0836993400" />
+          <PageRow leftIcon={<IconPhone />} text={'+' + phoneNumber} />
           <PageRow
             leftIcon={<IconLock />}
             text="********"
@@ -70,6 +82,11 @@ export function General() {
             leftIcon={<IconBrandTelegram />}
             indicator={true}
             text="Link to Telegram"
+          />
+          <PageRow
+            leftIcon={<IconLogout />}
+            text="Logout"
+            next={handleLogout}
           />
         </Stack>
       </Paper>

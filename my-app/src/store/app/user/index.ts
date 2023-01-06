@@ -57,6 +57,7 @@ const slice = createSlice({
       state.response.login.error = action.payload.error;
       state.response.login.message = action.payload.message;
     },
+
     // reset simple property
     resetLoading(state: User) {
       state.response.loading = false;
@@ -94,6 +95,7 @@ const slice = createSlice({
       state.language = action.payload;
     },
 
+    // response
     response(
       state: User,
       action: PayloadAction<{
@@ -105,34 +107,19 @@ const slice = createSlice({
       state.token = action.payload.response.data.token;
       state.status = action.payload.response.data.status;
       state.createTime = action.payload.response.data.createTime;
+      state.phoneNumber = action.payload.response.data.username;
 
       state.isLogin = true;
       state.response.loading = false;
     },
-    responseLogout(state: User, action: PayloadAction<BaseResponse>) {
+    responseLogout(state: User) {
       state.id = -1;
       state.token = '';
       state.role = 0;
       state.status = 0;
       state.createTime = 0;
       state.isLogin = false;
-      state.response.login.error = -1;
-      state.response.login.message = '';
     },
-    // resetErrorResponse(
-    //   state: User,
-    //   action: PayloadAction<{ type?: 'login' | 'register' }>,
-    // ) {
-    //   if (action.payload.type) {
-    //     state.response[`${action.payload.type}`].error = -1;
-    //     state.response[`${action.payload.type}`].message = '';
-    //   } else {
-    //     state.response.login.error = -1;
-    //     state.response.login.message = '';
-    //     state.response.register.error = -1;
-    //     state.response.register.message = '';
-    //   }
-    // },
   },
 });
 

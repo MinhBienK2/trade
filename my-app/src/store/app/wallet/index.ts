@@ -25,12 +25,6 @@ const slice = createSlice({
   initialState,
   reducers: {
     // set simple property
-    resetLoading(state: Wallet) {
-      state.response.loading = false;
-    },
-    resetResponse(state: Wallet) {
-      state.response = { loading: false, error: -1, message: '' };
-    },
     setResponseError(
       state: Wallet,
       action: PayloadAction<{ error: number; message: string }>,
@@ -39,6 +33,15 @@ const slice = createSlice({
       state.response.message = action.payload.message;
     },
 
+    // reset
+    resetLoading(state: Wallet) {
+      state.response.loading = false;
+    },
+    resetResponse(state: Wallet) {
+      state.response = { loading: false, error: -1, message: '' };
+    },
+
+    // handle
     pushHistoryTransaction(
       state: Wallet,
       action: PayloadAction<HistoryTransaction>,
@@ -52,6 +55,7 @@ const slice = createSlice({
       state.history_transaction_ESOP.push(action.payload);
     },
 
+    // request
     requestBuyStock(state: Wallet, action: PayloadAction<any>) {
       state.response.loading = true;
     },

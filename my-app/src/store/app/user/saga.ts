@@ -104,11 +104,10 @@ export function* Logout() {
       null,
       dataHeader,
     );
-
-    // if (data.error === 0) {
-    //   yield handleResetProfile();
-    //   yield put(actions.responseLogout(response));
-    // }
+    console.log(data);
+    if (data.error === 0) {
+      yield put(actions.responseLogout());
+    }
   } catch (err: any) {
     console.log(err);
   }

@@ -26,9 +26,11 @@ import {
 } from 'const/register';
 
 import 'react-phone-input-2/lib/bootstrap.css';
+import { useTranslation } from 'react-i18next';
 
 export function LoginForm() {
   const { actions } = useUserSlice();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
   const errorResponseLogin = useSelector(selectErrorLogin);
@@ -64,14 +66,16 @@ export function LoginForm() {
     <Box sx={{ minWidth: '300px', minHeight: '300px' }}>
       <form onSubmit={form.onSubmit(values => submitForm(values))}>
         <Center>
-          <Title>EASY INVEST</Title>
+          <Title>{t('Register.loginPage.title')}EASY INVEST</Title>
         </Center>
         <Divider my="sm" />
-        <Stack>
+        <Stack spacing={10}>
           <Box>
-            <Text className={classes.labelPhone}>Phone Number</Text>
+            <Text className={classes.labelPhone}>
+              {t('Register.loginPage.label_phone_number')}Phone Number
+            </Text>
             <PhoneInput
-              placeholder="Enter phone number"
+              placeholder={t('Register.loginPage.placeholder_phone_number')} //"Enter phone number"
               enableSearch
               country="vn"
               countryCodeEditable={false}
@@ -84,14 +88,18 @@ export function LoginForm() {
 
           <PasswordInput
             icon={<IconLock />}
-            label={<Text size={'lg'}>Password</Text>}
-            placeholder="Input your password"
+            label={<Text size={'lg'}>{t('Register.loginPage.password')}</Text>}
+            placeholder={t('Register.loginPage.placeholder_password')} //"Input your password"
             {...form.getInputProps('password')}
+            classNames={{
+              innerInput: classes.innerInput,
+              input: classes.input,
+            }}
           />
 
           {(errorResponseLogin === RESPONSE_ERROR_PASSWORD_NOT_AXISTS ||
             errorResponseLogin === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS) && (
-            <Text c={'red'}>Sai số điện thoại hoặc mật khẩu</Text>
+            <Text c={'red'}>{t('Register.loginPage.wrong_error')}</Text>
           )}
 
           <Stack mt="md">
@@ -103,7 +111,9 @@ export function LoginForm() {
               Login
             </Button>
             <Center>
-              <Anchor onClick={linkToRegisterPage}>Create New Account</Anchor>
+              <Anchor onClick={linkToRegisterPage}>
+                {t('Register.loginPage.create_new_account')}
+              </Anchor>
             </Center>
           </Stack>
         </Stack>
@@ -121,5 +131,11 @@ const useStyle = createStyles(theme => ({
     lineHeight: 1.55,
     fontWeight: 500,
     marginBottom: '3px',
+  },
+  innerInput: {
+    height: '57px',
+  },
+  input: {
+    height: '57px',
   },
 }));

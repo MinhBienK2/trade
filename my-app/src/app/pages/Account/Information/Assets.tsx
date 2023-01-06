@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Blockquote,
   Card,
@@ -7,17 +8,36 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { PageQuote } from './Components/PageQuote';
 import { PageRow } from './Components/PageRow';
 import { PageTitle } from './Components/PageTitle';
 import { randomQuote } from '../Data/QuoteData';
 import { WalletCard } from './Components/WalletCard';
-import { sampleWallet } from '../Data/WalletData';
+import { sampleWallet, WalletData } from '../Data/WalletData';
+import { useWalletSlice } from 'store/app/wallet';
+import {
+  selectBalance,
+  selectESOP,
+  selectStock,
+} from 'store/app/wallet/selector';
 
 export function Assets() {
+  useWalletSlice();
   const navitation = useNavigate();
+
+  const balance = useSelector(selectBalance);
+  const esop = useSelector(selectESOP);
+  const stock = useSelector(selectStock);
+  const sampleWallet: WalletData = {
+    balance,
+    esop,
+    stock,
+    total: balance + esop + stock,
+  };
+
   const moveToGeneralPage = () => {
     navitation('/account/general');
   };

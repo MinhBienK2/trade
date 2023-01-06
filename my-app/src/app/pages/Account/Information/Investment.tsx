@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Blockquote,
   Card,
@@ -9,12 +10,13 @@ import {
   Text,
 } from '@mantine/core';
 import { IconUserCircle, IconPigMoney, IconId } from '@tabler/icons';
-import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { sampleData } from '../Data/InvestmentData';
+
 import { InvestCard } from './Components/InvestCard';
 import { PageTitle } from './Components/PageTitle';
 import { WalletCard } from './Components/WalletCard';
+import { sampleData } from '../Data/InvestmentData';
+
 export function Investment() {
   const navitation = useNavigate();
   const moveToGeneralPage = () => {

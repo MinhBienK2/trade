@@ -1,0 +1,12 @@
+{
+  "Account": {
+    "profile": {
+      "strategy_investor": "Nhà đầu tư chiến lược",
+      "finance_investor": "Nhà đầu tư tài chính",
+      "team": "Đội nhóm",
+      "position_investor": "Nhà đầu tư",
+      "position_tech": "Công nghệ",
+      "position_business_analyst": "Phân tích kinh doanh"
+    }
+  }
+}

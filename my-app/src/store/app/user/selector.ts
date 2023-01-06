@@ -11,7 +11,7 @@ export const selectIsLogin = createSelector(
   user => user.isLogin,
 );
 export const selectToken = createSelector([selectDomain], user => user.token);
-export const selectUsername = createSelector(
+export const selectPhoneNumber = createSelector(
   [selectDomain],
   user => user.phoneNumber,
 );
