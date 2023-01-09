@@ -8,6 +8,7 @@ export interface PageRowProps {
   indicator?: boolean;
   text: string;
   next?: () => void;
+  userNameTelegram?: string;
 }
 
 export function PageRowButton(props: PageRowProps) {
@@ -17,13 +18,19 @@ export function PageRowButton(props: PageRowProps) {
       inline
       size={props.indicator ? 20 : 0}
       offset={5}
-      color="red"
+      color={props.userNameTelegram ? 'green' : 'red'}
       withBorder
     >
       <Card shadow="sm" p="md" radius="md" withBorder>
         <Flex align={'baseline'}>
           {props.leftIcon}
-          <Anchor m="auto" fw={700} fz={20} onClick={props.next}>
+          <Anchor
+            m="auto"
+            fw={700}
+            fz={20}
+            c={props.userNameTelegram ? '#333' : '#1c7ed6'}
+            onClick={props.next}
+          >
             {props.text}
           </Anchor>
         </Flex>

@@ -11,20 +11,45 @@ import {
   IconLogout,
 } from '@tabler/icons';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useProfileSlice } from 'store/app/profile';
+import {
+  selectNameTelegram,
+  selectPathLinkTelegram,
+} from 'store/app/profile/selector';
 import { useUserSlice } from 'store/app/user';
-import { selectPhoneNumber } from 'store/app/user/selector';
+import { selectLanguage, selectPhoneNumber } from 'store/app/user/selector';
 import { PageRow } from './Components/PageRow';
 import { PageRowButton } from './Components/PageRowButton';
 import { PageTitle } from './Components/PageTitle';
 
 export function General() {
   const { actions } = useUserSlice();
+  const profileSlice = useProfileSlice();
+  const { t } = useTranslation();
   const phoneNumber = useSelector(selectPhoneNumber);
-
+  const nameTelegram = useSelector(selectNameTelegram);
+  const language = useSelector(selectLanguage);
+  const pathLinkTelegram = useSelector(selectPathLinkTelegram);
   const dispatch = useDispatch();
   const navitation = useNavigate();
+
+  // checked link
+  React.useEffect(() => {
+    console.log('hello');
+    if (nameTelegram === '')
+      dispatch(profileSlice.actions.requestCheckedLinkTelegram());
+  }, []);
+  // link telegram
+  React.useEffect(() => {
+    if (pathLinkTelegram) {
+      window.open(pathLinkTelegram);
+      dispatch(profileSlice.actions.resetPathLinkTelegram());
+    }
+  }, [pathLinkTelegram]);
+
   function moveToHomePage() {
     navitation('/');
   }
@@ -40,6 +65,10 @@ export function General() {
   function handleLogout() {
     dispatch(actions.requestLogout());
   }
+  function handleLinkTelegram() {
+    console.log('first');
+    dispatch(profileSlice.actions.requestLinkThirdParty());
+  }
 
   return (
     <Center sx={{ height: '100vh' }}>
@@ -53,7 +82,11 @@ export function General() {
         }}
       >
         <Stack>
-          <PageTitle text="Account" back={moveToHomePage} />
+          <PageTitle
+            text={t('Account.detailCard.amount')}
+            back={moveToHomePage}
+            selectLanguage={language}
+          />
           <PageRow leftIcon={<IconPhone />} text={'+' + phoneNumber} />
           <PageRow
             leftIcon={<IconLock />}
@@ -62,30 +95,32 @@ export function General() {
           />
           <PageRow
             leftIcon={<IconUserCircle />}
-            text="Profile"
+            text={t('Account.detailCard.project')}
             rightIcon={<IconChevronRight />}
             next={moveToProfilePage}
           />
           <PageRow
             leftIcon={<IconMoneybag />}
-            text="Assets"
+            text={t('Account.general.assets')}
             rightIcon={<IconChevronRight />}
             next={moveToAssetsPage}
           />
           <PageRow
             leftIcon={<IconPigMoney />}
-            text="Investment"
+            text={t('Account.general.investment')}
             rightIcon={<IconChevronRight />}
             next={moveToInvestmentPage}
           />
           <PageRowButton
             leftIcon={<IconBrandTelegram />}
             indicator={true}
-            text="Link to Telegram"
+            text={t('Account.general.link_to_telegram')}
+            userNameTelegram={nameTelegram}
+            next={nameTelegram ? undefined : handleLinkTelegram}
           />
           <PageRow
             leftIcon={<IconLogout />}
-            text="Logout"
+            text={t('Account.general.logout')}
             next={handleLogout}
           />
         </Stack>

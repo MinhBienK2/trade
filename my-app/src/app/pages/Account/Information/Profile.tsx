@@ -18,23 +18,27 @@ import {
   selectName,
   selectPosition,
 } from 'store/app/profile/selector';
+import { useUserSlice } from 'store/app/user';
+import { selectLanguage } from 'store/app/user/selector';
 import { PageQuote } from './Components/PageQuote';
 import { PageRow } from './Components/PageRow';
 import { PageTitle } from './Components/PageTitle';
 export function Profile() {
   useProfileSlice();
+  useUserSlice();
   const { t } = useTranslation();
   const navitation = useNavigate();
 
   const name = useSelector(selectName);
   const position = useSelector(selectPosition);
   const investorType = useSelector(selectInvestorType);
+  const userLanguage = useSelector(selectLanguage);
 
   const moveToGeneralPage = () => {
     navitation('/account/general');
   };
 
-  const renderInvestorType = (investorType: 1 | 2 | 3): string => {
+  const renderInvestorType = (investorType: 1 | 2 | 3 | -1): string => {
     const STRATEGY_INVESTOR = 1;
     const FINANCE_INVESTOR = 2;
     const TEAM = 3;
@@ -48,7 +52,7 @@ export function Profile() {
     return '';
   };
 
-  const renderPosition = (position: 1 | 2 | 3) => {
+  const renderPosition = (position: 1 | 2 | 3 | -1) => {
     const INVESTOR = 1;
     const TECH = 2;
     const BA = 3;
@@ -73,7 +77,11 @@ export function Profile() {
         }}
       >
         <Stack>
-          <PageTitle text="Profile" back={moveToGeneralPage} />
+          <PageTitle
+            text="Profile"
+            back={moveToGeneralPage}
+            selectLanguage={userLanguage}
+          />
           <PageRow leftIcon={<IconUserCircle />} text={name} />
           <PageRow
             leftIcon={<IconPigMoney />}

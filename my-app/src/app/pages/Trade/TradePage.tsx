@@ -12,7 +12,8 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconGift, IconWallet, IconHistory } from '@tabler/icons';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { selectLanguage } from 'store/app/user/selector';
 import { useWalletSlice } from 'store/app/wallet';
 import { selectBalance, selectESOP } from 'store/app/wallet/selector';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
@@ -20,10 +21,13 @@ import { FormTrade } from './Loadable';
 
 export function TradePage() {
   useWalletSlice();
+  const userLanguage = useSelector(selectLanguage);
   const balance = useSelector(selectBalance);
   const esop = useSelector(selectESOP);
   const navitation = useNavigate();
   const smallThan576 = useMediaQuery('(max-width:576px)');
+  const param = useParams();
+
   function moveToHomePage() {
     navitation('/');
   }
@@ -43,7 +47,11 @@ export function TradePage() {
         }}
       >
         <Stack>
-          <PageTitle text="Trade" back={moveToHomePage} />
+          <PageTitle
+            text="Trade"
+            back={moveToHomePage}
+            selectLanguage={userLanguage}
+          />
           <Card shadow="sm" p="md" radius="md" withBorder>
             <Center>
               <Group spacing={smallThan576 ? 5 : 16}>
@@ -63,7 +71,9 @@ export function TradePage() {
             </Center>
             <Divider mt={20} mb={20} />
             <Center>
-              <FormTrade />
+              <FormTrade
+                projectId={param.project ? param.project : undefined}
+              />
             </Center>
           </Card>
         </Stack>

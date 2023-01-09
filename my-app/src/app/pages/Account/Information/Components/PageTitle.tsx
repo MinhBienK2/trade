@@ -14,6 +14,7 @@ import * as React from 'react';
 export interface PageTitleProps {
   text: string;
   back?: () => void;
+  selectLanguage: string;
 }
 
 export function PageTitle(props: PageTitleProps) {
@@ -37,7 +38,7 @@ export function PageTitle(props: PageTitleProps) {
         </Text>
         <Box pos={'absolute'} top={0} right={10}>
           <Box pos={'relative'}>
-            <Language />
+            <Language userLanguage={props.selectLanguage} />
           </Box>
         </Box>
 

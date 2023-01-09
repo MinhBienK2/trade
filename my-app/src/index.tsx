@@ -39,13 +39,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <HelmetProvider>
-      <React.StrictMode>
-        <MantineProvider>
-          <ModalsProvider>
-            <App />
-          </ModalsProvider>
-        </MantineProvider>
-      </React.StrictMode>
+      <MantineProvider>
+        <ModalsProvider>
+          <App />
+        </ModalsProvider>
+      </MantineProvider>
     </HelmetProvider>
   </Provider>,
 );

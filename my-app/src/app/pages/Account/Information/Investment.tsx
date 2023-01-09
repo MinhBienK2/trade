@@ -15,10 +15,30 @@ import { useNavigate } from 'react-router-dom';
 import { InvestCard } from './Components/InvestCard';
 import { PageTitle } from './Components/PageTitle';
 import { WalletCard } from './Components/WalletCard';
-import { sampleData } from '../Data/InvestmentData';
+import { useTranslation } from 'react-i18next';
+import { useUserSlice } from 'store/app/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectLanguage } from 'store/app/user/selector';
+import { useProfileSlice } from 'store/app/profile';
+import { selectInvestSharesTransaction } from 'store/app/profile/selector';
 
 export function Investment() {
+  useUserSlice();
+  const profileSlice = useProfileSlice();
+  const { t } = useTranslation();
   const navitation = useNavigate();
+  const dispatch = useDispatch();
+
+  const investSharesTransaction = useSelector(selectInvestSharesTransaction);
+  const userLanguage = useSelector(selectLanguage);
+
+  React.useEffect(() => {
+    console.log(investSharesTransaction.length === 0);
+    if (investSharesTransaction.length === 0) {
+      dispatch(profileSlice.actions.requestUpdateInvestShareTransaction());
+    }
+  }, []);
+
   const moveToGeneralPage = () => {
     navitation('/account/general');
   };
@@ -34,8 +54,12 @@ export function Investment() {
         }}
       >
         <Stack>
-          <PageTitle text="Investment" back={moveToGeneralPage} />
-          <InvestCard data={sampleData} />
+          <PageTitle
+            text={t('Account.general.investment')}
+            back={moveToGeneralPage}
+            selectLanguage={userLanguage}
+          />
+          <InvestCard data={investSharesTransaction} />
         </Stack>
       </Paper>
     </Center>

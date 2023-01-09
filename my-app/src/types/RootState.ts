@@ -1,6 +1,7 @@
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 import { Profile } from 'store/app/profile/types';
+import { Project } from 'store/app/project/types';
 import { User } from 'store/app/user/types';
 import { Wallet } from 'store/app/wallet/types';
 
@@ -13,4 +14,5 @@ export interface RootState {
   user?: User;
   wallet?: Wallet;
   profile?: Profile;
+  project?: Project;
 }

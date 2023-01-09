@@ -10,7 +10,7 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { IconSquareChevronsRight, IconWallet, IconGift } from '@tabler/icons';
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import convertDate from 'utils/date';
@@ -20,9 +20,15 @@ import {
   selectHistoryTransaction,
   selectHistoryTransactionESOP,
 } from 'store/app/wallet/selector';
+import { useTranslation } from 'react-i18next';
+import { useUserSlice } from 'store/app/user';
+import { selectLanguage } from 'store/app/user/selector';
 
 export const HistoryTransaction = () => {
   useWalletSlice();
+  useUserSlice();
+  const { t } = useTranslation();
+  const useLanguage = useSelector(selectLanguage);
   const dataHistory = useSelector(selectHistoryTransaction);
   const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
   const navitation = useNavigate();
@@ -78,13 +84,13 @@ export const HistoryTransaction = () => {
       <Table striped highlightOnHover withColumnBorders>
         <thead>
           <tr>
-            {<th>ID</th>}
-            {<th>Project</th>}
-            {largerThan576 && <th>Type</th>}
-            <th>Exchange</th>
-            {largerThan576 && <th>Balance</th>}
-            {largerThan576 && <th>Time</th>}
-            {largerThan576 && <th>detail</th>}
+            {<th>{t('Trade.historyDetail.id')}</th>}
+            {<th>{t('Trade.historyDetail.project')}</th>}
+            {largerThan576 && <th>{t('Trade.historyDetail.type')}</th>}
+            <th>{t('Trade.historyDetail.exchange')}</th>
+            {largerThan576 && <th>{t('Trade.historyDetail.balance')}</th>}
+            {largerThan576 && <th>{t('Trade.historyDetail.time')}</th>}
+            {largerThan576 && <th>{t('Trade.historyDetail.detail')}</th>}
             {!largerThan576 && <th></th>}
           </tr>
         </thead>
@@ -111,7 +117,11 @@ export const HistoryTransaction = () => {
         }}
       >
         <Stack>
-          <PageTitle text="History transaction" back={moveToTrade} />
+          <PageTitle
+            text="History transaction"
+            back={moveToTrade}
+            selectLanguage={useLanguage}
+          />
           <Card shadow="sm" p="md" radius="md" withBorder>
             <Tabs
               defaultValue="invest"
@@ -121,10 +131,10 @@ export const HistoryTransaction = () => {
             >
               <Tabs.List>
                 <Tabs.Tab value="invest" icon={<IconWallet color={'orange'} />}>
-                  Invest wallet
+                  {t('Trade.formTrade.investWallet')}
                 </Tabs.Tab>
                 <Tabs.Tab value="investOSOP" icon={<IconGift color={'cyan'} />}>
-                  Invest ESOP wallet
+                  {t('Trade.formTrade.investESOPWallet')}
                 </Tabs.Tab>
               </Tabs.List>
 

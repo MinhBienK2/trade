@@ -2,27 +2,30 @@ import { ActionIcon, Card, MediaQuery, Table } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconShoppingCart, IconSquareChevronsRight } from '@tabler/icons';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { InvestSharesTransaction } from 'store/app/profile/types';
 import { formatVND } from 'utils/number';
-import { InvestmentData } from '../../Data/InvestmentData';
 
 export interface InvestCardProps {
-  data: InvestmentData[];
+  data: InvestSharesTransaction[];
 }
 
 export function InvestCard(props: InvestCardProps) {
+  const { t } = useTranslation();
   const navitation = useNavigate();
   const moveToInvestDetail = (project: number) => {
     navitation('/account/investment/detail/' + project);
   };
   const moveToTrade = (project: number) => {
-    navitation('/trade/' + project);
+    navitation('/trade/buy/' + project);
   };
+
   const xs = useMediaQuery('(max-width: 500px)');
   let data = props.data;
   const rows = data.map(element => (
     <tr
-      key={element.project}
+      key={element.projectId}
       onClick={() =>
         xs
           ? moveToInvestDetail(element.projectId)
@@ -32,7 +35,7 @@ export function InvestCard(props: InvestCardProps) {
       <td>{element.project}</td>
       {!xs && <td>{element.numberOfShare}</td>}
       {!xs && <td>{element.pricePerShare}</td>}
-      <td>{formatVND(element.totalValue)}</td>
+      <td>{formatVND(element.numberOfShare * element.pricePerShare)}</td>
       <td>
         {xs ? (
           <ActionIcon onClick={() => moveToTrade(element.projectId)}>
@@ -51,11 +54,11 @@ export function InvestCard(props: InvestCardProps) {
       <Table striped highlightOnHover withColumnBorders>
         <thead>
           <tr>
-            <th>Project</th>
-            {!xs && <th>Amount</th>}
-            {!xs && <th>Price</th>}
-            <th>Value</th>
-            {xs ? <th>Detail</th> : <th>BUY MORE</th>}
+            <th>{t('Account.detailCard.project')}</th>
+            {!xs && <th>{t('Account.detailCard.amount')}</th>}
+            {!xs && <th>{t('Account.detailCard.price')}</th>}
+            <th>{t('Account.detailCard.value')}</th>
+            {xs ? <th>Detail</th> : <th> {t('Account.detailCard.buyMore')}</th>}
           </tr>
         </thead>
         <tbody>{rows}</tbody>

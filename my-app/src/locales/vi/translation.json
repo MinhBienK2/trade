@@ -7,6 +7,93 @@
       "position_investor": "Nhà đầu tư",
       "position_tech": "Công nghệ",
       "position_business_analyst": "Phân tích kinh doanh"
+    },
+    "detailCard": {
+      "project": "Dự án",
+      "amount": "Số Lượng",
+      "price": "Giá tiền",
+      "value": "Giá trị",
+      "buyMore": "Mua nhiều"
+    },
+    "general": {
+      "assets": "Tài sản",
+      "investment": "Sự đầu tư",
+      "link_to_telegram": "Liên kết telegram",
+      "logout": "Đăng xuất"
     }
+  },
+  "Register": {
+    "loginPage": {
+      "title": "Đầu tư dễ dàng",
+      "label_phone_number": "Số điện thoại",
+      "placeholder_phone_number": "Nhập số điện thoại",
+      "password": "Mật khẩu",
+      "placeholder_password": "Nhập mật khẩu",
+      "create_new_account": "Tạo tài khoản mới",
+      "ButtonTitle": "Đăng nhập"
+    },
+    "error": {
+      "wrong_error": "Sai tài khoản hoặc mật khẩu",
+      "account_not_axist": "Tài khoản không tồn tại"
+    },
+    "registerPage": {
+      "confirm_password": "Xác nhận mật khẩu",
+      "confirm_your_Password": "Xác nhận mật khẩu của bạn",
+      "button_title": "Đăng kí",
+      "already_have_an_account": "Bạn đã có tài khoản "
+    }
+  },
+  "Project": {
+    "project_card": {
+      "price": "Giá tiền",
+      "supply": "Cung cấp",
+      "market_cap": "Vốn hóa thị trường",
+      "listed": "Liệt kê",
+      "listed_cap": "Niêm yết",
+      "outstanding": "Vượt trội",
+      "outstanding_cap": "Vượt trội hẳn",
+      "buy": "Mua"
+    }
+  },
+  "Trade": {
+    "error": {
+      "can_select_project": "Cần chọn dự án"
+    },
+    "formTrade": {
+      "select_Project": "Chọn dự án",
+      "amount": "Số lượng",
+      "project": "Dự án:",
+      "value": "Giá trị:",
+      "buy": "Mua",
+      "quality": "Số lượng",
+      "price_per_stock": "giá cổ phần",
+      "total_value": "Tổng giá trị",
+      "button_confirm": "xác nhận",
+      "investWallet": "Ví đầu tư",
+      "investESOPWallet": "Ví ESOP đầu tư",
+      "price": "Giá tiền"
+    },
+    "historyDetail": {
+      "id": "ID",
+      "project": "Dự án",
+      "type": "Loại",
+      "exchange": "Thay đổi",
+      "balance": "Còn lại",
+      "time": "Thời gian",
+      "detail": "Chi tiết",
+      "title_transaction_detail": "Chi tiết giao dịch",
+      "detail_trade": "Chi Tiết Giao dịch"
+    }
+  },
+  "Poppup": {
+    "success": {
+      "successful_transaction": "Giao dịch thành công"
+    }
+  },
+  "Home": {
+    "title": "Đầu tư dễ dàng",
+    "account": "Tài khoản",
+    "projects": "Dự án",
+    "trade": "Giao dịch"
   }
 }

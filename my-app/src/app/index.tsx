@@ -34,9 +34,19 @@ import {
   PreventRouter,
   PreventRouterLogin,
 } from 'app/components/auth/PreventRouter';
+import { useSelector } from 'react-redux';
+import { selectLanguage } from 'store/app/user/selector';
+import { useUserSlice } from 'store/app/user';
 
 export function App() {
+  useUserSlice();
+  const language = useSelector(selectLanguage);
   const { i18n } = useTranslation();
+
+  React.useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
+
   return (
     <BrowserRouter>
       <Helmet
@@ -53,30 +63,6 @@ export function App() {
           element={
             <PreventRouter>
               <HomePage />
-            </PreventRouter>
-          }
-        />
-        <Route
-          path="/trade"
-          element={
-            <PreventRouter>
-              <TradePage />
-            </PreventRouter>
-          }
-        />
-        <Route
-          path="/projects"
-          element={
-            <PreventRouter>
-              <ProjectPage />
-            </PreventRouter>
-          }
-        />
-        <Route
-          path="/projects/detail/:project"
-          element={
-            <PreventRouter>
-              <ProjectDetailPage />
             </PreventRouter>
           }
         />
@@ -104,6 +90,8 @@ export function App() {
             </PreventRouter>
           }
         />
+
+        {/* account */}
         <Route
           path="/account/profile"
           element={
@@ -136,6 +124,41 @@ export function App() {
             </PreventRouter>
           }
         />
+        {/* project */}
+        <Route
+          path="/projects"
+          element={
+            <PreventRouter>
+              <ProjectPage />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/projects/detail/:project"
+          element={
+            <PreventRouter>
+              <ProjectDetailPage />
+            </PreventRouter>
+          }
+        />
+
+        {/* trade */}
+        <Route
+          path="/trade"
+          element={
+            <PreventRouter>
+              <TradePage />
+            </PreventRouter>
+          }
+        />
+        <Route
+          path="/trade/buy/:project"
+          element={
+            <PreventRouter>
+              <TradePage />
+            </PreventRouter>
+          }
+        />
         <Route
           path="/history"
           element={
@@ -160,6 +183,7 @@ export function App() {
             </PreventRouter>
           }
         />
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <GlobalStyle />

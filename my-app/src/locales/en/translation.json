@@ -7,6 +7,93 @@
       "position_investor": "Investor",
       "position_tech": "Tech",
       "position_business_analyst": "Business analyst"
+    },
+    "detailCard": {
+      "project": "Project",
+      "amount": "Amount",
+      "price": "Price",
+      "value": "Value",
+      "buyMore": "Buy more"
+    },
+    "general": {
+      "assets": "Assets",
+      "investment": "Investment",
+      "link_to_telegram": "Link to telegram",
+      "logout": "Logout"
     }
+  },
+  "Register": {
+    "loginPage": {
+      "title": "EASY INVEST",
+      "label_phone_number": "Phone Number",
+      "placeholder_phone_number": "Enter PhoneNumber",
+      "password": "Password",
+      "placeholder_password": "Enter Password",
+      "create_new_account": "Create new account",
+      "ButtonTitle": "Login"
+    },
+    "error": {
+      "wrong_error": "Wrong account or password",
+      "account_not_axist": "Account does not axist"
+    },
+    "registerPage": {
+      "confirm_password": "Confirm password",
+      "confirm_your_Password": "Confirm your password",
+      "button_title": "Register",
+      "already_have_an_account": "Already have an account"
+    }
+  },
+  "Project": {
+    "project_card": {
+      "price": "Price",
+      "supply": "Supply",
+      "market_cap": "Market cap",
+      "listed": "Listed",
+      "listed_cap": "Listed cap",
+      "outstanding": "Outstanding",
+      "outstanding_cap": "Outstanding cap",
+      "buy": "Buy"
+    }
+  },
+  "Trade": {
+    "error": {
+      "can_select_project": "Can select Project"
+    },
+    "formTrade": {
+      "select_Project": "Select project",
+      "amount": "Amount",
+      "project": "Project:",
+      "value": "Value:",
+      "buy": "Buy",
+      "quality": "Quality",
+      "price_per_stock": "Price per stock",
+      "total_value": "total value",
+      "button_confirm": "confirm",
+      "investWallet": "Invest wallet",
+      "investESOPWallet": "invert ESOP wallet",
+      "price": "Price"
+    },
+    "historyDetail": {
+      "id": "ID",
+      "project": "Project",
+      "type": "Type",
+      "exchange": "Exchange",
+      "balance": "Balance",
+      "time": "Time",
+      "detail": "Detail",
+      "title_transaction_detail": "Transaction_detail",
+      "detail_trade": "Detail trade"
+    }
+  },
+  "Poppup": {
+    "success": {
+      "successful_transaction": "Successful transaction"
+    }
+  },
+  "Home": {
+    "title": "Easy Invest",
+    "account": "Account",
+    "projects": "Projects",
+    "trade": "Trade"
   }
 }

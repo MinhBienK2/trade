@@ -19,6 +19,8 @@ import {
   RESPONSE_ERROR_PASSWORD_NOT_AXISTS,
   RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS,
 } from 'const/register';
+import { handleResetProfile } from '../profile/saga';
+import { handleResetWallet } from '../wallet/saga';
 
 export function* login(action) {
   try {
@@ -104,9 +106,11 @@ export function* Logout() {
       null,
       dataHeader,
     );
-    console.log(data);
+
     if (data.error === 0) {
       yield put(actions.responseLogout());
+      yield handleResetProfile();
+      yield handleResetWallet();
     }
   } catch (err: any) {
     console.log(err);
