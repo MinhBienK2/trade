@@ -23,13 +23,17 @@ import {
   selectESOP,
   selectStock,
 } from 'store/app/wallet/selector';
+import { useUserSlice } from 'store/app/user';
+import { selectLanguage } from 'store/app/user/selector';
 
 export function Assets() {
   useWalletSlice();
+  useUserSlice();
   const navitation = useNavigate();
 
   const balance = useSelector(selectBalance);
   const esop = useSelector(selectESOP);
+  const userLanguage = useSelector(selectLanguage);
   const stock = useSelector(selectStock);
   const sampleWallet: WalletData = {
     balance,
@@ -53,7 +57,11 @@ export function Assets() {
         }}
       >
         <Stack>
-          <PageTitle text="Assets" back={moveToGeneralPage} />
+          <PageTitle
+            text="Assets"
+            back={moveToGeneralPage}
+            selectLanguage={userLanguage}
+          />
           <WalletCard data={sampleWallet}></WalletCard>
         </Stack>
       </Paper>

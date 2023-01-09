@@ -8,8 +8,11 @@ import {
   Text,
 } from '@mantine/core';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useUserSlice } from 'store/app/user';
+import { selectLanguage } from 'store/app/user/selector';
 import { useWalletSlice } from 'store/app/wallet';
 import {
   selectHistoryTransaction,
@@ -19,36 +22,37 @@ import convertDate from 'utils/date';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 
 const RenderChildDetail = (props: { data: any }) => {
+  const { t } = useTranslation();
   return (
     <Card shadow="sm" p="md" radius="xs" withBorder>
       <Stack>
         <Group>
-          <Text w={100}>ID</Text>
+          <Text w={100}>{t('Trade.historyDetail.id')}</Text>
           <Text fw={500}>{props.data.id}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>Project</Text>
+          <Text w={100}>{t('Trade.historyDetail.project')}</Text>
           <Text fw={500}>{props.data.project}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>Type</Text>
+          <Text w={100}>{t('Trade.historyDetail.type')}</Text>
           <Text fw={500}>{props.data.service}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>Exchange</Text>
+          <Text w={100}>{t('Trade.historyDetail.exchange')}</Text>
           <Text fw={500}>{props.data.exchange}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>Balance</Text>
+          <Text w={100}>{t('Trade.historyDetail.balance')}</Text>
           <Text fw={500}>{props.data.currentBalance}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>Time</Text>
+          <Text w={100}>{t('Trade.historyDetail.time')}</Text>
           <Text fw={500}>
             {convertDate.GetDDMMYY_HHMMSS(
               convertDate.createNewDate(props.data.timestamp),
@@ -57,7 +61,7 @@ const RenderChildDetail = (props: { data: any }) => {
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>Details</Text>
+          <Text w={100}>{t('Trade.historyDetail.detail')}</Text>
           <Text fw={500}>{props.data.detail}</Text>
         </Group>
       </Stack>
@@ -67,8 +71,11 @@ const RenderChildDetail = (props: { data: any }) => {
 
 export const HistoryDetail = () => {
   useWalletSlice();
+  useUserSlice();
+  const { t } = useTranslation();
   const dataHistory = useSelector(selectHistoryTransaction);
   const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
+  const userLanguage = useSelector(selectLanguage);
   const navitation = useNavigate();
   const { historyId } = useParams();
   const location = useLocation();
@@ -93,12 +100,20 @@ export const HistoryDetail = () => {
         <Stack>
           {/history-esop/.test(location.pathname) ? (
             <>
-              <PageTitle text={'Transaction detail'} back={moveToHistoryPage} />
+              <PageTitle
+                text={t('Trade.historyDetail.title_transaction_detail')}
+                back={moveToHistoryPage}
+                selectLanguage={userLanguage}
+              />
               <RenderChildDetail data={detailESOP} />
             </>
           ) : (
             <>
-              <PageTitle text={'Detail Trade'} back={moveToHistoryPage} />
+              <PageTitle
+                text={t('Trade.historyDetail.detail_trade')}
+                back={moveToHistoryPage}
+                selectLanguage={userLanguage}
+              />
               <RenderChildDetail data={detail} />
             </>
           )}

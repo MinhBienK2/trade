@@ -1,13 +1,22 @@
 import { Paper, Center, Stack } from '@mantine/core';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useUserSlice } from 'store/app/user';
+import { selectLanguage } from 'store/app/user/selector';
 import { PageQuote } from '../Account/Information/Components/PageQuote';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import { ProjectCard } from './ProjectCard';
 import { getProjectData } from './ProjectData';
 
 export function ProjectDetailPage() {
+  useUserSlice();
+  const userLanguage = useSelector(selectLanguage);
   const navitation = useNavigate();
+  const param = useParams();
+
+  console.log(param);
+
   const moveToProjectPage = () => {
     navitation('/projects');
   };
@@ -29,6 +38,7 @@ export function ProjectDetailPage() {
           <PageTitle
             text={projectData ? projectData.project : 'Project Not Found'}
             back={moveToProjectPage}
+            selectLanguage={userLanguage}
           />
           {projectData ? <ProjectCard data={projectData} /> : <PageQuote />}
         </Stack>

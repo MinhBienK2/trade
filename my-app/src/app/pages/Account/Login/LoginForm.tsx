@@ -66,13 +66,13 @@ export function LoginForm() {
     <Box sx={{ minWidth: '300px', minHeight: '300px' }}>
       <form onSubmit={form.onSubmit(values => submitForm(values))}>
         <Center>
-          <Title>{t('Register.loginPage.title')}EASY INVEST</Title>
+          <Title>{t('Register.loginPage.title')}</Title>
         </Center>
         <Divider my="sm" />
         <Stack spacing={10}>
           <Box>
             <Text className={classes.labelPhone}>
-              {t('Register.loginPage.label_phone_number')}Phone Number
+              {t('Register.loginPage.label_phone_number')}
             </Text>
             <PhoneInput
               placeholder={t('Register.loginPage.placeholder_phone_number')} //"Enter phone number"
@@ -99,7 +99,7 @@ export function LoginForm() {
 
           {(errorResponseLogin === RESPONSE_ERROR_PASSWORD_NOT_AXISTS ||
             errorResponseLogin === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS) && (
-            <Text c={'red'}>{t('Register.loginPage.wrong_error')}</Text>
+            <Text c={'red'}>{t('Register.error.wrong_error')}</Text>
           )}
 
           <Stack mt="md">
@@ -108,7 +108,7 @@ export function LoginForm() {
               type={'submit'}
               onClick={handleCLickButton}
             >
-              Login
+              {t('Register.loginPage.ButtonTitle')}
             </Button>
             <Center>
               <Anchor onClick={linkToRegisterPage}>

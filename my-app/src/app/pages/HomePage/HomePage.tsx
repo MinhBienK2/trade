@@ -1,10 +1,17 @@
 import { Paper, Center, Stack, Card, Text } from '@mantine/core';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useUserSlice } from 'store/app/user';
+import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 
 export function HomePage() {
+  const { t } = useTranslation();
+  useUserSlice();
+  const userLanguage = useSelector(selectLanguage);
   const navitation = useNavigate();
   const moveToGeneralPage = () => {
     navitation('/account/general');
@@ -27,10 +34,10 @@ export function HomePage() {
         }}
       >
         <Stack>
-          <PageTitle text="Easy Invest" />
-          <PageRow text={'Account'} next={moveToGeneralPage} />
-          <PageRow text={'Projects'} next={moveToProjectPage} />
-          <PageRow text={'Trade'} next={moveToTradePage} />
+          <PageTitle text={t('Home.title')} selectLanguage={userLanguage} />
+          <PageRow text={t('Home.account')} next={moveToGeneralPage} />
+          <PageRow text={t('Home.projects')} next={moveToProjectPage} />
+          <PageRow text={t('Home.trade')} next={moveToTradePage} />
         </Stack>
       </Paper>
     </Center>

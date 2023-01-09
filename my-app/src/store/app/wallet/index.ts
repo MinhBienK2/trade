@@ -40,6 +40,13 @@ const slice = createSlice({
     resetResponse(state: Wallet) {
       state.response = { loading: false, error: -1, message: '' };
     },
+    resetWallet(state: Wallet) {
+      state.balance = 0;
+      state.esop = 0;
+      state.stock = 0;
+      state.history_transaction_ESOP = [];
+      state.history_transaction = [];
+    },
 
     // handle
     pushHistoryTransaction(

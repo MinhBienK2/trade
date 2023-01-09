@@ -22,9 +22,11 @@ import { selectErrorRegister, selectLoading } from 'store/app/user/selector';
 import { LoginData } from 'store/app/user/response';
 
 import 'react-phone-input-2/lib/bootstrap.css';
+import { useTranslation } from 'react-i18next';
 
 export function RegisterForm() {
   const { actions } = useUserSlice();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
   const errorResponseRegister = useSelector(selectErrorRegister);
@@ -66,14 +68,16 @@ export function RegisterForm() {
     <Box sx={{ minWidth: '300px', minHeight: '300px' }}>
       <form onSubmit={form.onSubmit(values => registerAccount(values))}>
         <Center>
-          <Title>EASY INVEST</Title>
+          <Title>{t('Register.loginPage.title')}</Title>
         </Center>
         <Divider my="sm" />
         <Stack spacing={8}>
           <Box>
-            <Text className={classes.labelPhone}>Phone Number</Text>
+            <Text className={classes.labelPhone}>
+              {t('Register.loginPage.label_phone_number')}
+            </Text>
             <PhoneInput
-              placeholder="Enter phone number"
+              placeholder={t('Register.loginPage.placeholder_phone_number')}
               enableSearch
               country="vn"
               countryCodeEditable={false}
@@ -85,13 +89,13 @@ export function RegisterForm() {
           </Box>
 
           {errorResponseRegister === 10 && (
-            <Text c={'red'}>Số điện thoại đã tồn tại </Text>
+            <Text c={'red'}>{t('Register.error.account_not_axist')}</Text>
           )}
 
           <PasswordInput
             icon={<IconLock />}
-            label={<Text size={'lg'}>Password</Text>}
-            placeholder="Input your password"
+            label={<Text size={'lg'}>{t('Register.loginPage.password')}</Text>}
+            placeholder={t('Register.loginPage.placeholder_password')}
             {...form.getInputProps('password')}
             classNames={{
               innerInput: classes.innerInput,
@@ -100,8 +104,12 @@ export function RegisterForm() {
           />
           <PasswordInput
             icon={<IconLock />}
-            label={<Text size={'lg'}>Confirm Password</Text>}
-            placeholder="Confirm your password"
+            label={
+              <Text size={'lg'}>
+                {t('Register.registerPage.confirm_password')}
+              </Text>
+            }
+            placeholder={t('Register.registerPage.confirm_your_Password')}
             {...form.getInputProps('confirm_password')}
             classNames={{
               innerInput: classes.innerInput,
@@ -114,10 +122,12 @@ export function RegisterForm() {
               type={'submit'}
               onClick={handleCLickButton}
             >
-              Register
+              {t('Register.registerPage.button_title')}
             </Button>
             <Center>
-              <Anchor onClick={linkToLoginPage}>Already Have An Account</Anchor>
+              <Anchor onClick={linkToLoginPage}>
+                {t('Register.registerPage.already_have_an_account')}
+              </Anchor>
             </Center>
           </Stack>
         </Stack>

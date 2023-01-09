@@ -27,8 +27,7 @@ const MenuLanguage = props => {
 
   return (
     <Menu.Item
-      className={cx(classes.menuItem, classes.item)}
-      classNames={{ item: classes.item }}
+      className={cx(classes.menuItem, classes.item, classes.item)}
       icon={props.icon}
       onClick={() => handleConvertLanguage()}
     >
@@ -37,8 +36,8 @@ const MenuLanguage = props => {
   );
 };
 
-const ListLanguage = dataLanguage =>
-  dataLanguage.map(ele => {
+const ListLanguage = (props: { dataLanguage: DataLanguageProps[] }): any => {
+  return props.dataLanguage.map(ele => {
     return (
       <MenuLanguage
         key={ele.id}
@@ -49,11 +48,12 @@ const ListLanguage = dataLanguage =>
       />
     );
   });
+};
 
 export const ListMenu = (props: Props) => {
   return (
     <Menu.Dropdown style={{ background: '#d0ebff' }} p={0}>
-      {ListLanguage(props.dataLanguage)}
+      <ListLanguage dataLanguage={props.dataLanguage} />
     </Menu.Dropdown>
   );
 };

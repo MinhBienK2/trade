@@ -22,7 +22,21 @@ export const selectPosition = createSelector(
   [selectDomain],
   profile => profile.position,
 );
+// link
+export const selectNameTelegram = createSelector(
+  [selectDomain],
+  profile => profile.nameTelegram,
+);
+export const selectPathLinkTelegram = createSelector(
+  [selectDomain],
+  profile => profile.pathLinkTelegram,
+);
+
 export const selectError = createSelector(
   [selectDomain],
   profile => profile.response.error,
+);
+export const selectInvestSharesTransaction = createSelector(
+  [selectDomain],
+  profile => profile.investSharesTransaction,
 );
