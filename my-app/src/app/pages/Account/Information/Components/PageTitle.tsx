@@ -36,16 +36,18 @@ export function PageTitle(props: PageTitleProps) {
         <Text m="auto" fw={700} fz={20} color="white">
           {props.text}
         </Text>
-        <Box pos={'absolute'} top={0} right={10}>
+        <Box pos={'absolute'} top={0} right={-10}>
           <Box pos={'relative'}>
             <Language userLanguage={props.selectLanguage} />
           </Box>
         </Box>
 
         <ActionIcon
-          size="lg"
-          variant="transparent"
-          onClick={props.back}
+          disabled
+          style={{
+            background: 'none',
+            border: 'none',
+          }}
         ></ActionIcon>
       </Center>
     </Card>

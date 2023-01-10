@@ -18,3 +18,11 @@ export interface HistoryTransaction {
 export interface HistoryTransactionResponse
   extends ErrorResponse,
     ErrorResponse {}
+
+export interface walletBalanceResponse extends ErrorResponse {
+  data: {
+    balance: number;
+    esop: number;
+    stock: number;
+  };
+}

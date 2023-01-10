@@ -3,16 +3,17 @@ import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 
 import { Wallet } from './types';
 import { walletSaga } from './saga';
-import { HistoryTransaction } from './response';
+import { HistoryTransaction, walletBalanceResponse } from './response';
 
 import { dataHistory, dataHistoryESOP } from 'app/pages/Trade/data/History';
+import { formValue } from 'app/pages/Trade/FormTrade';
 
 export const initialState: Wallet = {
-  balance: 10000000,
-  esop: 500000,
-  stock: 300000,
-  history_transaction: dataHistory,
-  history_transaction_ESOP: dataHistoryESOP,
+  balance: 0,
+  esop: 0,
+  stock: 0,
+  history_transaction: [],
+  history_transaction_ESOP: [],
   response: {
     loading: false,
     error: -1,
@@ -65,6 +66,59 @@ const slice = createSlice({
     // request
     requestBuyStock(state: Wallet, action: PayloadAction<any>) {
       state.response.loading = true;
+    },
+    requestUpdateBalance() {},
+
+    // response
+    responseUpdateBalance(
+      state: Wallet,
+      action: PayloadAction<walletBalanceResponse>,
+    ) {
+      state.balance = action.payload.data.balance;
+      state.esop = action.payload.data.esop;
+      state.stock = action.payload.data.stock;
+    },
+
+    // buy shares
+    requestBuyShares(state: Wallet, action: PayloadAction<formValue>) {
+      state.response.loading = true;
+    },
+    responseBoughtShares(
+      state: Wallet,
+      action: PayloadAction<{ paymentMethod: number; totalValue: number }>,
+    ) {
+      const PAYMENT_BY_BALANCE = 0;
+      const PAYMENT_BY_ESOP = 1;
+      const payload = action.payload;
+      //update total money
+      if (payload.paymentMethod === PAYMENT_BY_BALANCE && payload.totalValue) {
+        state.balance = state.balance - payload.totalValue;
+        state.stock = state.stock + payload.totalValue;
+      } else if (
+        payload.paymentMethod === PAYMENT_BY_ESOP &&
+        payload.totalValue
+      ) {
+        state.esop = state.esop - payload.totalValue;
+        state.stock = state.stock + payload.totalValue;
+      }
+    },
+
+    // get history transaction
+    requestHistoryTransaction(
+      state,
+      action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>,
+    ) {},
+    updateHistoryTransaction(
+      state: Wallet,
+      action: PayloadAction<HistoryTransaction[]>,
+    ) {
+      state.history_transaction = action.payload;
+    },
+    updateHistoryTransactionESOP(
+      state: Wallet,
+      action: PayloadAction<HistoryTransaction[]>,
+    ) {
+      state.history_transaction_ESOP = action.payload;
     },
   },
 });

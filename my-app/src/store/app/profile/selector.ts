@@ -36,7 +36,3 @@ export const selectError = createSelector(
   [selectDomain],
   profile => profile.response.error,
 );
-export const selectInvestSharesTransaction = createSelector(
-  [selectDomain],
-  profile => profile.investSharesTransaction,
-);

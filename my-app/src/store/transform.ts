@@ -7,9 +7,9 @@ export const userTransform = createTransform(
   (inboundState: any, key) => {
     return {
       ...inboundState,
-      password: inboundState.response.login.remember_password
-        ? inboundState.password
-        : '',
+      // password: inboundState.response.login.remember_password
+      //   ? inboundState.password
+      //   : '',
     };
   },
   (outboundState: any, key): {} => {

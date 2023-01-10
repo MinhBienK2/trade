@@ -19,6 +19,28 @@ export function* handleResetProfile() {
   yield put(actions.resetProfile());
 }
 
+// check has profile exist
+export function* checkProfile() {
+  try {
+    const url = '';
+    const data = {
+      error: 0,
+      message: 'success',
+      data: {
+        name: 'Nguyễn Khánh Thịnh',
+        investorType: 2,
+        position: 1,
+      },
+    };
+
+    if (data.error === 0) {
+      yield put(actions.responseProfile(data.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 //link third party
 export function* handleCheckedLinkTelegram() {
   try {
@@ -71,20 +93,6 @@ export function* handleLinkThirdParty(action) {
   }
 }
 
-// invest shares transaction
-
-export function* handleUpdateInvestShareTransaction() {
-  try {
-    const data = { error: 0, message: 'success', data: sampleData };
-
-    if (data.error === 0) {
-      yield put(actions.insertInvestShareTransaction(data.data));
-    }
-  } catch (err: any) {
-    console.log(err);
-  }
-}
-
 export function* profileSaga() {
   yield takeLatest(
     actions.requestCheckedLinkTelegram.type,
@@ -92,9 +100,4 @@ export function* profileSaga() {
   );
   //link third party
   yield takeLatest(actions.requestLinkThirdParty.type, handleLinkThirdParty);
-  // invest shares transaction
-  yield takeLatest(
-    actions.requestUpdateInvestShareTransaction.type,
-    handleUpdateInvestShareTransaction,
-  );
 }

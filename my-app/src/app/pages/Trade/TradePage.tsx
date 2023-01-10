@@ -11,22 +11,38 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { IconGift, IconWallet, IconHistory } from '@tabler/icons';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { selectLanguage } from 'store/app/user/selector';
 import { useWalletSlice } from 'store/app/wallet';
-import { selectBalance, selectESOP } from 'store/app/wallet/selector';
+import {
+  selectBalance,
+  selectESOP,
+  selectStock,
+} from 'store/app/wallet/selector';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import { FormTrade } from './Loadable';
 
 export function TradePage() {
   useWalletSlice();
+  const walletSlice = useWalletSlice();
   const userLanguage = useSelector(selectLanguage);
-  const balance = useSelector(selectBalance);
-  const esop = useSelector(selectESOP);
   const navitation = useNavigate();
+  const { t } = useTranslation();
   const smallThan576 = useMediaQuery('(max-width:576px)');
   const param = useParams();
+  const dispatch = useDispatch();
+
+  const esop = useSelector(selectESOP);
+  const balance = useSelector(selectBalance);
+  const stock = useSelector(selectStock);
+
+  // update wallet
+  React.useEffect(() => {
+    if (balance === 0 && esop === 0 && stock === 0)
+      dispatch(walletSlice.actions.requestUpdateBalance());
+  }, []);
 
   function moveToHomePage() {
     navitation('/');
@@ -65,7 +81,7 @@ export function TradePage() {
                   onClick={moveToHistoryTransactionPage}
                   leftIcon={<IconHistory />}
                 >
-                  History
+                  {t('Trade.history')}
                 </Button>
               </Group>
             </Center>
@@ -73,6 +89,7 @@ export function TradePage() {
             <Center>
               <FormTrade
                 projectId={param.project ? param.project : undefined}
+                wallet={{ balance, esop }}
               />
             </Center>
           </Card>

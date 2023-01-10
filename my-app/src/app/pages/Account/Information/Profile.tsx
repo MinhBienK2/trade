@@ -38,7 +38,7 @@ export function Profile() {
     navitation('/account/general');
   };
 
-  const renderInvestorType = (investorType: 1 | 2 | 3 | -1): string => {
+  const renderInvestorType = (investorType: number): string => {
     const STRATEGY_INVESTOR = 1;
     const FINANCE_INVESTOR = 2;
     const TEAM = 3;
@@ -52,7 +52,7 @@ export function Profile() {
     return '';
   };
 
-  const renderPosition = (position: 1 | 2 | 3 | -1) => {
+  const renderPosition = (position: number) => {
     const INVESTOR = 1;
     const TECH = 2;
     const BA = 3;

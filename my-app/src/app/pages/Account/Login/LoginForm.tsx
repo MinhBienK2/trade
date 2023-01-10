@@ -23,7 +23,7 @@ import { selectErrorLogin, selectLoading } from 'store/app/user/selector';
 import {
   RESPONSE_ERROR_PASSWORD_NOT_AXISTS,
   RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS,
-} from 'const/register';
+} from 'constants/register';
 
 import 'react-phone-input-2/lib/bootstrap.css';
 import { useTranslation } from 'react-i18next';

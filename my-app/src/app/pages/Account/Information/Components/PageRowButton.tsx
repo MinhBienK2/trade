@@ -33,6 +33,7 @@ export function PageRowButton(props: PageRowProps) {
           >
             {props.text}
           </Anchor>
+          <ActionIcon size="lg"></ActionIcon>
         </Flex>
       </Card>
     </Indicator>

@@ -3,7 +3,16 @@ import { RootState } from '../../../types';
 import { initialState } from './index';
 
 const selectDomain = (state: RootState) => state.project || initialState;
-export const selectWallet = createSelector([selectDomain], project => project);
+export const selectProject = createSelector([selectDomain], project => project);
+
+export const selectListProject = createSelector(
+  [selectDomain],
+  project => project.projects,
+);
+export const selectInvestedProject = createSelector(
+  [selectDomain],
+  project => project.investedProject,
+);
 
 // response
 export const selectLoading = createSelector(

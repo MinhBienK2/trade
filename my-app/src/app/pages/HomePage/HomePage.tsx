@@ -1,18 +1,30 @@
-import { Paper, Center, Stack, Card, Text } from '@mantine/core';
+import { Paper, Center, Stack } from '@mantine/core';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { useProjectSlice } from 'store/app/project';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
+import Storage from 'utils/Storage';
 
 export function HomePage() {
-  const { t } = useTranslation();
   useUserSlice();
-  const userLanguage = useSelector(selectLanguage);
+  const projectSlice = useProjectSlice();
+  const { t } = useTranslation();
   const navitation = useNavigate();
+  const dispatch = useDispatch();
+
+  const userLanguage = useSelector(selectLanguage);
+
+  React.useEffect(() => {
+    Storage.setFieldOfUser('phoneNumber', '112312312312312312');
+    dispatch(projectSlice.actions.requestUpdateListProject());
+  }, []);
+
   const moveToGeneralPage = () => {
     navitation('/account/general');
   };

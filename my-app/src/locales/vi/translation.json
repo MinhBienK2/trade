@@ -13,13 +13,18 @@
       "amount": "Số Lượng",
       "price": "Giá tiền",
       "value": "Giá trị",
-      "buyMore": "Mua nhiều"
+      "buyMore": "Mua nhiều",
+      "profile": "Hồ sơ"
     },
     "general": {
+      "title" : "Tài khoản",
       "assets": "Tài sản",
       "investment": "Sự đầu tư",
       "link_to_telegram": "Liên kết telegram",
       "logout": "Đăng xuất"
+    },
+    "assets": {
+      "title": "Tài sản"
     }
   },
   "Register": {
@@ -48,10 +53,10 @@
       "price": "Giá tiền",
       "supply": "Cung cấp",
       "market_cap": "Vốn hóa thị trường",
-      "listed": "Liệt kê",
-      "listed_cap": "Niêm yết",
-      "outstanding": "Vượt trội",
-      "outstanding_cap": "Vượt trội hẳn",
+      "listed": "Số phiếu Lưu hành tối đa",
+      "listed_cap": "Giá trị lưu hành tối đa",
+      "outstanding": "Số phiếu đang lưu hành",
+      "outstanding_cap": "Giá trị đang lưu hành",
       "buy": "Mua"
     }
   },
@@ -71,7 +76,8 @@
       "button_confirm": "xác nhận",
       "investWallet": "Ví đầu tư",
       "investESOPWallet": "Ví ESOP đầu tư",
-      "price": "Giá tiền"
+      "price": "Giá tiền",
+      "paymentMethods": "Phương thức Thanh Toán"
     },
     "historyDetail": {
       "id": "ID",
@@ -83,7 +89,10 @@
       "detail": "Chi tiết",
       "title_transaction_detail": "Chi tiết giao dịch",
       "detail_trade": "Chi Tiết Giao dịch"
-    }
+    },
+    "history": "Giao dịch",
+    "paymentByBalance": "Tiền mặt",
+    "paymentByESOP": "Tiền cổ phiếu"
   },
   "Poppup": {
     "success": {
@@ -95,5 +104,13 @@
     "account": "Tài khoản",
     "projects": "Dự án",
     "trade": "Giao dịch"
+  },
+  "Profile": {
+    "assets": {
+      "total": "Tổng tiền",
+      "balance": "Tiền còn lại",
+      "esop": "Tiền cổ phần",
+      "stock": "Cổ phiếu"
+    }
   }
 }

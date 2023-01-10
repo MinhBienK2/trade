@@ -4,17 +4,20 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { selectListProject } from 'store/app/project/selector';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
-import { ProjectCard } from './ProjectCard';
-import { sampleProjectData } from './ProjectData';
+
 export function ProjectPage() {
   useUserSlice();
   const { t } = useTranslation();
-  const userLanguage = useSelector(selectLanguage);
   const navitation = useNavigate();
+
+  const userLanguage = useSelector(selectLanguage);
+  const projects = useSelector(selectListProject);
+
   function moveToHomePage() {
     navitation('/');
   }
@@ -38,12 +41,12 @@ export function ProjectPage() {
             back={moveToHomePage}
             selectLanguage={userLanguage}
           />
-          {sampleProjectData.map(item => (
+          {projects.map(item => (
             <PageRow
               key={item.projectId}
               leftIcon={<Badge>{item.projectId}</Badge>}
               rightIcon={<IconChevronRight />}
-              text={item.project}
+              text={item.nameProject}
               next={() => moveToProjectDetail(item.projectId)}
             />
           ))}

@@ -18,7 +18,7 @@ import {
   selectHistoryTransaction,
   selectHistoryTransactionESOP,
 } from 'store/app/wallet/selector';
-import convertDate from 'utils/date';
+import convertDate from 'helpers/formatDate';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 
 const RenderChildDetail = (props: { data: any }) => {

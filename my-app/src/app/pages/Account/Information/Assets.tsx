@@ -1,22 +1,11 @@
 import * as React from 'react';
-import {
-  Blockquote,
-  Card,
-  Center,
-  Group,
-  Paper,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { Center, Paper, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { PageQuote } from './Components/PageQuote';
-import { PageRow } from './Components/PageRow';
 import { PageTitle } from './Components/PageTitle';
-import { randomQuote } from '../Data/QuoteData';
 import { WalletCard } from './Components/WalletCard';
-import { sampleWallet, WalletData } from '../Data/WalletData';
+import { WalletData } from '../Data/WalletData';
 import { useWalletSlice } from 'store/app/wallet';
 import {
   selectBalance,
@@ -25,11 +14,14 @@ import {
 } from 'store/app/wallet/selector';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
+import { useTranslation } from 'react-i18next';
 
 export function Assets() {
-  useWalletSlice();
+  const walletSlice = useWalletSlice();
   useUserSlice();
   const navitation = useNavigate();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const balance = useSelector(selectBalance);
   const esop = useSelector(selectESOP);
@@ -41,6 +33,12 @@ export function Assets() {
     stock,
     total: balance + esop + stock,
   };
+
+  // update wallet
+  React.useEffect(() => {
+    if (balance === 0 && esop === 0 && stock === 0)
+      dispatch(walletSlice.actions.requestUpdateBalance());
+  }, []);
 
   const moveToGeneralPage = () => {
     navitation('/account/general');
@@ -58,7 +56,7 @@ export function Assets() {
       >
         <Stack>
           <PageTitle
-            text="Assets"
+            text={t('Account.assets.title')}
             back={moveToGeneralPage}
             selectLanguage={userLanguage}
           />

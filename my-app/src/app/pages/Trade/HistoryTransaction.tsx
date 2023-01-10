@@ -13,9 +13,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { PageTitle } from '../Account/Information/Components/PageTitle';
-import convertDate from 'utils/date';
+import convertDate from 'helpers/formatDate';
 import { useWalletSlice } from 'store/app/wallet';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectHistoryTransaction,
   selectHistoryTransactionESOP,
@@ -25,17 +25,34 @@ import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 
 export const HistoryTransaction = () => {
-  useWalletSlice();
+  const walletSLice = useWalletSlice();
   useUserSlice();
   const { t } = useTranslation();
+  const navitation = useNavigate();
+  const dispatch = useDispatch();
+
+  const [value, setValue] = useState<string>('invest');
+  const largerThan576 = useMediaQuery('(min-width:576px)');
   const useLanguage = useSelector(selectLanguage);
   const dataHistory = useSelector(selectHistoryTransaction);
   const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
-  const navitation = useNavigate();
-  const largerThan576 = useMediaQuery('(min-width:576px)');
-  const [value, setValue] = useState<string>('invest');
 
-  console.log(value);
+  React.useEffect(() => {
+    if (dataHistory.length === 0) {
+      dispatch(
+        walletSLice.actions.requestHistoryTransaction({
+          typeWallet: 'balance',
+        }),
+      );
+    }
+    if (dataHistoryESOP.length === 0) {
+      dispatch(
+        walletSLice.actions.requestHistoryTransaction({
+          typeWallet: 'esop',
+        }),
+      );
+    }
+  }, []);
 
   function moveToTrade() {
     navitation('/trade');

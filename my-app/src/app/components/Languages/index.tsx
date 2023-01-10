@@ -21,7 +21,7 @@ export const Language = (props: LanguageProps) => {
   const { classes } = useStyles();
 
   return (
-    <Menu withArrow>
+    <Menu withArrow zIndex={999999}>
       <Menu.Target>
         <Button
           className={classes.button}
@@ -29,7 +29,6 @@ export const Language = (props: LanguageProps) => {
           rightIcon={<Arrow />}
           fs={'12px'}
           fw={500}
-          style={{ color: '#000000', fontFamily: 'Poppins Medium' }}
         >
           {props.userLanguage === 'vi' ? 'Vie' : 'Eng'}
         </Button>
@@ -45,5 +44,7 @@ const useStyles = createStyles(theme => ({
     borderRadius: '27px',
     color: theme.black,
     height: '32px',
+    fontFamily:
+      '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
   },
 }));

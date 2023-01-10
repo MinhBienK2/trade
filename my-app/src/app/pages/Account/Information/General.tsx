@@ -15,15 +15,14 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useProfileSlice } from 'store/app/profile';
-import {
-  selectNameTelegram,
-  selectPathLinkTelegram,
-} from 'store/app/profile/selector';
+import { selectNameTelegram, selectPathLinkTelegram } from 'store/app/profile/selector';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage, selectPhoneNumber } from 'store/app/user/selector';
 import { PageRow } from './Components/PageRow';
 import { PageRowButton } from './Components/PageRowButton';
 import { PageTitle } from './Components/PageTitle';
+import Storage from 'utils/Storage';
+import storage from 'redux-persist/lib/storage';
 
 export function General() {
   const { actions } = useUserSlice();
@@ -38,8 +37,7 @@ export function General() {
 
   // checked link
   React.useEffect(() => {
-    if (nameTelegram === '')
-      dispatch(profileSlice.actions.requestCheckedLinkTelegram());
+    if (nameTelegram === '') dispatch(profileSlice.actions.requestCheckedLinkTelegram());
   }, []);
   // link telegram
   React.useEffect(() => {
@@ -81,20 +79,12 @@ export function General() {
         }}
       >
         <Stack>
-          <PageTitle
-            text={t('Account.detailCard.amount')}
-            back={moveToHomePage}
-            selectLanguage={language}
-          />
+          <PageTitle text={t('Account.general.title')} back={moveToHomePage} selectLanguage={language} />
           <PageRow leftIcon={<IconPhone />} text={'+' + phoneNumber} />
-          <PageRow
-            leftIcon={<IconLock />}
-            text="********"
-            rightIcon={<IconEdit />}
-          />
+          <PageRow leftIcon={<IconLock />} text="********" rightIcon={<IconEdit />} />
           <PageRow
             leftIcon={<IconUserCircle />}
-            text={t('Account.detailCard.project')}
+            text={t('Account.detailCard.profile')}
             rightIcon={<IconChevronRight />}
             next={moveToProfilePage}
           />
@@ -113,15 +103,11 @@ export function General() {
           <PageRowButton
             leftIcon={<IconBrandTelegram />}
             indicator={true}
-            text={t('Account.general.link_to_telegram')}
+            text={nameTelegram ? nameTelegram : t('Account.general.link_to_telegram')}
             userNameTelegram={nameTelegram}
             next={nameTelegram ? undefined : handleLinkTelegram}
           />
-          <PageRow
-            leftIcon={<IconLogout />}
-            text={t('Account.general.logout')}
-            next={handleLogout}
-          />
+          <PageRow leftIcon={<IconLogout />} text={t('Account.general.logout')} next={handleLogout} />
         </Stack>
       </Paper>
     </Center>

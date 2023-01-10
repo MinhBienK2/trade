@@ -37,9 +37,11 @@ import {
 import { useSelector } from 'react-redux';
 import { selectLanguage } from 'store/app/user/selector';
 import { useUserSlice } from 'store/app/user';
+import { useProfileSlice } from 'store/app/profile';
 
 export function App() {
   useUserSlice();
+  useProfileSlice();
   const language = useSelector(selectLanguage);
   const { i18n } = useTranslation();
 
@@ -117,7 +119,7 @@ export function App() {
           }
         />
         <Route
-          path="/account/investment/detail/:project"
+          path="/account/investment/detail/:projectId"
           element={
             <PreventRouter>
               <InvestDetail />

@@ -9,33 +9,32 @@ import {
   Table,
   Text,
 } from '@mantine/core';
-import { IconUserCircle, IconPigMoney, IconId } from '@tabler/icons';
 import { useNavigate } from 'react-router-dom';
 
 import { InvestCard } from './Components/InvestCard';
 import { PageTitle } from './Components/PageTitle';
-import { WalletCard } from './Components/WalletCard';
 import { useTranslation } from 'react-i18next';
 import { useUserSlice } from 'store/app/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLanguage } from 'store/app/user/selector';
 import { useProfileSlice } from 'store/app/profile';
-import { selectInvestSharesTransaction } from 'store/app/profile/selector';
+import { useProjectSlice } from 'store/app/project';
+import { selectInvestedProject } from 'store/app/project/selector';
 
 export function Investment() {
   useUserSlice();
-  const profileSlice = useProfileSlice();
+  useProfileSlice();
+  const ProjectSlice = useProjectSlice();
   const { t } = useTranslation();
   const navitation = useNavigate();
   const dispatch = useDispatch();
 
-  const investSharesTransaction = useSelector(selectInvestSharesTransaction);
   const userLanguage = useSelector(selectLanguage);
+  const investedProject = useSelector(selectInvestedProject);
 
   React.useEffect(() => {
-    console.log(investSharesTransaction.length === 0);
-    if (investSharesTransaction.length === 0) {
-      dispatch(profileSlice.actions.requestUpdateInvestShareTransaction());
+    if (investedProject.length === 0) {
+      dispatch(ProjectSlice.actions.requestUpdateInvestedProject());
     }
   }, []);
 
@@ -59,7 +58,7 @@ export function Investment() {
             back={moveToGeneralPage}
             selectLanguage={userLanguage}
           />
-          <InvestCard data={investSharesTransaction} />
+          <InvestCard data={investedProject} />
         </Stack>
       </Paper>
     </Center>

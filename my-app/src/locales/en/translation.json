@@ -13,13 +13,18 @@
       "amount": "Amount",
       "price": "Price",
       "value": "Value",
-      "buyMore": "Buy more"
+      "buyMore": "Buy more",
+      "profile": "Profile"
     },
     "general": {
+      "title" : "Account",
       "assets": "Assets",
       "investment": "Investment",
       "link_to_telegram": "Link to telegram",
       "logout": "Logout"
+    },
+    "assets": {
+      "title": "Assets"
     }
   },
   "Register": {
@@ -71,7 +76,8 @@
       "button_confirm": "confirm",
       "investWallet": "Invest wallet",
       "investESOPWallet": "invert ESOP wallet",
-      "price": "Price"
+      "price": "Price",
+      "paymentMethods": "Payment methods"
     },
     "historyDetail": {
       "id": "ID",
@@ -83,7 +89,10 @@
       "detail": "Detail",
       "title_transaction_detail": "Transaction_detail",
       "detail_trade": "Detail trade"
-    }
+    },
+    "history": "History",
+    "paymentByBalance": "BALANCE",
+    "paymentByESOP": "ESOP"
   },
   "Poppup": {
     "success": {
@@ -95,5 +104,13 @@
     "account": "Account",
     "projects": "Projects",
     "trade": "Trade"
+  },
+  "Profile": {
+    "assets": {
+      "total": "Total value",
+      "balance": "Balance",
+      "esop": "ESOP",
+      "stock": "Stock"
+    }
   }
 }

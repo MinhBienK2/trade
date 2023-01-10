@@ -1,16 +1,11 @@
-export interface InvestSharesTransaction {
-  projectId: number;
-  project: string;
-  numberOfShare: number;
-  pricePerShare: number;
-}
-export interface Profile {
+export interface ProfileInfo {
   name: string;
-  investorType: 1 | 2 | 3 | -1; // 1:Strategy Investor 2:Finance Investor 3:Team
-  position: 1 | 2 | 3 | -1; // 1:Investor 2:Tech 3:BA
+  investorType: number; // 1:Strategy Investor 2:Finance Investor 3:Team
+  position: number; // 1:Investor 2:Tech 3:BA
+}
+export interface Profile extends ProfileInfo {
   nameTelegram: string;
   pathLinkTelegram: string;
-  investSharesTransaction: InvestSharesTransaction[];
   response: {
     loading;
     error: number;

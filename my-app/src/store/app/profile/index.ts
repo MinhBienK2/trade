@@ -2,17 +2,16 @@ import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { profileSaga } from './saga';
-import { InvestSharesTransaction, Profile } from './types';
+import { Profile, ProfileInfo } from './types';
 import { LinkTelegramResponse, responseProfile } from './response';
 import { ErrorResponse } from 'utils/http/response';
 
 export const initialState: Profile = {
-  name: 'Nguyễn khánh Thịnh',
-  investorType: 2,
-  position: 1,
+  name: '',
+  investorType: -1,
+  position: -1,
   nameTelegram: '',
   pathLinkTelegram: '',
-  investSharesTransaction: [],
   response: {
     loading: false,
     error: -1,
@@ -54,10 +53,11 @@ const slice = createSlice({
     // request
 
     //response
-    responseProfile(state: Profile, action: PayloadAction<responseProfile>) {
-      state.name = action.payload.data.name;
-      state.investorType = action.payload.data.investorType;
-      state.position = action.payload.data.position;
+    responseProfile(state: Profile, action: PayloadAction<ProfileInfo>) {
+      console.log(action.payload);
+      state.name = action.payload.name;
+      state.investorType = action.payload.investorType;
+      state.position = action.payload.position;
     },
 
     // link third party
@@ -77,49 +77,6 @@ const slice = createSlice({
     ) {
       state.pathLinkTelegram = action.payload.data.link;
     },
-
-    // invest shares transaction
-    requestUpdateInvestShareTransaction() {},
-    insertInvestShareTransaction(
-      state: Profile,
-      action: PayloadAction<InvestSharesTransaction[]>,
-    ) {
-      const dataInvestShares = action.payload;
-
-      if (!!dataInvestShares.length) {
-        for (let invest of dataInvestShares) {
-          state.investSharesTransaction.push(invest);
-        }
-      }
-    },
-    increaseInvestShareTransaction(
-      state: Profile,
-      action: PayloadAction<{
-        projectId: number;
-        numberOfShareIncrease: number;
-      }>,
-    ) {
-      let numberOfShare =
-        state.investSharesTransaction[action.payload.projectId].numberOfShare;
-      let numberOfShareIncrease = action.payload.numberOfShareIncrease;
-
-      state.investSharesTransaction[action.payload.projectId].numberOfShare =
-        numberOfShare + numberOfShareIncrease;
-    }, // bought shares
-    decreaseInvestShareTransaction(
-      state: Profile,
-      action: PayloadAction<{
-        projectId: number;
-        numberOfShareIncrease: number;
-      }>,
-    ) {
-      let numberOfShare =
-        state.investSharesTransaction[action.payload.projectId].numberOfShare;
-      let numberOfShareIncrease = action.payload.numberOfShareIncrease;
-
-      state.investSharesTransaction[action.payload.projectId].numberOfShare =
-        numberOfShare - numberOfShareIncrease;
-    }, // sold shares
   },
 });
 

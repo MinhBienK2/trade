@@ -34,26 +34,23 @@ const slice = createSlice({
   initialState,
   reducers: {
     // set simple property
+    setIsLogin(state: User, action: PayloadAction<boolean>) {
+      state.isLogin = action.payload;
+    },
+    setLoading(state: User, action: PayloadAction<boolean>) {
+      state.response.loading = action.payload;
+    },
     setUserId(state: User, action: PayloadAction<{ id: number }>) {
       state.id = action.payload.id;
     },
-    setPhoneNumber(
-      state: User,
-      action: PayloadAction<{ phoneNumber: string }>,
-    ) {
+    setPhoneNumber(state: User, action: PayloadAction<{ phoneNumber: string }>) {
       state.phoneNumber = action.payload.phoneNumber;
     },
-    setResponseRegister(
-      state: User,
-      action: PayloadAction<{ error: number; message: string }>,
-    ) {
+    setResponseRegister(state: User, action: PayloadAction<{ error: number; message: string }>) {
       state.response.register.error = action.payload.error;
       state.response.register.message = action.payload.message;
     },
-    setResponseLogin(
-      state: User,
-      action: PayloadAction<{ error: number; message: string }>,
-    ) {
+    setResponseLogin(state: User, action: PayloadAction<{ error: number; message: string }>) {
       state.response.login.error = action.payload.error;
       state.response.login.message = action.payload.message;
     },
@@ -62,17 +59,11 @@ const slice = createSlice({
     resetLoading(state: User) {
       state.response.loading = false;
     },
-    resetToken(
-      state: User,
-      action: PayloadAction<{ id: number; token: string }>,
-    ) {
+    resetToken(state: User, action: PayloadAction<{ id: number; token: string }>) {
       state.token = action.payload.token;
       state.response.loading = false;
     },
-    resetResponseError(
-      state: User,
-      action: PayloadAction<{ type: 'login' | 'register' }>,
-    ) {
+    resetResponseError(state: User, action: PayloadAction<{ type: 'login' | 'register' }>) {
       if (action.payload.type === 'login') {
         state.response.login.error = -1;
         state.response.login.message = '';

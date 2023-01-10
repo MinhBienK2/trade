@@ -4,11 +4,11 @@ import { IconShoppingCart, IconSquareChevronsRight } from '@tabler/icons';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { InvestSharesTransaction } from 'store/app/profile/types';
-import { formatVND } from 'utils/number';
+import { formatVND } from 'helpers/formatCurrencyVND';
+import { InvestedProject } from 'store/app/project/types';
 
 export interface InvestCardProps {
-  data: InvestSharesTransaction[];
+  data: InvestedProject[];
 }
 
 export function InvestCard(props: InvestCardProps) {
@@ -32,10 +32,12 @@ export function InvestCard(props: InvestCardProps) {
           : moveToTrade(element.projectId)
       }
     >
-      <td>{element.project}</td>
-      {!xs && <td>{element.numberOfShare}</td>}
+      <td>{element.nameProject}</td>
+      {!xs && <td>{element.numberOfSharesPurchased}</td>}
       {!xs && <td>{element.pricePerShare}</td>}
-      <td>{formatVND(element.numberOfShare * element.pricePerShare)}</td>
+      <td>
+        {formatVND(element.numberOfSharesPurchased * element.pricePerShare)}
+      </td>
       <td>
         {xs ? (
           <ActionIcon onClick={() => moveToTrade(element.projectId)}>

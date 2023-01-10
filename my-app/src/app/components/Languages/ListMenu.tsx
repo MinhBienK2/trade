@@ -27,7 +27,7 @@ const MenuLanguage = props => {
 
   return (
     <Menu.Item
-      className={cx(classes.menuItem, classes.item, classes.item)}
+      className={cx(classes.menuItem, classes.item)}
       icon={props.icon}
       onClick={() => handleConvertLanguage()}
     >
@@ -65,6 +65,8 @@ const useStyleMenu = createStyles((theme, params: { id: number }) => {
         params.id !== lengthLanguage
           ? `0.4px solid ${theme.colors.blue[1]}`
           : 'none',
+      fontFamily:
+        '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
     },
     item: {
       width: '150px',
