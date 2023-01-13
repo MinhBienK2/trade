@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 
-import { DataProject, InvestedProject, Project } from './types';
+import { DataProject, InvestedProject, Project, InvestShares } from './types';
 import { projectSaga } from './saga';
-import { InvestedProjectResponse } from './response';
+import { SimpleProjectResponse } from './response';
 
 export const initialState: Project = {
   projects: [],
   investedProject: [],
+  investShares: [],
+  investSharesESOP: [],
   response: {
     loading: false,
     error: -1,
@@ -35,16 +37,35 @@ const slice = createSlice({
     resetProject(state: Project) {
       state.projects = [];
       state.investedProject = [];
+      state.investShares = [];
+      state.investSharesESOP = [];
     },
 
     // list project
     requestUpdateListProject(state: Project) {
       state.response.loading = true;
     },
-    responseUpdateListProject(state: Project, action: PayloadAction<DataProject[]>) {
-      if (!!action.payload.length) {
-        state.projects = action.payload;
+    // responseUpdateListProject(state: Project, action: PayloadAction<DataProject[] | undefined>) {
+    responseUpdateListProject(state: Project, action: PayloadAction<SimpleProjectResponse[]>) {
+      let listProject: DataProject[] = [];
+
+      for (let project of action.payload) {
+        let value: DataProject = {
+          projectId: project.id,
+          nameProject: project.project,
+          shortName: project.shortName,
+          pricePerShare: project.price,
+          supply: project.supply,
+          marketCap: project.marketCap,
+          maxTradingShare: project.listed,
+          maxTradingValue: project.listedCap,
+          currentTradingShare: project.outstanding,
+          currentTradingValue: project.outstandingCap,
+        };
+        listProject.push(value);
       }
+
+      state.projects = listProject;
     },
 
     // invested project
@@ -62,10 +83,19 @@ const slice = createSlice({
       }>,
     ) {
       if (!!state.investedProject.length) {
-        let numberOfShare = state.investedProject[action.payload.projectId].numberOfSharesPurchased;
-        let numberOfShareIncrease = action.payload.numberOfShareIncrease;
+        for (let [key, invested] of state.investedProject.entries()) {
+          if (invested.id === action.payload.projectId) {
+            // quantity
+            let numberOfShare = state.investedProject[key].quantity;
+            let numberOfShareIncrease = action.payload.numberOfShareIncrease;
+            state.investedProject[key].quantity = numberOfShare + numberOfShareIncrease;
+            // total value
+            state.investedProject[key].priceTotal =
+              state.investedProject[key].quantity * state.investedProject[key].pricePerShare;
 
-        state.investedProject[action.payload.projectId].numberOfSharesPurchased = numberOfShare + numberOfShareIncrease;
+            break;
+          }
+        }
       }
     }, // bought shares
     decreaseInvestShareTransaction(
@@ -76,12 +106,21 @@ const slice = createSlice({
       }>,
     ) {
       if (!!state.investedProject.length) {
-        let numberOfShare = state.investedProject[action.payload.projectId].numberOfSharesPurchased;
+        let numberOfShare = state.investedProject[action.payload.projectId].quantity;
         let numberOfShareIncrease = action.payload.numberOfShareIncrease;
 
-        state.investedProject[action.payload.projectId].numberOfSharesPurchased = numberOfShare - numberOfShareIncrease;
+        state.investedProject[action.payload.projectId].quantity = numberOfShare - numberOfShareIncrease;
       }
     }, // sold shares
+
+    // project detail
+    requestUpdateInrestShares() {},
+    updateInvestShares(state: Project, action: PayloadAction<InvestShares[]>) {
+      state.investShares = action.payload;
+    },
+    updateInvestSharesESOP(state: Project, action: PayloadAction<InvestShares[]>) {
+      state.investSharesESOP = action.payload;
+    },
   },
 });
 

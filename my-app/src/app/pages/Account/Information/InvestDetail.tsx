@@ -11,12 +11,9 @@ import { DetailCard } from './Components/DetailCard';
 import { PageQuote } from './Components/PageQuote';
 import { PageTitle } from './Components/PageTitle';
 
-function getInvestmentData(
-  projectId: number,
-  data,
-): InvestedProject | undefined {
+function getInvestmentData(projectId: number, data): InvestedProject | undefined {
   for (let i = 0; i < data.length; i++) {
-    if (data[i].projectId === projectId) {
+    if (data[i].id === projectId) {
       return data[i];
     }
   }
@@ -31,7 +28,7 @@ export function InvestDetail() {
 
   const userLanguage = useSelector(selectLanguage);
   const investedProject = useSelector(selectInvestedProject);
-  const projectId = params['projectId'] ? parseInt(params['projectId']) : 0;
+  const projectId = params['projectId'] ? Number(params['projectId']) : 0;
   const investData = getInvestmentData(projectId, investedProject);
 
   const moveToGeneralPage = () => {
@@ -51,7 +48,7 @@ export function InvestDetail() {
       >
         <Stack>
           <PageTitle
-            text={investData ? investData.nameProject : 'Project Not Found'}
+            text={investData ? investData.project : 'Project Not Found'}
             back={moveToGeneralPage}
             selectLanguage={userLanguage}
           />

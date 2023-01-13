@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Center, Paper, Stack } from '@mantine/core';
+import { Button, Center, Group, Paper, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,11 +7,7 @@ import { PageTitle } from './Components/PageTitle';
 import { WalletCard } from './Components/WalletCard';
 import { WalletData } from '../Data/WalletData';
 import { useWalletSlice } from 'store/app/wallet';
-import {
-  selectBalance,
-  selectESOP,
-  selectStock,
-} from 'store/app/wallet/selector';
+import { selectBalance, selectESOP, selectStock } from 'store/app/wallet/selector';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { useTranslation } from 'react-i18next';
@@ -36,8 +32,7 @@ export function Assets() {
 
   // update wallet
   React.useEffect(() => {
-    if (balance === 0 && esop === 0 && stock === 0)
-      dispatch(walletSlice.actions.requestUpdateBalance());
+    if (balance === 0 && esop === 0 && stock === 0) dispatch(walletSlice.actions.requestUpdateBalance());
   }, []);
 
   const moveToGeneralPage = () => {
@@ -55,11 +50,7 @@ export function Assets() {
         }}
       >
         <Stack>
-          <PageTitle
-            text={t('Account.assets.title')}
-            back={moveToGeneralPage}
-            selectLanguage={userLanguage}
-          />
+          <PageTitle text={t('Account.assets.title')} back={moveToGeneralPage} selectLanguage={userLanguage} />
           <WalletCard data={sampleWallet}></WalletCard>
         </Stack>
       </Paper>

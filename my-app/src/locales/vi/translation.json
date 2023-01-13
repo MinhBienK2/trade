@@ -17,7 +17,7 @@
       "profile": "Hồ sơ"
     },
     "general": {
-      "title" : "Tài khoản",
+      "title": "Tài khoản",
       "assets": "Tài sản",
       "investment": "Sự đầu tư",
       "link_to_telegram": "Liên kết telegram",
@@ -70,21 +70,22 @@
       "project": "Dự án:",
       "value": "Giá trị:",
       "buy": "Mua",
-      "quality": "Số lượng",
+      "quantity": "Số lượng",
       "price_per_stock": "giá cổ phần",
       "total_value": "Tổng giá trị",
       "button_confirm": "xác nhận",
       "investWallet": "Ví đầu tư",
       "investESOPWallet": "Ví ESOP đầu tư",
       "price": "Giá tiền",
-      "paymentMethods": "Phương thức Thanh Toán"
+      "paymentMethods": "Phương thức Thanh Toán",
+      "maximum": "Hạn mức"
     },
     "historyDetail": {
       "id": "ID",
       "project": "Dự án",
-      "type": "Loại",
-      "exchange": "Thay đổi",
-      "balance": "Còn lại",
+      "quantity": "Số lượng",
+      "pricePerShare": "Giá cổ phiếu",
+      "totalValue": "Giá trị",
       "time": "Thời gian",
       "detail": "Chi tiết",
       "title_transaction_detail": "Chi tiết giao dịch",
@@ -92,7 +93,8 @@
     },
     "history": "Giao dịch",
     "paymentByBalance": "Tiền mặt",
-    "paymentByESOP": "Tiền cổ phiếu"
+    "paymentByESOP": "Tiền cổ phiếu",
+    "title": "Lịch sử"
   },
   "Poppup": {
     "success": {

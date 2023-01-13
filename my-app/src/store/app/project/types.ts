@@ -1,6 +1,7 @@
 export interface DataProject {
   projectId: number;
   nameProject: string;
+  shortName: string;
   pricePerShare: number;
   supply: number;
   marketCap: number; //Vốn hóa thị trường
@@ -10,15 +11,28 @@ export interface DataProject {
   currentTradingValue: number; //Giá trị đang lưu hành
 }
 export interface InvestedProject {
-  projectId: number;
-  nameProject: string;
-  numberOfSharesPurchased: number;
+  id: number;
+  project: string;
   pricePerShare: number;
+  quantity: number;
+  priceTotal: number;
+}
+
+export interface InvestShares {
+  id: number;
+  project: string;
+  type: number; // 0 : balance   1: ESOP
+  maxBuyShare: number;
+  boughtShare: number;
+  canBuyShare: number;
+  createTime: number;
 }
 
 export interface Project {
   projects: DataProject[];
   investedProject: InvestedProject[];
+  investShares: InvestShares[];
+  investSharesESOP: InvestShares[];
   response: {
     loading: boolean;
     error: number;

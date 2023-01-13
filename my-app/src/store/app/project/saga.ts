@@ -1,11 +1,11 @@
+import { selectId } from './../user/selector';
+import { apiGet } from './../../../utils/http/request';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
-import { Project } from './types';
 import { projectActions as actions } from '.';
 
 // mook data
-import { sampleProjectData } from './mock/ProjectData';
-import { sampleData } from 'app/pages/Account/Data/InvestmentData';
+import { InvestedProjectResponse, ListProjectResponse, ProjectDetailResponse } from './response';
 
 export function* handleResetWallet() {
   yield put(actions.resetProject());
@@ -13,12 +13,13 @@ export function* handleResetWallet() {
 
 export function* FetchListProject() {
   try {
-    const url = '';
+    const url = '/v1/invest/getallproject';
+    const userId = yield select(selectId);
 
-    const data = { error: 0, message: 'success', data: sampleProjectData };
+    const { data }: { data: ListProjectResponse } = yield call(apiGet, url, { userId });
 
     if (data.error === 0) {
-      yield put(actions.responseUpdateListProject(data.data));
+      if (!!data.data?.length) yield put(actions.responseUpdateListProject(data.data));
       yield put(actions.resetLoading());
     }
   } catch (error) {
@@ -31,9 +32,10 @@ export function* FetchListProject() {
 
 export function* fetchInvestedProject() {
   try {
-    const url = '';
+    const userId = yield select(selectId);
+    const url = '/v1/invest/getinvestedproject';
 
-    const data = { error: 0, message: 'success', data: sampleData };
+    const { data }: { data: InvestedProjectResponse } = yield call(apiGet, url, { userId });
 
     if (data.error === 0) {
       yield put(actions.responseUpdateInvestedProject(data.data));
@@ -43,11 +45,29 @@ export function* fetchInvestedProject() {
   }
 }
 
+export function* handleUpdateProjectDetail(action: PayloadAction<{ projectId: number; type: number }>) {
+  try {
+    const userId = yield select(selectId);
+    let url = '/v1/invest/seeshareproject1';
+
+    const { data }: { data: ProjectDetailResponse } = yield call(apiGet, url, { userId });
+
+    if (data.error === 0) {
+      const balanceShares = data.data.filter(project => project.type === 0);
+      const balanceESOPShares = data.data.filter(project => project.type === 1);
+
+      yield put(actions.updateInvestShares(balanceShares));
+      yield put(actions.updateInvestSharesESOP(balanceESOPShares));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* projectSaga() {
   yield takeLatest(actions.requestUpdateListProject.type, FetchListProject);
   // invested project
-  yield takeLatest(
-    actions.requestUpdateInvestedProject.type,
-    fetchInvestedProject,
-  );
+  yield takeLatest(actions.requestUpdateInvestedProject.type, fetchInvestedProject);
+  // project detail
+  yield takeLatest(actions.requestUpdateInrestShares.type, handleUpdateProjectDetail);
 }

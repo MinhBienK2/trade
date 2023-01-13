@@ -1,10 +1,12 @@
+import { apiGet, apiPost } from './../../../utils/http/request';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
+import { call, put, select, takeLatest, delay, takeEvery } from 'redux-saga/effects';
 import { Wallet } from './types';
 import { walletActions as actions } from '.';
 import { projectActions } from '../project';
 import { formValue } from 'app/pages/Trade/FormTrade';
-import { dataHistory, dataHistoryESOP } from 'app/pages/Trade/data/History';
+import { selectId } from '../user/selector';
+import { HistoryTransactionResponse, walletBalanceResponse } from './response';
 
 export function* handleResetWallet() {
   yield put(actions.resetWallet());
@@ -17,16 +19,13 @@ export function* handleBuyStock() {
 
 export function* fetchWalletBalance() {
   try {
-    const url = '';
+    const url = '/v1/invest/getmywallet';
+    const userId = yield select(selectId);
 
-    const data = {
-      error: 0,
-      message: 'success',
-      data: { balance: 1000000, esop: 5000000, stock: 300000 },
-    };
+    const { data }: { data: walletBalanceResponse } = yield call(apiGet, url, { userId });
 
     if (data.error === 0) {
-      yield put(actions.responseUpdateBalance(data));
+      yield put(actions.responseUpdateBalance(data.data));
     }
   } catch (error) {
     console.log(error);
@@ -36,25 +35,25 @@ export function* fetchWalletBalance() {
 // handle Buy Shares
 export function* fetchBuyShares(action: PayloadAction<formValue>) {
   try {
-    const url = '';
-    const body = action.payload;
-
-    const data = {
-      error: 0,
-      message: 'success',
+    const url = '/v1/invest/buyshareproject';
+    const userId = yield select(selectId);
+    const body = {
+      projectId: Number(action.payload.projectId),
+      quantity: action.payload.quantity,
+      type: action.payload.paymentMethods,
     };
 
-    if (data.error === 0) {
-      const totalValue = body.price * body.quality;
+    const { data } = yield call(apiPost, url, body, { userId });
 
-      yield put(
-        actions.setResponseError({ error: data.error, message: data.message }),
-      );
+    if (data.error === 0) {
+      const totalValue = action.payload.price * action.payload.quantity;
+
+      yield put(actions.setResponseError({ error: data.error, message: data.message }));
       yield put(actions.resetLoading());
       // update total money
       yield put(
         actions.responseBoughtShares({
-          paymentMethod: body.paymentMethods,
+          paymentMethod: action.payload.paymentMethods,
           totalValue: totalValue,
         }),
       );
@@ -62,7 +61,7 @@ export function* fetchBuyShares(action: PayloadAction<formValue>) {
       yield put(
         projectActions.increaseInvestShareTransaction({
           projectId: Number(body.projectId),
-          numberOfShareIncrease: body.quality,
+          numberOfShareIncrease: action.payload.quantity,
         }),
       );
     }
@@ -72,21 +71,22 @@ export function* fetchBuyShares(action: PayloadAction<formValue>) {
 }
 
 // handle Buy Shares
-export function* fetchHistoryTransaction(
-  action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>,
-) {
+export function* fetchHistoryTransaction(action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>) {
   try {
-    const url = '';
+    const userId = yield select(selectId);
     const typeWallet = action.payload.typeWallet;
+    let url = '/v1/invest/historytransaction';
 
-    let data = { error: 0, message: 'success', data: dataHistory };
-    if (typeWallet === 'balance') data.data = dataHistory;
-    else if (typeWallet === 'esop') data.data = dataHistoryESOP;
+    if (typeWallet === 'balance') url = url + '?type=0';
+    else if (typeWallet === 'esop') url = url + '?type=1';
+    console.log(url);
 
+    const { data }: { data: HistoryTransactionResponse } = yield call(apiGet, url, { userId });
+
+    console.log(data);
     if (data.error === 0 && typeWallet === 'balance') {
       yield put(actions.updateHistoryTransaction(data.data));
-    } else if (data.error === 0 && typeWallet === 'esop')
-      yield put(actions.updateHistoryTransactionESOP(data.data));
+    } else if (data.error === 0 && typeWallet === 'esop') yield put(actions.updateHistoryTransactionESOP(data.data));
   } catch (error) {
     console.log(error);
   }
@@ -100,8 +100,5 @@ export function* walletSaga() {
   yield takeLatest(actions.requestBuyShares.type, fetchBuyShares);
 
   // get history transaction
-  yield takeLatest(
-    actions.requestHistoryTransaction.type,
-    fetchHistoryTransaction,
-  );
+  yield takeEvery(actions.requestHistoryTransaction.type, fetchHistoryTransaction);
 }

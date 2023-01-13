@@ -3,9 +3,8 @@ import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 
 import { Wallet } from './types';
 import { walletSaga } from './saga';
-import { HistoryTransaction, walletBalanceResponse } from './response';
+import { DataBalance, HistoryTransaction, walletBalanceResponse } from './response';
 
-import { dataHistory, dataHistoryESOP } from 'app/pages/Trade/data/History';
 import { formValue } from 'app/pages/Trade/FormTrade';
 
 export const initialState: Wallet = {
@@ -26,10 +25,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     // set simple property
-    setResponseError(
-      state: Wallet,
-      action: PayloadAction<{ error: number; message: string }>,
-    ) {
+    setResponseError(state: Wallet, action: PayloadAction<{ error: number; message: string }>) {
       state.response.error = action.payload.error;
       state.response.message = action.payload.message;
     },
@@ -50,16 +46,10 @@ const slice = createSlice({
     },
 
     // handle
-    pushHistoryTransaction(
-      state: Wallet,
-      action: PayloadAction<HistoryTransaction>,
-    ) {
+    pushHistoryTransaction(state: Wallet, action: PayloadAction<HistoryTransaction>) {
       state.history_transaction.push(action.payload);
     },
-    pushHistoryTransactionESOP(
-      state: Wallet,
-      action: PayloadAction<HistoryTransaction>,
-    ) {
+    pushHistoryTransactionESOP(state: Wallet, action: PayloadAction<HistoryTransaction>) {
       state.history_transaction_ESOP.push(action.payload);
     },
 
@@ -70,23 +60,17 @@ const slice = createSlice({
     requestUpdateBalance() {},
 
     // response
-    responseUpdateBalance(
-      state: Wallet,
-      action: PayloadAction<walletBalanceResponse>,
-    ) {
-      state.balance = action.payload.data.balance;
-      state.esop = action.payload.data.esop;
-      state.stock = action.payload.data.stock;
+    responseUpdateBalance(state: Wallet, action: PayloadAction<DataBalance>) {
+      state.balance = action.payload.balance;
+      state.esop = action.payload.esopBalance;
+      state.stock = action.payload.shareBalance;
     },
 
     // buy shares
     requestBuyShares(state: Wallet, action: PayloadAction<formValue>) {
       state.response.loading = true;
     },
-    responseBoughtShares(
-      state: Wallet,
-      action: PayloadAction<{ paymentMethod: number; totalValue: number }>,
-    ) {
+    responseBoughtShares(state: Wallet, action: PayloadAction<{ paymentMethod: number; totalValue: number }>) {
       const PAYMENT_BY_BALANCE = 0;
       const PAYMENT_BY_ESOP = 1;
       const payload = action.payload;
@@ -94,30 +78,18 @@ const slice = createSlice({
       if (payload.paymentMethod === PAYMENT_BY_BALANCE && payload.totalValue) {
         state.balance = state.balance - payload.totalValue;
         state.stock = state.stock + payload.totalValue;
-      } else if (
-        payload.paymentMethod === PAYMENT_BY_ESOP &&
-        payload.totalValue
-      ) {
+      } else if (payload.paymentMethod === PAYMENT_BY_ESOP && payload.totalValue) {
         state.esop = state.esop - payload.totalValue;
         state.stock = state.stock + payload.totalValue;
       }
     },
 
     // get history transaction
-    requestHistoryTransaction(
-      state,
-      action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>,
-    ) {},
-    updateHistoryTransaction(
-      state: Wallet,
-      action: PayloadAction<HistoryTransaction[]>,
-    ) {
+    requestHistoryTransaction(state, action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>) {},
+    updateHistoryTransaction(state: Wallet, action: PayloadAction<HistoryTransaction[]>) {
       state.history_transaction = action.payload;
     },
-    updateHistoryTransactionESOP(
-      state: Wallet,
-      action: PayloadAction<HistoryTransaction[]>,
-    ) {
+    updateHistoryTransactionESOP(state: Wallet, action: PayloadAction<HistoryTransaction[]>) {
       state.history_transaction_ESOP = action.payload;
     },
   },

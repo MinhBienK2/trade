@@ -6,10 +6,10 @@ import { useUserSlice } from 'store/app/user';
 import { selectIsLogin } from 'store/app/user/selector';
 
 interface Props {
-  children: JSX.Element;
+  children?: JSX.Element;
 }
 
-export const PreventRouter = (props: Props) => {
+export const PublicRouter = (props: Props) => {
   useUserSlice();
   const navigate = useNavigate();
   const isLogin = useSelector(selectIsLogin);

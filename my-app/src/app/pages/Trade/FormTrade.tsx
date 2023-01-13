@@ -1,16 +1,5 @@
-import React from 'react';
-import {
-  Button,
-  Group,
-  Text,
-  NumberInput,
-  Stack,
-  Select,
-  Title,
-  Modal,
-  Center,
-  Divider,
-} from '@mantine/core';
+import React, { useEffect } from 'react';
+import { Button, Group, Text, NumberInput, Stack, Select, Title, Modal, Center, Divider } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import { formatVND } from 'helpers/formatCurrencyVND';
@@ -20,8 +9,9 @@ import { selectError, selectLoading } from 'store/app/wallet/selector';
 import { useTranslation } from 'react-i18next';
 import { GetPaymentMethodList } from './data/paymentMethod';
 import { useProjectSlice } from 'store/app/project';
-import { selectListProject } from 'store/app/project/selector';
+import { selectInvestShares, selectInvestSharesESOP, selectListProject } from 'store/app/project/selector';
 import { DataProject } from 'store/app/project/types';
+import { InvestShares } from 'store/app/project/types';
 
 interface Props {
   projectId?: string | undefined;
@@ -34,51 +24,59 @@ export interface ValueSelectForm {
   value: string;
   label: string;
 }
+export interface filterValueForm {
+  projectId: string | null;
+  paymentMethods: number;
+  quantity: number;
+}
 export interface formValue {
   projectId: string | null;
   paymentMethods: number;
-  quality: number;
+  quantity: number;
   price: number;
 }
 
 export const FormTrade = (props: Props) => {
-  useProjectSlice();
+  const projectSlice = useProjectSlice();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [openPoppupError, setOpenPoppupError] = React.useState<boolean>(false);
+  const [projectId, setProjectId] = React.useState<number>(0);
+  const [paymentMethods, setPaymentMethods] = React.useState<number>(0);
+  const inputNumberRef = React.useRef<HTMLInputElement>(null);
   const errorWallet = useSelector(selectError);
   const walletSlice = useWalletSlice();
   const loading = useSelector(selectLoading);
   const listProject = useSelector(selectListProject);
+  const listInvestShares = useSelector(selectInvestShares);
+  const listInvestSharesESOP = useSelector(selectInvestSharesESOP);
 
   const form = useForm({
     initialValues: {
       projectId: props.projectId ? props.projectId : '',
       paymentMethods: 0,
-      quality: 0,
-      price: props.projectId
-        ? listProject[Number(props.projectId)].pricePerShare
-        : 0,
+      quantity: 0,
+      price: props.projectId ? listProject[Number(props.projectId) - 1].pricePerShare : 0,
     },
 
     validate: {
-      projectId: project =>
-        project !== '' ? null : t('Trade.error.can_select_project'),
-      quality: quality => (quality > 0 ? null : 'quality larger than 0'),
+      projectId: project => (project !== '' ? null : t('Trade.error.can_select_project')),
+      quantity: quantity => (quantity > 0 ? null : 'quantity larger than 0'),
       price: price => (price > 0 ? null : 'price larger than 0'),
     },
   });
 
   const handleBuyShares = (values: formValue) => {
+    const paymentBalance = 0;
+    const paymentESOP = 1;
+
     if (
-      (values.price * values.quality < props.wallet.balance &&
-        values.paymentMethods === 0) ||
-      (values.price * values.quality < props.wallet.esop &&
-        values.paymentMethods === 1)
-    )
+      (values.price * values.quantity < props.wallet.balance && values.paymentMethods === paymentBalance) ||
+      (values.price * values.quantity < props.wallet.esop && values.paymentMethods === paymentESOP)
+    ) {
       dispatch(walletSlice.actions.requestBuyShares(values));
-    else {
+    } else {
       setOpenPoppupError(true);
     }
   };
@@ -97,10 +95,8 @@ export const FormTrade = (props: Props) => {
               data={getNameProjectList(listProject)}
               placeholder={t('Trade.formTrade.select_Project')}
               onChange={value => {
-                form.setFieldValue(
-                  'price',
-                  listProject[Number(value)].pricePerShare,
-                );
+                setProjectId(Number(value));
+                form.setFieldValue('price', listProject[Number(value) - 1].pricePerShare);
                 form.setFieldValue('projectId', String(value));
               }}
             />
@@ -113,10 +109,35 @@ export const FormTrade = (props: Props) => {
               w={130}
               defaultValue={0}
               min={0}
+              max={GetMaximumShare(
+                props.projectId ? Number(props.projectId) : projectId,
+                paymentMethods,
+                listInvestShares,
+                listInvestSharesESOP,
+              )}
               step={10}
-              onChange={value =>
-                form.setFieldValue('quality', value ? value : 0)
-              }
+              onChange={value => form.setFieldValue('quantity', value ? value : 0)}
+              onBlurCapture={e => {
+                if (
+                  Number(e.currentTarget.value) >
+                  GetMaximumShare(
+                    props.projectId ? Number(props.projectId) : projectId,
+                    paymentMethods,
+                    listInvestShares,
+                    listInvestSharesESOP,
+                  )
+                ) {
+                  e.currentTarget.value = String(
+                    GetMaximumShare(
+                      props.projectId ? Number(props.projectId) : projectId,
+                      paymentMethods,
+                      listInvestShares,
+                      listInvestSharesESOP,
+                    ),
+                  );
+                }
+              }}
+              ref={inputNumberRef}
             />
           </Group>
           <Group>
@@ -127,10 +148,24 @@ export const FormTrade = (props: Props) => {
               w={130}
               data={GetPaymentMethodList()}
               defaultValue={String(form.values.paymentMethods)}
-              onChange={value =>
-                form.setFieldValue('paymentMethods', Number(value))
-              }
+              onChange={value => {
+                setPaymentMethods(Number(value));
+                form.setFieldValue('paymentMethods', Number(value));
+              }}
             />
+          </Group>
+          <Group>
+            <Text fw={500} w={100}>
+              {t('Trade.formTrade.maximum')}
+            </Text>
+            <Text fw={500}>
+              {GetMaximumShare(
+                props.projectId ? Number(props.projectId) : projectId,
+                paymentMethods,
+                listInvestShares,
+                listInvestSharesESOP,
+              )}
+            </Text>
           </Group>
           <Group>
             <Text fw={500} w={100}>
@@ -142,15 +177,26 @@ export const FormTrade = (props: Props) => {
             <Text fw={500} w={100}>
               {t('Trade.formTrade.value')}
             </Text>
-            <Text fw={500}>
-              {formatVND(form.values.quality * form.values.price)}
-            </Text>
+            <Text fw={500}>{formatVND(form.values.quantity * form.values.price)}</Text>
           </Group>
           {form.errors?.project && <Text c={'red'}>{form.errors.project}</Text>}
-          {form.errors?.quality && !form.errors?.project && (
-            <Text c={'red'}>{form.errors.quality}</Text>
-          )}
-          <Button loading={loading} type="submit" w={130} ml={115}>
+          {form.errors?.quantity && !form.errors?.project && <Text c={'red'}>{form.errors.quantity}</Text>}
+          <Button
+            loading={loading}
+            type="submit"
+            w={130}
+            ml={115}
+            disabled={
+              GetMaximumShare(
+                props.projectId ? Number(props.projectId) : projectId,
+                paymentMethods,
+                listInvestShares,
+                listInvestSharesESOP,
+              ) === 0
+                ? true
+                : false
+            }
+          >
             {t('Trade.formTrade.buy')}
           </Button>
         </Stack>
@@ -162,6 +208,7 @@ export const FormTrade = (props: Props) => {
         centered
         onClose={() => {
           dispatch(walletSlice.actions.resetResponse());
+          dispatch(projectSlice.actions.requestUpdateInrestShares());
         }}
       >
         <Stack align={'left'}>
@@ -173,23 +220,17 @@ export const FormTrade = (props: Props) => {
           <Divider />
           <Group>
             <Text w={105}>{t('Trade.formTrade.project')}</Text>
-            <Text fw={500}>
-              {form.values.projectId
-                ? listProject[form.values.projectId].nameProject
-                : null}
-            </Text>
+            <Text fw={500}>{form.values.projectId ? listProject[Number(form.values.projectId) - 1].nameProject : null}</Text>
           </Group>
           <Divider />
           <Group>
             <Text w={105}>{t('Trade.formTrade.paymentMethods')}</Text>
-            <Text fw={500}>
-              {form.values.paymentMethods === 0 ? 'Balance' : 'ESOP'}
-            </Text>
+            <Text fw={500}>{form.values.paymentMethods === 0 ? 'Balance' : 'ESOP'}</Text>
           </Group>
           <Divider />
           <Group>
-            <Text w={105}>{t('Trade.formTrade.quality')}</Text>
-            <Text fw={500}>{form.values.quality}</Text>
+            <Text w={105}>{t('Trade.formTrade.quantity')}</Text>
+            <Text fw={500}>{form.values.quantity}</Text>
           </Group>
           <Divider />
           <Group>
@@ -199,13 +240,14 @@ export const FormTrade = (props: Props) => {
           <Divider />
           <Group>
             <Text w={105}>{t('Trade.formTrade.total_value')}</Text>
-            <Text fw={500}>
-              {formatVND(form.values.price * form.values.quality)}
-            </Text>
+            <Text fw={500}>{formatVND(Number(form.values.price) * Number(form.values.quantity))}</Text>
           </Group>
           <Center>
             <Button
-              onClick={() => dispatch(walletSlice.actions.resetResponse())}
+              onClick={() => {
+                dispatch(walletSlice.actions.resetResponse());
+                dispatch(projectSlice.actions.requestUpdateInrestShares());
+              }}
             >
               {t('Trade.formTrade.button_confirm')}
             </Button>
@@ -239,10 +281,7 @@ export function getNameProjectList(projectData): ValueSelectForm[] {
   }
   return data;
 }
-export function getProjectData(
-  projectId: number,
-  dataProject: DataProject[],
-): DataProject | undefined {
+export function getProjectData(projectId: number, dataProject: DataProject[]): DataProject | undefined {
   for (let i = 0; i < dataProject.length; i++) {
     if (dataProject[i].projectId === projectId) {
       return dataProject[i];
@@ -250,3 +289,22 @@ export function getProjectData(
   }
   return undefined;
 }
+
+export const GetMaximumShare = (
+  projectId: number,
+  paymentMethod: number,
+  investData: InvestShares[],
+  investESOPData: InvestShares[],
+): number => {
+  if (paymentMethod === 0) {
+    for (let project of investData) {
+      if (project.id === projectId) return project.canBuyShare;
+    }
+    return 0;
+  } else {
+    for (let project of investESOPData) {
+      if (project.id === projectId) return project.canBuyShare;
+    }
+    return 0;
+  }
+};

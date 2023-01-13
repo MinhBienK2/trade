@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { profileSaga } from './saga';
 import { Profile, ProfileInfo } from './types';
-import { LinkTelegramResponse, responseProfile } from './response';
+import { LinkTelegramResponse, ProfileInfoResponse, responseProfile } from './response';
 import { ErrorResponse } from 'utils/http/response';
 
 export const initialState: Profile = {
@@ -53,28 +53,22 @@ const slice = createSlice({
     // request
 
     //response
-    responseProfile(state: Profile, action: PayloadAction<ProfileInfo>) {
+    responseProfile(state: Profile, action: PayloadAction<ProfileInfoResponse>) {
       console.log(action.payload);
-      state.name = action.payload.name;
+      state.name = action.payload.displayName;
       state.investorType = action.payload.investorType;
       state.position = action.payload.position;
     },
 
     // link third party
     requestCheckedLinkTelegram() {},
-    setNameLinkThirdParty(
-      state: Profile,
-      action: PayloadAction<{ name: string }>,
-    ) {
+    setNameLinkThirdParty(state: Profile, action: PayloadAction<{ name: string }>) {
       state.nameTelegram = action.payload.name;
     },
     requestLinkThirdParty(state: Profile) {
       state.response.loading = true;
     },
-    responseLinkThirdPartyTelegram(
-      state: Profile,
-      action: PayloadAction<LinkTelegramResponse>,
-    ) {
+    responseLinkThirdPartyTelegram(state: Profile, action: PayloadAction<LinkTelegramResponse>) {
       state.pathLinkTelegram = action.payload.data.link;
     },
   },

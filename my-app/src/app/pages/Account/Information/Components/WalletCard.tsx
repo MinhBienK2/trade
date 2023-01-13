@@ -10,6 +10,7 @@ import {
   RingProgress,
   ActionIcon,
   createStyles,
+  Button,
 } from '@mantine/core';
 import {
   IconChevronRight,
@@ -53,31 +54,22 @@ export function WalletCard(props: WalletCardProps) {
             <Stack className={classes.stackValue}>
               <Group className={classes.groupValue}>
                 <IconCoin color="orange" />
-                <Text color="orange">{formatVND(props.data.balance)}</Text>
+                <Text color="orange">{formatVND(Number(props.data.balance))}</Text>
                 <ActionIcon></ActionIcon>
               </Group>
-              <Divider
-                label={t('Profile.assets.balance')}
-                labelPosition="center"
-              />
+              <Divider label={t('Profile.assets.balance')} labelPosition="center" />
               <Group className={classes.groupValue}>
                 <IconGift color="cyan" />
-                <Text color="cyan">{formatVND(props.data.esop)}</Text>
+                <Text color="cyan">{formatVND(Number(props.data.esop))}</Text>
                 <ActionIcon></ActionIcon>
               </Group>
-              <Divider
-                label={t('Profile.assets.esop')}
-                labelPosition="center"
-              />
+              <Divider label={t('Profile.assets.esop')} labelPosition="center" />
               <Group className={classes.groupValue}>
                 <IconPigMoney color="green" />
-                <Text color="green">{formatVND(props.data.stock)}</Text>
+                <Text color="green">{formatVND(Number(props.data.stock))}</Text>
                 <ActionIcon></ActionIcon>
               </Group>
-              <Divider
-                label={t('Profile.assets.stock')}
-                labelPosition="center"
-              />
+              <Divider label={t('Profile.assets.stock')} labelPosition="center" />
             </Stack>
             <RingProgress
               size={200}
@@ -90,6 +82,12 @@ export function WalletCard(props: WalletCardProps) {
             />
           </Group>
         </Stack>
+      </Center>
+      <Center mt={40}>
+        <Group>
+          <Button>Recharge Balance</Button>
+          <Button>Recharge ESOP</Button>
+        </Group>
       </Center>
     </Card>
   );

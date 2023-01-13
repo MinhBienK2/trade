@@ -24,7 +24,7 @@ export function* login(action) {
 
     if (data.error === RESPONSE_SUCCESS_ERROR) {
       yield put(actions.response({ response: data, type: 'login' }));
-      yield checkProfile();
+      yield checkProfile(data.data.id, data.data.token);
     } else if (data.error === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS || data.error === RESPONSE_ERROR_PASSWORD_NOT_AXISTS) {
       yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
       yield put(actions.resetLoading());

@@ -10,7 +10,7 @@ import { profileActions as actions } from '.';
 import { ErrorResponse } from 'utils/http/response';
 import { apiPost, apiGet } from '../../../utils/http/request';
 import { ProfileResponse } from '../user/response';
-import { CheckLinkTelegramResponse, LinkTelegramResponse } from './response';
+import { CheckLinkTelegramResponse, LinkTelegramResponse, responseProfile } from './response';
 
 // data test
 import { sampleData } from 'app/pages/Account/Data/InvestmentData';
@@ -20,18 +20,11 @@ export function* handleResetProfile() {
 }
 
 // check has profile exist
-export function* checkProfile() {
+export function* checkProfile(userId, token) {
   try {
-    const url = '';
-    const data = {
-      error: 0,
-      message: 'success',
-      data: {
-        name: 'Nguyễn Khánh Thịnh',
-        investorType: 2,
-        position: 1,
-      },
-    };
+    const url = '/v1/invest/getmyinformation';
+
+    const { data }: { data: responseProfile } = yield call(apiGet, url, { userId, token });
 
     if (data.error === 0) {
       yield put(actions.responseProfile(data.data));
@@ -49,11 +42,7 @@ export function* handleCheckedLinkTelegram() {
     const userId = yield select(selectId);
     const headers = { token: token, userid: userId };
 
-    const { data }: { data: CheckLinkTelegramResponse } = yield call(
-      apiGet,
-      url,
-      headers,
-    );
+    const { data }: { data: CheckLinkTelegramResponse } = yield call(apiGet, url, headers);
     console.log(data.data);
     if (data.error === 0) {
       yield put(
@@ -83,9 +72,7 @@ export function* handleLinkThirdParty(action) {
     );
 
     if (data.error === 0) {
-      yield put(
-        actions.responseLinkThirdPartyTelegram(data as LinkTelegramResponse),
-      );
+      yield put(actions.responseLinkThirdPartyTelegram(data as LinkTelegramResponse));
       yield put(actions.resetLoading());
     }
   } catch (err: any) {
@@ -94,10 +81,7 @@ export function* handleLinkThirdParty(action) {
 }
 
 export function* profileSaga() {
-  yield takeLatest(
-    actions.requestCheckedLinkTelegram.type,
-    handleCheckedLinkTelegram,
-  );
+  yield takeLatest(actions.requestCheckedLinkTelegram.type, handleCheckedLinkTelegram);
   //link third party
   yield takeLatest(actions.requestLinkThirdParty.type, handleLinkThirdParty);
 }

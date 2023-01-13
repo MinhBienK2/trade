@@ -15,6 +15,7 @@ export const authAxios = axios.create({
 authAxios.interceptors.request.use(
   config => {
     const token = Storage.getFieldOfUser('token');
+    if (!token) return config;
 
     if (token && config.headers) {
       // config.headers['Authorization'] = 'Bearer ' + token;
@@ -31,7 +32,7 @@ authAxios.interceptors.request.use(
 // Add a response interceptor
 authAxios.interceptors.response.use(
   async (res: AxiosResponse) => {
-    /*const originalConfig = res.config;
+    const originalConfig = res.config;
     const originalData = res.data as BaseResponse;
 
     if (
@@ -46,7 +47,9 @@ authAxios.interceptors.response.use(
       originalData.error === 2 &&
       originalData.message === 'unauthorized'
     ) {
-    }*/
+      Storage.remove('persist:state');
+      window.location.reload();
+    }
     return res;
   },
   function (error: AxiosError) {

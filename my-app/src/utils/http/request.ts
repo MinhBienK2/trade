@@ -9,8 +9,6 @@ const baseDomain = 'https://ttvnapi.com';
 export const apiGet = (url: string, header?: any) => {
   const source = axios.CancelToken.source();
   try {
-    url = baseDomain + url;
-
     const promise = authAxios.get(url, {
       headers: header,
       cancelToken: source.token,
@@ -26,8 +24,6 @@ export const apiGet = (url: string, header?: any) => {
 export const apiPost = (url: string, payload?: any, header?: any) => {
   const source = axios.CancelToken.source();
   try {
-    url = baseDomain + url;
-
     const promise = authAxios.post<BaseResponse>(url, payload, {
       headers: header,
       cancelToken: source.token,

@@ -23,6 +23,7 @@ import { PageRowButton } from './Components/PageRowButton';
 import { PageTitle } from './Components/PageTitle';
 import Storage from 'utils/Storage';
 import storage from 'redux-persist/lib/storage';
+import { authAxios } from 'config/axios';
 
 export function General() {
   const { actions } = useUserSlice();

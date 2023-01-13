@@ -24,27 +24,18 @@ export function InvestCard(props: InvestCardProps) {
   const xs = useMediaQuery('(max-width: 500px)');
   let data = props.data;
   const rows = data.map(element => (
-    <tr
-      key={element.projectId}
-      onClick={() =>
-        xs
-          ? moveToInvestDetail(element.projectId)
-          : moveToTrade(element.projectId)
-      }
-    >
-      <td>{element.nameProject}</td>
-      {!xs && <td>{element.numberOfSharesPurchased}</td>}
+    <tr key={element.id} onClick={() => (xs ? moveToInvestDetail(element.id) : moveToTrade(element.id))}>
+      <td>{element.project}</td>
+      {!xs && <td>{element.quantity}</td>}
       {!xs && <td>{element.pricePerShare}</td>}
-      <td>
-        {formatVND(element.numberOfSharesPurchased * element.pricePerShare)}
-      </td>
+      <td>{formatVND(element.quantity * element.pricePerShare)}</td>
       <td>
         {xs ? (
-          <ActionIcon onClick={() => moveToTrade(element.projectId)}>
+          <ActionIcon onClick={() => moveToTrade(element.id)}>
             <IconSquareChevronsRight />
           </ActionIcon>
         ) : (
-          <ActionIcon onClick={() => moveToInvestDetail(element.projectId)}>
+          <ActionIcon onClick={() => moveToInvestDetail(element.id)}>
             <IconShoppingCart />
           </ActionIcon>
         )}

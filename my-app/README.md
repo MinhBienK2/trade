@@ -108,7 +108,7 @@ yarn cleanAndSetup
   <dd>Create components, containers, routes, selectors and sagas - and their tests - right from the CLI!</dd>
 
   <dt>Static code analysis</dt>
-  <dd>Focus on writing new features without worrying about formatting or code quality. With the right editor setup, your code will automatically be formatted and linted as you work.</dd>
+  <dd>Focus on writing new features without worrying about formatting or code quantity. With the right editor setup, your code will automatically be formatted and linted as you work.</dd>
 
   <dt>SEO</dt>
   <dd>We support SEO (document head tags management) for search engines that support indexing of JavaScript content. (eg. Google)</dd>
@@ -116,7 +116,7 @@ yarn cleanAndSetup
 
 But wait... there's more!
 
-- _The best test setup:_ Automatically guarantee code quality and non-breaking
+- _The best test setup:_ Automatically guarantee code quantity and non-breaking
   changes. (Seen a react app with 100% test coverage before?)
 - _The fastest fonts:_ Say goodbye to vacant text.
 - _Stay fast_: Profile your app's performance from the comfort of your command

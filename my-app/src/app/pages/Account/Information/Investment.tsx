@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-  Blockquote,
-  Card,
-  Center,
-  Group,
-  Paper,
-  Stack,
-  Table,
-  Text,
-} from '@mantine/core';
+import { Blockquote, Card, Center, Group, Paper, Stack, Table, Text } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
 import { InvestCard } from './Components/InvestCard';
@@ -53,11 +44,7 @@ export function Investment() {
         }}
       >
         <Stack>
-          <PageTitle
-            text={t('Account.general.investment')}
-            back={moveToGeneralPage}
-            selectLanguage={userLanguage}
-          />
+          <PageTitle text={t('Account.general.investment')} back={moveToGeneralPage} selectLanguage={userLanguage} />
           <InvestCard data={investedProject} />
         </Stack>
       </Paper>

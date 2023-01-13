@@ -1,28 +1,81 @@
-import {
-  ActionIcon,
-  Card,
-  Center,
-  Paper,
-  Stack,
-  Table,
-  Tabs,
-} from '@mantine/core';
+import { ActionIcon, Card, Center, Paper, Stack, Table, Tabs } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconSquareChevronsRight, IconWallet, IconGift } from '@tabler/icons';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import convertDate from 'helpers/formatDate';
 import { useWalletSlice } from 'store/app/wallet';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectHistoryTransaction,
-  selectHistoryTransactionESOP,
-} from 'store/app/wallet/selector';
+import { selectHistoryTransaction, selectHistoryTransactionESOP } from 'store/app/wallet/selector';
 import { useTranslation } from 'react-i18next';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
+import { HistoryTransaction as HistoryTransactionResponse } from 'store/app/wallet/response';
+
+const DislayTableData = (props: { data: HistoryTransactionResponse[]; largerThan576: boolean; value: string }) => {
+  const navitation = useNavigate();
+
+  function moveToTradeESOPDetail(id) {
+    navitation(`/history-esop/detail/${id}`);
+  }
+  function moveToTradeDetail(id) {
+    navitation(`/history/detail/${id}`);
+  }
+
+  function handleClickRow(id) {
+    if (props.value === 'invest') moveToTradeDetail(id);
+    else if (props.value === 'investOSOP') moveToTradeESOPDetail(id);
+  }
+
+  return (
+    <>
+      {props.data.map(element => (
+        <tr key={element.id} onClick={() => handleClickRow(element.id)}>
+          <td>{element.id}</td>
+          <td>{element.project}</td>
+          {<td>{element.boughtShares}</td>}
+          {props.largerThan576 && <td>{element.pricePerShare}</td>}
+          {props.largerThan576 && <td>{element.priceTotal}</td>}
+          {props.largerThan576 && <td>{convertDate.GetDDMMYY_HHMMSS(convertDate.createNewDate(element.transactionTime))}</td>}
+          {props.largerThan576 && <td>{element.detail}</td>}
+          {!props.largerThan576 && (
+            <td>
+              <ActionIcon>
+                <IconSquareChevronsRight />
+              </ActionIcon>
+            </td>
+          )}
+        </tr>
+      ))}
+    </>
+  );
+};
+
+const RenderTable = (props: { data: HistoryTransactionResponse[]; largerThan576: boolean; value: string }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Table striped highlightOnHover withColumnBorders>
+      <thead>
+        <tr>
+          {<th>{t('Trade.historyDetail.id')}</th>}
+          {<th>{t('Trade.historyDetail.project')}</th>}
+          {<th>{t('Trade.historyDetail.quantity')}</th>}
+          {props.largerThan576 && <th>{t('Trade.historyDetail.pricePerShare')}</th>}
+          {props.largerThan576 && <th>{t('Trade.historyDetail.totalValue')}</th>}
+          {props.largerThan576 && <th>{t('Trade.historyDetail.time')}</th>}
+          {props.largerThan576 && <th>{t('Trade.historyDetail.detail')}</th>}
+          {!props.largerThan576 && <th></th>}
+        </tr>
+      </thead>
+      <tbody>
+        <DislayTableData data={props.data} largerThan576={props.largerThan576} value={props.value}></DislayTableData>
+      </tbody>
+    </Table>
+  );
+};
 
 export const HistoryTransaction = () => {
   const walletSLice = useWalletSlice();
@@ -38,85 +91,22 @@ export const HistoryTransaction = () => {
   const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
 
   React.useEffect(() => {
-    if (dataHistory.length === 0) {
-      dispatch(
-        walletSLice.actions.requestHistoryTransaction({
-          typeWallet: 'balance',
-        }),
-      );
-    }
-    if (dataHistoryESOP.length === 0) {
-      dispatch(
-        walletSLice.actions.requestHistoryTransaction({
-          typeWallet: 'esop',
-        }),
-      );
-    }
+    dispatch(
+      walletSLice.actions.requestHistoryTransaction({
+        typeWallet: 'balance',
+      }),
+    );
+
+    dispatch(
+      walletSLice.actions.requestHistoryTransaction({
+        typeWallet: 'esop',
+      }),
+    );
   }, []);
 
   function moveToTrade() {
     navitation('/trade');
   }
-  function moveToTradeESOPDetail(id) {
-    navitation(`/history-esop/detail/${id}`);
-  }
-  function moveToTradeDetail(id) {
-    navitation(`/history/detail/${id}`);
-  }
-
-  function handleClickRow(id) {
-    if (value === 'invest') moveToTradeDetail(id);
-    else if (value === 'investOSOP') moveToTradeESOPDetail(id);
-  }
-
-  const DislayTableData = (props: { data: any }) => {
-    return props.data.map(element => (
-      <tr key={element.id} onClick={() => handleClickRow(element.id)}>
-        <td>{element.id}</td>
-        <td>{element.project}</td>
-        {largerThan576 && <td>{element.service}</td>}
-        <td>{element.exchange}</td>
-        {largerThan576 && <td>{element.currentBalance}</td>}
-        {largerThan576 && (
-          <td>
-            {convertDate.GetDDMMYY_HHMMSS(
-              convertDate.createNewDate(element.timestamp),
-            )}
-          </td>
-        )}
-        {largerThan576 && <td>{element.detail}</td>}
-        {!largerThan576 && (
-          <td>
-            <ActionIcon>
-              <IconSquareChevronsRight />
-            </ActionIcon>
-          </td>
-        )}
-      </tr>
-    ));
-  };
-
-  const RenderTable = (props: { data: any }) => {
-    return (
-      <Table striped highlightOnHover withColumnBorders>
-        <thead>
-          <tr>
-            {<th>{t('Trade.historyDetail.id')}</th>}
-            {<th>{t('Trade.historyDetail.project')}</th>}
-            {largerThan576 && <th>{t('Trade.historyDetail.type')}</th>}
-            <th>{t('Trade.historyDetail.exchange')}</th>
-            {largerThan576 && <th>{t('Trade.historyDetail.balance')}</th>}
-            {largerThan576 && <th>{t('Trade.historyDetail.time')}</th>}
-            {largerThan576 && <th>{t('Trade.historyDetail.detail')}</th>}
-            {!largerThan576 && <th></th>}
-          </tr>
-        </thead>
-        <tbody>
-          <DislayTableData data={props.data}></DislayTableData>
-        </tbody>
-      </Table>
-    );
-  };
 
   const handleGetValueTabs = value => {
     setValue(value);
@@ -134,11 +124,7 @@ export const HistoryTransaction = () => {
         }}
       >
         <Stack>
-          <PageTitle
-            text="History transaction"
-            back={moveToTrade}
-            selectLanguage={useLanguage}
-          />
+          <PageTitle text={t('Trade.title')} back={moveToTrade} selectLanguage={useLanguage} />
           <Card shadow="sm" p="md" radius="md" withBorder>
             <Tabs
               defaultValue="invest"
@@ -156,10 +142,10 @@ export const HistoryTransaction = () => {
               </Tabs.List>
 
               <Tabs.Panel value="invest" pt="xs">
-                <RenderTable data={dataHistory} />
+                <RenderTable data={dataHistory} largerThan576={largerThan576} value={value} />
               </Tabs.Panel>
               <Tabs.Panel value="investOSOP" pt="xs">
-                <RenderTable data={dataHistoryESOP} />
+                <RenderTable data={dataHistoryESOP} largerThan576={largerThan576} value={value} />
               </Tabs.Panel>
             </Tabs>
           </Card>

@@ -30,18 +30,19 @@ import './locales/i18n';
 import { HomePage } from './app/pages/HomePage/Loadable';
 import { Button, Code, MantineProvider, Title } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
+import { ErrorBoundary } from 'shared/ErrorBoudary';
 
 const store = configureAppStore();
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <Provider store={store}>
     <HelmetProvider>
       <MantineProvider>
         <ModalsProvider>
-          <App />
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
         </ModalsProvider>
       </MantineProvider>
     </HelmetProvider>

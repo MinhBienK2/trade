@@ -17,23 +17,10 @@ import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
 import { LoginPage } from './pages/Account/Login/Loadable';
 import { RegisterPage } from './pages/Account/Register/Loadable';
-import {
-  Assets,
-  General,
-  InvestDetail,
-  Investment,
-  Profile,
-} from './pages/Account/Information/Loadable';
+import { Assets, General, InvestDetail, Investment, Profile } from './pages/Account/Information/Loadable';
 import { ProjectPage, ProjectDetailPage } from './pages/Project/Loadable';
-import {
-  TradePage,
-  HistoryTransaction,
-  HistoryDetail,
-} from './pages/Trade/Loadable';
-import {
-  PreventRouter,
-  PreventRouterLogin,
-} from 'app/components/auth/PreventRouter';
+import { TradePage, HistoryTransaction, HistoryDetail } from './pages/Trade/Loadable';
+import { PublicRouter, PreventRouterLogin } from 'app/components/auth/PublicRouter';
 import { useSelector } from 'react-redux';
 import { selectLanguage } from 'store/app/user/selector';
 import { useUserSlice } from 'store/app/user';
@@ -51,11 +38,7 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <Helmet
-        titleTemplate="%s - React Boilerplate"
-        defaultTitle="React Boilerplate"
-        htmlAttributes={{ lang: i18n.language }}
-      >
+      <Helmet titleTemplate="%s - React Boilerplate" defaultTitle="React Boilerplate" htmlAttributes={{ lang: i18n.language }}>
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
 
@@ -63,9 +46,9 @@ export function App() {
         <Route
           path="/"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <HomePage />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
@@ -87,9 +70,9 @@ export function App() {
         <Route
           path="/account/general"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <General />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
 
@@ -97,50 +80,50 @@ export function App() {
         <Route
           path="/account/profile"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <Profile />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/account/assets"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <Assets />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/account/investment"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <Investment />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/account/investment/detail/:projectId"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <InvestDetail />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         {/* project */}
         <Route
           path="/projects"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <ProjectPage />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/projects/detail/:project"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <ProjectDetailPage />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
 
@@ -148,41 +131,41 @@ export function App() {
         <Route
           path="/trade"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <TradePage />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/trade/buy/:project"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <TradePage />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/history"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <HistoryTransaction />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/history/detail/:historyId"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <HistoryDetail />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
         <Route
           path="/history-esop/detail/:historyId"
           element={
-            <PreventRouter>
+            <PublicRouter>
               <HistoryDetail />
-            </PreventRouter>
+            </PublicRouter>
           }
         />
 

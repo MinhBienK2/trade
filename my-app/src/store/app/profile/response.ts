@@ -1,7 +1,14 @@
 import { ErrorResponse } from 'utils/http/response';
 import { Profile } from './types';
+
+export interface ProfileInfoResponse {
+  userId: number;
+  displayName: string;
+  investorType: number;
+  position: number;
+}
 export interface responseProfile extends ErrorResponse {
-  data: Profile;
+  data: ProfileInfoResponse;
 }
 
 export interface CheckLinkTelegramResponse extends ErrorResponse {

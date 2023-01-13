@@ -1,23 +1,11 @@
-import {
-  Blockquote,
-  Card,
-  Center,
-  Group,
-  Paper,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { Blockquote, Card, Center, Group, Paper, Stack, Text } from '@mantine/core';
 import { IconUserCircle, IconPigMoney, IconId } from '@tabler/icons';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useProfileSlice } from 'store/app/profile';
-import {
-  selectInvestorType,
-  selectName,
-  selectPosition,
-} from 'store/app/profile/selector';
+import { selectInvestorType, selectName, selectPosition } from 'store/app/profile/selector';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageQuote } from './Components/PageQuote';
@@ -43,10 +31,8 @@ export function Profile() {
     const FINANCE_INVESTOR = 2;
     const TEAM = 3;
 
-    if (investorType === STRATEGY_INVESTOR)
-      return 'Account.profile.strategy_investor';
-    else if (investorType === FINANCE_INVESTOR)
-      return 'Account.profile.finance_investor';
+    if (investorType === STRATEGY_INVESTOR) return 'Account.profile.strategy_investor';
+    else if (investorType === FINANCE_INVESTOR) return 'Account.profile.finance_investor';
     else if (investorType === TEAM) return 'Account.profile.team';
 
     return '';
@@ -59,8 +45,7 @@ export function Profile() {
 
     if (position === INVESTOR) return 'Account.profile.position_investor';
     else if (position === TECH) return 'Account.profile.position_tech';
-    else if (position === BA)
-      return 'Account.profile.position_business_analyst';
+    else if (position === BA) return 'Account.profile.position_business_analyst';
 
     return '';
   };
@@ -77,17 +62,10 @@ export function Profile() {
         }}
       >
         <Stack>
-          <PageTitle
-            text="Profile"
-            back={moveToGeneralPage}
-            selectLanguage={userLanguage}
-          />
-          <PageRow leftIcon={<IconUserCircle />} text={name} />
-          <PageRow
-            leftIcon={<IconPigMoney />}
-            text={t(renderInvestorType(investorType))}
-          />
-          <PageRow leftIcon={<IconId />} text={t(renderPosition(position))} />
+          <PageTitle text="Profile" back={moveToGeneralPage} selectLanguage={userLanguage} />
+          <PageRow leftIcon={<IconUserCircle />} text={name || 'user01'} />
+          <PageRow leftIcon={<IconPigMoney />} text={t(renderInvestorType(investorType)) || 'Investor'} />
+          <PageRow leftIcon={<IconId />} text={t(renderPosition(position)) || 'position'} />
           <PageQuote />
         </Stack>
       </Paper>

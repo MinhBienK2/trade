@@ -2,27 +2,27 @@ export interface ErrorResponse {
   error: number;
   message: string;
 }
-// wallet
+
+export interface DataBalance {
+  userId: number;
+  balance: number;
+  esopBalance: number;
+  shareBalance: number;
+}
 export interface HistoryTransaction {
   id: number;
-  userId: number;
-  project: string;
-  service: 'ADD' | 'BUY STOCK' | 'SELL STOCK';
-  previousBalance: number;
-  exchange: number;
-  currentBalance: number;
-  timestamp: number;
+  project: number;
+  boughtShares: number;
+  pricePerShare: number;
+  priceTotal: number;
+  transactionTime: number;
   detail: string;
 }
 
-export interface HistoryTransactionResponse
-  extends ErrorResponse,
-    ErrorResponse {}
+export interface HistoryTransactionResponse extends ErrorResponse {
+  data: HistoryTransaction[];
+}
 
 export interface walletBalanceResponse extends ErrorResponse {
-  data: {
-    balance: number;
-    esop: number;
-    stock: number;
-  };
+  data: DataBalance;
 }

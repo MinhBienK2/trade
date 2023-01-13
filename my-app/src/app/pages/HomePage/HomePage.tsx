@@ -10,6 +10,7 @@ import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import Storage from 'utils/Storage';
+import { selectInvestShares } from 'store/app/project/selector';
 
 export function HomePage() {
   useUserSlice();
@@ -17,11 +18,11 @@ export function HomePage() {
   const { t } = useTranslation();
   const navitation = useNavigate();
   const dispatch = useDispatch();
+  const investShares = useSelector(selectInvestShares);
 
   const userLanguage = useSelector(selectLanguage);
 
   React.useEffect(() => {
-    Storage.setFieldOfUser('phoneNumber', '112312312312312312');
     dispatch(projectSlice.actions.requestUpdateListProject());
   }, []);
 
@@ -29,6 +30,9 @@ export function HomePage() {
     navitation('/account/general');
   };
   const moveToTradePage = () => {
+    if (investShares.length === 0) {
+      dispatch(projectSlice.actions.requestUpdateInrestShares());
+    }
     navitation('/trade');
   };
   const moveToProjectPage = () => {

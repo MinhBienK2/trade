@@ -16,7 +16,8 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "downlevelIteration": true, // use with lower version (loop.. of with entries())
   },
   "include": ["src"],
   "ts-node": {
@@ -25,7 +26,7 @@
       "module": "commonjs",
       "moduleResolution": "node",
       "noEmit": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
     }
   }
 }

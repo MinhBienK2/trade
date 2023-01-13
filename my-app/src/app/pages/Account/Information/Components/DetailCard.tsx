@@ -1,12 +1,4 @@
-import {
-  Card,
-  Text,
-  Center,
-  Stack,
-  Group,
-  Divider,
-  Button,
-} from '@mantine/core';
+import { Card, Text, Center, Stack, Group, Divider, Button } from '@mantine/core';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -31,17 +23,17 @@ export function DetailCard(props: DetailCardProps) {
       <Stack>
         <Group>
           <Text w={100}>ID</Text>
-          <Text fw={500}>{props.data.projectId}</Text>
+          <Text fw={500}>{props.data.id}</Text>
         </Group>
         <Divider />
         <Group>
           <Text w={100}>{t('Account.detailCard.project')}</Text>
-          <Text fw={500}>{props.data.nameProject}</Text>
+          <Text fw={500}>{props.data.project}</Text>
         </Group>
         <Divider />
         <Group>
           <Text w={100}>{t('Account.detailCard.amount')}</Text>
-          <Text fw={500}>{props.data.numberOfSharesPurchased}</Text>
+          <Text fw={500}>{props.data.quantity}</Text>
         </Group>
         <Divider />
         <Group>
@@ -51,15 +43,9 @@ export function DetailCard(props: DetailCardProps) {
         <Divider />
         <Group>
           <Text w={100}>{t('Account.detailCard.value')}</Text>
-          <Text fw={500}>
-            {formatVND(
-              props.data.pricePerShare * props.data.numberOfSharesPurchased,
-            )}
-          </Text>
+          <Text fw={500}>{formatVND(props.data.pricePerShare * props.data.quantity)}</Text>
         </Group>
-        <Button onClick={() => moveToTrade(props.data.projectId)}>
-          {t('Account.detailCard.buyMore')}
-        </Button>
+        <Button onClick={() => moveToTrade(props.data.id)}>{t('Account.detailCard.buyMore')}</Button>
       </Stack>
     </Card>
   );

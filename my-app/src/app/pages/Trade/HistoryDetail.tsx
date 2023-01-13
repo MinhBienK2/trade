@@ -1,12 +1,4 @@
-import {
-  Card,
-  Center,
-  Divider,
-  Group,
-  Paper,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { Card, Center, Divider, Group, Paper, Stack, Text } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -14,14 +6,12 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { useWalletSlice } from 'store/app/wallet';
-import {
-  selectHistoryTransaction,
-  selectHistoryTransactionESOP,
-} from 'store/app/wallet/selector';
+import { selectHistoryTransaction, selectHistoryTransactionESOP } from 'store/app/wallet/selector';
 import convertDate from 'helpers/formatDate';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
+import { HistoryTransaction } from 'store/app/wallet/response';
 
-const RenderChildDetail = (props: { data: any }) => {
+const RenderChildDetail = (props: { data: HistoryTransaction }) => {
   const { t } = useTranslation();
   return (
     <Card shadow="sm" p="md" radius="xs" withBorder>
@@ -37,27 +27,23 @@ const RenderChildDetail = (props: { data: any }) => {
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>{t('Trade.historyDetail.type')}</Text>
-          <Text fw={500}>{props.data.service}</Text>
+          <Text w={100}>{t('Trade.historyDetail.quantity')}</Text>
+          <Text fw={500}>{props.data.boughtShares}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>{t('Trade.historyDetail.exchange')}</Text>
-          <Text fw={500}>{props.data.exchange}</Text>
+          <Text w={100}>{t('Trade.historyDetail.pricePerShare')}</Text>
+          <Text fw={500}>{props.data.pricePerShare}</Text>
         </Group>
         <Divider />
         <Group>
-          <Text w={100}>{t('Trade.historyDetail.balance')}</Text>
-          <Text fw={500}>{props.data.currentBalance}</Text>
+          <Text w={100}>{t('Trade.historyDetail.totalValue')}</Text>
+          <Text fw={500}>{props.data.priceTotal}</Text>
         </Group>
         <Divider />
         <Group>
           <Text w={100}>{t('Trade.historyDetail.time')}</Text>
-          <Text fw={500}>
-            {convertDate.GetDDMMYY_HHMMSS(
-              convertDate.createNewDate(props.data.timestamp),
-            )}
-          </Text>
+          <Text fw={500}>{convertDate.GetDDMMYY_HHMMSS(convertDate.createNewDate(props.data.transactionTime))}</Text>
         </Group>
         <Divider />
         <Group>
@@ -79,8 +65,12 @@ export const HistoryDetail = () => {
   const navitation = useNavigate();
   const { historyId } = useParams();
   const location = useLocation();
-  const detail = dataHistory[historyId ? historyId : 0];
-  const detailESOP = dataHistoryESOP[historyId ? historyId : 0];
+  // const detail = dataHistory[historyId ? historyId : 0];
+  // const detailESOP = dataHistoryESOP[historyId ? historyId : 0];
+  const detail = getTransaction(Number(historyId), dataHistory);
+  const detailESOP = getTransaction(Number(historyId), dataHistoryESOP);
+
+  console.log(detail, detailESOP);
 
   const moveToHistoryPage = () => {
     navitation('/history');
@@ -109,11 +99,7 @@ export const HistoryDetail = () => {
             </>
           ) : (
             <>
-              <PageTitle
-                text={t('Trade.historyDetail.detail_trade')}
-                back={moveToHistoryPage}
-                selectLanguage={userLanguage}
-              />
+              <PageTitle text={t('Trade.historyDetail.detail_trade')} back={moveToHistoryPage} selectLanguage={userLanguage} />
               <RenderChildDetail data={detail} />
             </>
           )}
@@ -121,4 +107,8 @@ export const HistoryDetail = () => {
       </Paper>
     </Center>
   );
+};
+
+const getTransaction: any = (projectId: number, data: HistoryTransaction[]) => {
+  return data.find((element: HistoryTransaction) => element.id === projectId);
 };
