@@ -2,9 +2,11 @@ import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { profileSaga } from './saga';
-import { Profile, ProfileInfo } from './types';
-import { LinkTelegramResponse, ProfileInfoResponse, responseProfile } from './response';
+import { Profile } from './types';
+import { LinkTelegramResponse, ProfileInfoResponse } from './response';
 import { ErrorResponse } from 'utils/http/response';
+import { useEffect } from 'react';
+import { persistor } from 'index';
 
 export const initialState: Profile = {
   name: '',
@@ -77,7 +79,12 @@ const slice = createSlice({
 export const { actions: profileActions, reducer } = slice;
 
 export const useProfileSlice = () => {
+  useEffect(() => {
+    persistor.persist();
+  }, []);
+
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: profileSaga });
+
   return { actions: slice.actions };
 };

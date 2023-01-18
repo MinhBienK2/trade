@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 
 import { Wallet } from './types';
 import { walletSaga } from './saga';
-import { DataBalance, HistoryTransaction, walletBalanceResponse } from './response';
-
+import { DataBalance, HistoryTransaction } from './response';
 import { formValue } from 'app/pages/Trade/FormTrade';
+import { persistor } from 'index';
 
 export const initialState: Wallet = {
   balance: 0,
@@ -100,5 +101,10 @@ export const { actions: walletActions, reducer } = slice;
 export const useWalletSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: walletSaga });
+
+  useEffect(() => {
+    persistor.persist();
+  }, []);
+
   return { actions: slice.actions };
 };

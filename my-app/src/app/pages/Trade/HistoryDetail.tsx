@@ -10,6 +10,8 @@ import { selectHistoryTransaction, selectHistoryTransactionESOP } from 'store/ap
 import convertDate from 'helpers/formatDate';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import { HistoryTransaction } from 'store/app/wallet/response';
+import { numberWithCommas } from 'helpers/formatNumberWithCommas';
+import { formatVND } from 'helpers/formatCurrencyVND';
 
 const RenderChildDetail = (props: { data: HistoryTransaction }) => {
   const { t } = useTranslation();
@@ -28,22 +30,24 @@ const RenderChildDetail = (props: { data: HistoryTransaction }) => {
         <Divider />
         <Group>
           <Text w={100}>{t('Trade.historyDetail.quantity')}</Text>
-          <Text fw={500}>{props.data.boughtShares}</Text>
+          <Text fw={500}>{numberWithCommas(props.data.boughtShares)}</Text>
         </Group>
         <Divider />
         <Group>
           <Text w={100}>{t('Trade.historyDetail.pricePerShare')}</Text>
-          <Text fw={500}>{props.data.pricePerShare}</Text>
+          <Text fw={500}>{numberWithCommas(props.data.pricePerShare)}</Text>
         </Group>
         <Divider />
         <Group>
           <Text w={100}>{t('Trade.historyDetail.totalValue')}</Text>
-          <Text fw={500}>{props.data.priceTotal}</Text>
+          <Text fw={500}>{formatVND(Number(props.data.priceTotal))}</Text>
         </Group>
         <Divider />
         <Group>
           <Text w={100}>{t('Trade.historyDetail.time')}</Text>
-          <Text fw={500}>{convertDate.GetDDMMYY_HHMMSS(convertDate.createNewDate(props.data.transactionTime))}</Text>
+          <Text fw={500}>
+            {convertDate.GetDDMMYY_HHMMSS(convertDate.createNewDate(Math.floor(props.data.transactionTime / 1000)))}
+          </Text>
         </Group>
         <Divider />
         <Group>
@@ -56,24 +60,19 @@ const RenderChildDetail = (props: { data: HistoryTransaction }) => {
 };
 
 export const HistoryDetail = () => {
-  useWalletSlice();
-  useUserSlice();
   const { t } = useTranslation();
-  const dataHistory = useSelector(selectHistoryTransaction);
-  const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
-  const userLanguage = useSelector(selectLanguage);
-  const navitation = useNavigate();
+  const navigation = useNavigate();
   const { historyId } = useParams();
   const location = useLocation();
-  // const detail = dataHistory[historyId ? historyId : 0];
-  // const detailESOP = dataHistoryESOP[historyId ? historyId : 0];
+
+  const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
+  const dataHistory = useSelector(selectHistoryTransaction);
+  const userLanguage = useSelector(selectLanguage);
   const detail = getTransaction(Number(historyId), dataHistory);
   const detailESOP = getTransaction(Number(historyId), dataHistoryESOP);
 
-  console.log(detail, detailESOP);
-
   const moveToHistoryPage = () => {
-    navitation('/history');
+    navigation('/history');
   };
 
   return (

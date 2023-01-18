@@ -4,18 +4,28 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { formatVND } from 'helpers/formatCurrencyVND';
 import { InvestedProject } from 'store/app/project/types';
+import { selectInvestShares } from 'store/app/project/selector';
+import { useDispatch, useSelector } from 'react-redux';
+import { useProjectSlice } from 'store/app/project';
 
 export interface DetailCardProps {
   data: InvestedProject;
 }
 
 export function DetailCard(props: DetailCardProps) {
+  const projectSlice = useProjectSlice();
   const { t } = useTranslation();
-  const navitation = useNavigate();
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
 
-  console.log(props.data);
+  const investShares = useSelector(selectInvestShares);
+
   const moveToTrade = (project: number) => {
-    navitation('/trade/buy/' + project);
+    if (investShares.length === 0) {
+      dispatch(projectSlice.actions.requestUpdateInvestShares());
+    }
+
+    navigation('/trade/buy/' + project);
   };
 
   return (

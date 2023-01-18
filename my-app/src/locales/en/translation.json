@@ -39,7 +39,7 @@
     },
     "error": {
       "wrong_error": "Wrong account or password",
-      "account_not_axist": "Account does not axist"
+      "account_not_axist": "Account had axist"
     },
     "registerPage": {
       "confirm_password": "Confirm password",
@@ -113,6 +113,12 @@
       "balance": "Balance",
       "esop": "ESOP",
       "stock": "Stock"
+    }
+  },
+  "Popup" : {
+    "error" : {
+      "exceeding" : "Your money is not enough to make this transaction!",
+      "maximum" : "You have bought all the shares you can buy!"
     }
   }
 }

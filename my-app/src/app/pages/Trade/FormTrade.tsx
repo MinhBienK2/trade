@@ -42,7 +42,8 @@ export const FormTrade = (props: Props) => {
   const dispatch = useDispatch();
 
   const [openPoppupError, setOpenPoppupError] = React.useState<boolean>(false);
-  const [projectId, setProjectId] = React.useState<number>(0);
+  const [openPoppupErrorMaximum, setOpenPoppupErrorMaximum] = React.useState<boolean>(false);
+  const [projectId, setProjectId] = React.useState<number>(props.projectId ? Number(props.projectId) : 0);
   const [paymentMethods, setPaymentMethods] = React.useState<number>(0);
   const inputNumberRef = React.useRef<HTMLInputElement>(null);
   const errorWallet = useSelector(selectError);
@@ -51,6 +52,7 @@ export const FormTrade = (props: Props) => {
   const listProject = useSelector(selectListProject);
   const listInvestShares = useSelector(selectInvestShares);
   const listInvestSharesESOP = useSelector(selectInvestSharesESOP);
+  const maximum = GetMaximumShare(projectId, paymentMethods, listInvestShares, listInvestSharesESOP);
 
   const form = useForm({
     initialValues: {
@@ -70,8 +72,11 @@ export const FormTrade = (props: Props) => {
   const handleBuyShares = (values: formValue) => {
     const paymentBalance = 0;
     const paymentESOP = 1;
+    const maximumShare = maximum;
 
-    if (
+    if (maximumShare <= 0) {
+      setOpenPoppupErrorMaximum(true);
+    } else if (
       (values.price * values.quantity < props.wallet.balance && values.paymentMethods === paymentBalance) ||
       (values.price * values.quantity < props.wallet.esop && values.paymentMethods === paymentESOP)
     ) {
@@ -109,32 +114,12 @@ export const FormTrade = (props: Props) => {
               w={130}
               defaultValue={0}
               min={0}
-              max={GetMaximumShare(
-                props.projectId ? Number(props.projectId) : projectId,
-                paymentMethods,
-                listInvestShares,
-                listInvestSharesESOP,
-              )}
+              max={maximum}
               step={10}
               onChange={value => form.setFieldValue('quantity', value ? value : 0)}
               onBlurCapture={e => {
-                if (
-                  Number(e.currentTarget.value) >
-                  GetMaximumShare(
-                    props.projectId ? Number(props.projectId) : projectId,
-                    paymentMethods,
-                    listInvestShares,
-                    listInvestSharesESOP,
-                  )
-                ) {
-                  e.currentTarget.value = String(
-                    GetMaximumShare(
-                      props.projectId ? Number(props.projectId) : projectId,
-                      paymentMethods,
-                      listInvestShares,
-                      listInvestSharesESOP,
-                    ),
-                  );
+                if (Number(e.currentTarget.value) > maximum) {
+                  e.currentTarget.value = String(maximum);
                 }
               }}
               ref={inputNumberRef}
@@ -158,20 +143,13 @@ export const FormTrade = (props: Props) => {
             <Text fw={500} w={100}>
               {t('Trade.formTrade.maximum')}
             </Text>
-            <Text fw={500}>
-              {GetMaximumShare(
-                props.projectId ? Number(props.projectId) : projectId,
-                paymentMethods,
-                listInvestShares,
-                listInvestSharesESOP,
-              )}
-            </Text>
+            <Text fw={500}>{maximum}</Text>
           </Group>
           <Group>
             <Text fw={500} w={100}>
               {t('Trade.formTrade.price')}
             </Text>
-            <Text fw={500}>{formatVND(form.values.price)}</Text>
+            <Text fw={500}>{formatVND(Number(form.values.price))}</Text>
           </Group>
           <Group>
             <Text fw={500} w={100}>
@@ -180,23 +158,8 @@ export const FormTrade = (props: Props) => {
             <Text fw={500}>{formatVND(form.values.quantity * form.values.price)}</Text>
           </Group>
           {form.errors?.project && <Text c={'red'}>{form.errors.project}</Text>}
-          {form.errors?.quantity && !form.errors?.project && <Text c={'red'}>{form.errors.quantity}</Text>}
-          <Button
-            loading={loading}
-            type="submit"
-            w={130}
-            ml={115}
-            disabled={
-              GetMaximumShare(
-                props.projectId ? Number(props.projectId) : projectId,
-                paymentMethods,
-                listInvestShares,
-                listInvestSharesESOP,
-              ) === 0
-                ? true
-                : false
-            }
-          >
+          {form.errors?.quantity && maximum > 0 && !form.errors?.project && <Text c={'red'}>{form.errors.quantity}</Text>}
+          <Button loading={loading} type="submit" w={130} ml={115} disabled={form.values.quantity === 0 ? true : false}>
             {t('Trade.formTrade.buy')}
           </Button>
         </Stack>
@@ -208,7 +171,7 @@ export const FormTrade = (props: Props) => {
         centered
         onClose={() => {
           dispatch(walletSlice.actions.resetResponse());
-          dispatch(projectSlice.actions.requestUpdateInrestShares());
+          dispatch(projectSlice.actions.requestUpdateInvestShares());
         }}
       >
         <Stack align={'left'}>
@@ -246,7 +209,7 @@ export const FormTrade = (props: Props) => {
             <Button
               onClick={() => {
                 dispatch(walletSlice.actions.resetResponse());
-                dispatch(projectSlice.actions.requestUpdateInrestShares());
+                dispatch(projectSlice.actions.requestUpdateInvestShares());
               }}
             >
               {t('Trade.formTrade.button_confirm')}
@@ -264,7 +227,20 @@ export const FormTrade = (props: Props) => {
         }}
       >
         <Center>
-          <Title>Tiền của bạn không đủ</Title>
+          <Title>{t('Popup.error.exceeding')}</Title>
+        </Center>
+      </Modal>
+
+      {/* when bought all the shares that can be owned*/}
+      <Modal
+        opened={openPoppupErrorMaximum}
+        centered
+        onClose={() => {
+          setOpenPoppupErrorMaximum(false);
+        }}
+      >
+        <Center>
+          <Title>{t('Popup.error.maximum')}</Title>
         </Center>
       </Modal>
     </>

@@ -10,17 +10,17 @@ import { useWalletSlice } from 'store/app/wallet';
 import { selectBalance, selectESOP, selectStock } from 'store/app/wallet/selector';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import { FormTrade } from './Loadable';
+import { numberWithCommas } from 'helpers/formatNumberWithCommas';
 
 export function TradePage() {
-  useWalletSlice();
   const walletSlice = useWalletSlice();
-  const userLanguage = useSelector(selectLanguage);
-  const navitation = useNavigate();
+  const navigation = useNavigate();
   const { t } = useTranslation();
-  const smallThan576 = useMediaQuery('(max-width:576px)');
   const param = useParams();
   const dispatch = useDispatch();
 
+  const smallThan576 = useMediaQuery('(max-width:576px)');
+  const userLanguage = useSelector(selectLanguage);
   const esop = useSelector(selectESOP);
   const balance = useSelector(selectBalance);
   const stock = useSelector(selectStock);
@@ -31,10 +31,10 @@ export function TradePage() {
   }, []);
 
   function moveToHomePage() {
-    navitation('/');
+    navigation('/');
   }
   function moveToHistoryTransactionPage() {
-    navitation('/history');
+    navigation('/history');
   }
 
   return (
@@ -54,10 +54,10 @@ export function TradePage() {
             <Center>
               <Group spacing={smallThan576 ? 5 : 16}>
                 <IconWallet color={'orange'} />
-                <Text color={'orange'}>{balance}</Text>
+                <Text color={'orange'}>{numberWithCommas(balance)}</Text>
                 <Divider orientation="vertical" />
                 <IconGift color={'cyan'} />
-                <Text color={'cyan'}>{esop}</Text>
+                <Text color={'cyan'}>{numberWithCommas(esop)}</Text>
                 <Button variant="outline" onClick={moveToHistoryTransactionPage} leftIcon={<IconHistory />}>
                   {t('Trade.history')}
                 </Button>

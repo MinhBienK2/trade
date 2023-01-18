@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { User } from './types';
 import { LoginData, UserResponse } from './response';
 import { userSaga } from './saga';
-import { BaseResponse } from 'utils/http/response';
+import { persistor } from 'index';
 
 export const initialState: User = {
   isLogin: false,
@@ -119,5 +120,10 @@ export const { actions: userActions, reducer } = slice;
 export const useUserSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: userSaga });
+
+  useEffect(() => {
+    persistor.persist();
+  }, []);
+
   return { actions: slice.actions };
 };

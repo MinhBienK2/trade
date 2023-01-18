@@ -4,6 +4,8 @@ import { useInjectReducer, useInjectSaga } from 'redux-injectors';
 import { DataProject, InvestedProject, Project, InvestShares } from './types';
 import { projectSaga } from './saga';
 import { SimpleProjectResponse } from './response';
+import { useEffect } from 'react';
+import { persistor } from 'index';
 
 export const initialState: Project = {
   projects: [],
@@ -114,7 +116,7 @@ const slice = createSlice({
     }, // sold shares
 
     // project detail
-    requestUpdateInrestShares() {},
+    requestUpdateInvestShares() {},
     updateInvestShares(state: Project, action: PayloadAction<InvestShares[]>) {
       state.investShares = action.payload;
     },
@@ -129,5 +131,10 @@ export const { actions: projectActions, reducer } = slice;
 export const useProjectSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: projectSaga });
+
+  useEffect(() => {
+    persistor.persist();
+  }, []);
+
   return { actions: slice.actions };
 };

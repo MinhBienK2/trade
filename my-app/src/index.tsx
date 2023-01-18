@@ -31,8 +31,10 @@ import { HomePage } from './app/pages/HomePage/Loadable';
 import { Button, Code, MantineProvider, Title } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { ErrorBoundary } from 'shared/ErrorBoudary';
+import persistStore from 'redux-persist/es/persistStore';
 
 const store = configureAppStore();
+export const persistor = persistStore(store);
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

@@ -2,14 +2,12 @@ import { createTransform } from 'redux-persist';
 
 import { User } from './app/user/types';
 import { Profile } from './app/profile/types';
+import { Wallet } from './app/wallet/types';
 
 export const userTransform = createTransform(
   (inboundState: any, key) => {
     return {
       ...inboundState,
-      // password: inboundState.response.login.remember_password
-      //   ? inboundState.password
-      //   : '',
     };
   },
   (outboundState: any, key): {} => {
@@ -26,7 +24,7 @@ export const userTransform = createTransform(
           message: '',
         },
       },
-      language: outboundState.language,
+      // language: outboundState.language,
     };
   },
   { whitelist: ['user'] },
@@ -35,7 +33,7 @@ export const userTransform = createTransform(
 export const profileTransform = createTransform(
   (inboundState: any, key) => {
     return {
-      ...(inboundState as any),
+      ...inboundState,
     };
   },
   (outboundState: any, key): {} => {
@@ -54,12 +52,12 @@ export const profileTransform = createTransform(
 export const walletTransform = createTransform(
   (inboundState: any, key) => {
     return {
-      ...(inboundState as any),
+      ...inboundState,
     };
   },
   (outboundState: any, key): {} => {
     return {
-      ...(outboundState as Profile),
+      ...(outboundState as Wallet),
       response: {
         loading: false,
         error: -1,

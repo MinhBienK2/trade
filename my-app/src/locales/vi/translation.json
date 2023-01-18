@@ -39,7 +39,7 @@
     },
     "error": {
       "wrong_error": "Sai tài khoản hoặc mật khẩu",
-      "account_not_axist": "Tài khoản không tồn tại"
+      "account_not_axist": "Tài khoản đã tồn tại"
     },
     "registerPage": {
       "confirm_password": "Xác nhận mật khẩu",
@@ -89,7 +89,7 @@
       "time": "Thời gian",
       "detail": "Chi tiết",
       "title_transaction_detail": "Chi tiết giao dịch",
-      "detail_trade": "Chi Tiết Giao dịch"
+      "detail_trade": "Chi Tiết"
     },
     "history": "Giao dịch",
     "paymentByBalance": "Tiền mặt",
@@ -113,6 +113,12 @@
       "balance": "Tiền còn lại",
       "esop": "Tiền cổ phần",
       "stock": "Cổ phiếu"
+    }
+  },
+  "Popup" : {
+    "error" : {
+      "exceeding" : "Tiền của bạn không Đủ để thực hiện giao dịch này!",
+      "maximum" : "Bạn đã mua hết số cổ phiếu có thể mua !"
     }
   }
 }

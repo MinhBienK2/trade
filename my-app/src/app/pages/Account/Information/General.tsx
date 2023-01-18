@@ -21,20 +21,21 @@ import { selectLanguage, selectPhoneNumber } from 'store/app/user/selector';
 import { PageRow } from './Components/PageRow';
 import { PageRowButton } from './Components/PageRowButton';
 import { PageTitle } from './Components/PageTitle';
-import Storage from 'utils/Storage';
-import storage from 'redux-persist/lib/storage';
-import { authAxios } from 'config/axios';
+import { useWalletSlice } from 'store/app/wallet';
+import { formatPhoneNumber } from 'helpers/formatPhoneNumber';
 
 export function General() {
   const { actions } = useUserSlice();
   const profileSlice = useProfileSlice();
+  useWalletSlice();
   const { t } = useTranslation();
+
   const phoneNumber = useSelector(selectPhoneNumber);
   const nameTelegram = useSelector(selectNameTelegram);
   const language = useSelector(selectLanguage);
   const pathLinkTelegram = useSelector(selectPathLinkTelegram);
   const dispatch = useDispatch();
-  const navitation = useNavigate();
+  const navigation = useNavigate();
 
   // checked link
   React.useEffect(() => {
@@ -49,16 +50,16 @@ export function General() {
   }, [pathLinkTelegram]);
 
   function moveToHomePage() {
-    navitation('/');
+    navigation('/');
   }
   function moveToProfilePage() {
-    navitation('/account/profile');
+    navigation('/account/profile');
   }
   function moveToAssetsPage() {
-    navitation('/account/assets');
+    navigation('/account/assets');
   }
   function moveToInvestmentPage() {
-    navitation('/account/investment');
+    navigation('/account/investment');
   }
   function handleLogout() {
     dispatch(actions.requestLogout());
@@ -67,6 +68,8 @@ export function General() {
     console.log('first');
     dispatch(profileSlice.actions.requestLinkThirdParty());
   }
+
+  console.log(formatPhoneNumber(String(phoneNumber)));
 
   return (
     <Center sx={{ height: '100vh' }}>
@@ -81,7 +84,7 @@ export function General() {
       >
         <Stack>
           <PageTitle text={t('Account.general.title')} back={moveToHomePage} selectLanguage={language} />
-          <PageRow leftIcon={<IconPhone />} text={'+' + phoneNumber} />
+          <PageRow leftIcon={<IconPhone />} text={formatPhoneNumber(String(phoneNumber))} />
           <PageRow leftIcon={<IconLock />} text="********" rightIcon={<IconEdit />} />
           <PageRow
             leftIcon={<IconUserCircle />}

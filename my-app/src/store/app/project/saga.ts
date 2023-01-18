@@ -69,5 +69,5 @@ export function* projectSaga() {
   // invested project
   yield takeLatest(actions.requestUpdateInvestedProject.type, fetchInvestedProject);
   // project detail
-  yield takeLatest(actions.requestUpdateInrestShares.type, handleUpdateProjectDetail);
+  yield takeLatest(actions.requestUpdateInvestShares.type, handleUpdateProjectDetail);
 }

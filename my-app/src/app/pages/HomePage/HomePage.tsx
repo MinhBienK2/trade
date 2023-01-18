@@ -5,21 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { useProjectSlice } from 'store/app/project';
-import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
-import Storage from 'utils/Storage';
 import { selectInvestShares } from 'store/app/project/selector';
 
 export function HomePage() {
-  useUserSlice();
   const projectSlice = useProjectSlice();
   const { t } = useTranslation();
-  const navitation = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const investShares = useSelector(selectInvestShares);
 
+  const investShares = useSelector(selectInvestShares);
   const userLanguage = useSelector(selectLanguage);
 
   React.useEffect(() => {
@@ -27,16 +24,17 @@ export function HomePage() {
   }, []);
 
   const moveToGeneralPage = () => {
-    navitation('/account/general');
+    navigate('/account/general');
   };
   const moveToTradePage = () => {
     if (investShares.length === 0) {
-      dispatch(projectSlice.actions.requestUpdateInrestShares());
+      dispatch(projectSlice.actions.requestUpdateInvestShares());
     }
-    navitation('/trade');
+
+    navigate('/trade');
   };
   const moveToProjectPage = () => {
-    navitation('/projects');
+    navigate('/projects');
   };
   return (
     <Center sx={{ height: '100vh' }}>

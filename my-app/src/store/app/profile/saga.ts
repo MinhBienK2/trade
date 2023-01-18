@@ -1,19 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
 
-import { selectProfile } from './selector';
-import { Profile } from './types';
 import { selectId, selectToken, selectUser } from '../user/selector';
 import { User } from '../user/types';
 
 import { profileActions as actions } from '.';
-import { ErrorResponse } from 'utils/http/response';
 import { apiPost, apiGet } from '../../../utils/http/request';
-import { ProfileResponse } from '../user/response';
 import { CheckLinkTelegramResponse, LinkTelegramResponse, responseProfile } from './response';
-
-// data test
-import { sampleData } from 'app/pages/Account/Data/InvestmentData';
 
 export function* handleResetProfile() {
   yield put(actions.resetProfile());
@@ -37,6 +30,7 @@ export function* checkProfile(userId, token) {
 //link third party
 export function* handleCheckedLinkTelegram() {
   try {
+    console.log('check telegram');
     const url = '/v1/tele/checklinktelegram';
     const token = yield select(selectToken);
     const userId = yield select(selectId);
