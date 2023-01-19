@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useProfileSlice } from 'store/app/profile';
 import { selectInvestedProject } from 'store/app/project/selector';
 import { InvestedProject } from 'store/app/project/types';
-import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { DetailCard } from './Components/DetailCard';
 import { PageQuote } from './Components/PageQuote';
@@ -21,7 +20,6 @@ function getInvestmentData(projectId: number, data): InvestedProject | undefined
 }
 
 export function InvestDetail() {
-  useUserSlice();
   useProfileSlice();
   const navitation = useNavigate();
   const params = useParams();

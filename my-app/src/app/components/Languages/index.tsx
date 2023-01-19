@@ -1,9 +1,6 @@
 import React from 'react';
 import { Menu, createStyles, Button } from '@mantine/core';
-import { useSelector } from 'react-redux';
 
-import { useUserSlice } from 'store/app/user';
-import { selectLanguage } from 'store/app/user/selector';
 import { ListMenu } from './ListMenu';
 import { dataLanguage } from './data';
 
@@ -16,8 +13,6 @@ interface LanguageProps {
 }
 
 export const Language = (props: LanguageProps) => {
-  // useUserSlice();
-  // const language = useSelector(selectLanguage);
   const { classes } = useStyles();
 
   return (
@@ -44,7 +39,6 @@ const useStyles = createStyles(theme => ({
     borderRadius: '27px',
     color: theme.black,
     height: '32px',
-    fontFamily:
-      '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
+    fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
   },
 }));

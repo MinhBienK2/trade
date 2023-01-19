@@ -1,4 +1,4 @@
-import { Blockquote, Card, Center, Group, Paper, Stack, Text } from '@mantine/core';
+import { Center, Paper, Stack } from '@mantine/core';
 import { IconUserCircle, IconPigMoney, IconId } from '@tabler/icons';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';

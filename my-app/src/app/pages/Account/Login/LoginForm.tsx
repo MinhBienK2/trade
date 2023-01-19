@@ -5,17 +5,15 @@ import { IconLock } from '@tabler/icons';
 import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 
-import { useUserSlice } from 'store/app/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectErrorLogin, selectLoading } from 'store/app/user/selector';
-
+import { userActions } from 'store/app/user';
 import { RESPONSE_ERROR_PASSWORD_NOT_AXISTS, RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS } from 'constants/register';
 
 import 'react-phone-input-2/lib/bootstrap.css';
 import { useTranslation } from 'react-i18next';
 
 export function LoginForm() {
-  const { actions } = useUserSlice();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
@@ -34,11 +32,11 @@ export function LoginForm() {
   });
 
   const handleCLickButton = () => {
-    dispatch(actions.resetResponseError({ type: 'login' }));
+    dispatch(userActions.resetResponseError({ type: 'login' }));
   };
 
   const submitForm = values => {
-    dispatch(actions.requestLogin(values));
+    dispatch(userActions.requestLogin(values));
   };
 
   const navigate = useNavigate();

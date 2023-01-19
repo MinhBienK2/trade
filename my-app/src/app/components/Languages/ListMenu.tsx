@@ -26,11 +26,7 @@ const MenuLanguage = props => {
   }
 
   return (
-    <Menu.Item
-      className={cx(classes.menuItem, classes.item)}
-      icon={props.icon}
-      onClick={() => handleConvertLanguage()}
-    >
+    <Menu.Item className={cx(classes.menuItem, classes.item)} icon={props.icon} onClick={() => handleConvertLanguage()}>
       {props.title}
     </Menu.Item>
   );
@@ -38,15 +34,7 @@ const MenuLanguage = props => {
 
 const ListLanguage = (props: { dataLanguage: DataLanguageProps[] }): any => {
   return props.dataLanguage.map(ele => {
-    return (
-      <MenuLanguage
-        key={ele.id}
-        title={ele.title}
-        value={ele.value}
-        icon={ele.icon}
-        id={ele.id}
-      />
-    );
+    return <MenuLanguage key={ele.id} title={ele.title} value={ele.value} icon={ele.icon} id={ele.id} />;
   });
 };
 
@@ -61,12 +49,8 @@ export const ListMenu = (props: Props) => {
 const useStyleMenu = createStyles((theme, params: { id: number }) => {
   return {
     menuItem: {
-      borderBottom:
-        params.id !== lengthLanguage
-          ? `0.4px solid ${theme.colors.blue[1]}`
-          : 'none',
-      fontFamily:
-        '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
+      borderBottom: params.id !== lengthLanguage ? `0.4px solid ${theme.colors.blue[1]}` : 'none',
+      fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
     },
     item: {
       width: '150px',

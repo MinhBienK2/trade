@@ -5,11 +5,12 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import { FormTrade } from './Loadable';
 import { selectLanguage } from 'store/app/user/selector';
 import { useWalletSlice } from 'store/app/wallet';
 import { selectBalance, selectESOP, selectStock } from 'store/app/wallet/selector';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
-import { FormTrade } from './Loadable';
 import { numberWithCommas } from 'helpers/formatNumberWithCommas';
 
 export function TradePage() {

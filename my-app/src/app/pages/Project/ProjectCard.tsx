@@ -1,4 +1,4 @@
-import { Card, Text, Center, Stack, Group, Divider, Button, Accordion, Anchor } from '@mantine/core';
+import { Card, Text, Stack, Group, Divider, Button } from '@mantine/core';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

@@ -1,36 +1,26 @@
 import * as React from 'react';
 import PhoneInput from 'react-phone-input-2';
-import {
-  Button,
-  PasswordInput,
-  Box,
-  Text,
-  Anchor,
-  Title,
-  Center,
-  Divider,
-  Stack,
-  createStyles,
-} from '@mantine/core';
+import { Button, PasswordInput, Box, Text, Anchor, Title, Center, Divider, Stack, createStyles } from '@mantine/core';
 import { IconLock } from '@tabler/icons';
 import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 
-import { useUserSlice } from 'store/app/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectErrorRegister, selectLoading } from 'store/app/user/selector';
 import { LoginData } from 'store/app/user/response';
+import { userActions } from 'store/app/user';
 
 import 'react-phone-input-2/lib/bootstrap.css';
 import { useTranslation } from 'react-i18next';
 
 export function RegisterForm() {
-  const { actions } = useUserSlice();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { classes } = useStyle();
+
   const loading = useSelector(selectLoading);
   const errorResponseRegister = useSelector(selectErrorRegister);
-  const { classes } = useStyle();
+
   const form = useForm({
     initialValues: {
       phoneNumber: '',
@@ -38,17 +28,14 @@ export function RegisterForm() {
       confirm_password: '',
     },
     validate: {
-      phoneNumber: value =>
-        value.length < 6 ? 'Account is at least 8 characters.' : null,
-      password: value =>
-        value.length < 6 ? 'Password is at least 8 characters.' : null,
-      confirm_password: value =>
-        value !== form.values.password ? 'Password is not match.' : null,
+      phoneNumber: value => (value.length < 6 ? 'Account is at least 8 characters.' : null),
+      password: value => (value.length < 6 ? 'Password is at least 8 characters.' : null),
+      confirm_password: value => (value !== form.values.password ? 'Password is not match.' : null),
     },
   });
 
   const handleCLickButton = () => {
-    dispatch(actions.resetResponseError({ type: 'register' }));
+    dispatch(userActions.resetResponseError({ type: 'register' }));
   };
 
   const registerAccount = values => {
@@ -57,7 +44,7 @@ export function RegisterForm() {
       password: values.password,
     };
 
-    dispatch(actions.requestRegister(body));
+    dispatch(userActions.requestRegister(body));
   };
   const navigate = useNavigate();
   const linkToLoginPage = () => {
@@ -73,24 +60,18 @@ export function RegisterForm() {
         <Divider my="sm" />
         <Stack spacing={8}>
           <Box>
-            <Text className={classes.labelPhone}>
-              {t('Register.loginPage.label_phone_number')}
-            </Text>
+            <Text className={classes.labelPhone}>{t('Register.loginPage.label_phone_number')}</Text>
             <PhoneInput
               placeholder={t('Register.loginPage.placeholder_phone_number')}
               enableSearch
               country="vn"
               countryCodeEditable={false}
               value={form.values.phoneNumber}
-              onChange={value =>
-                form.setFieldValue('phoneNumber', String(value))
-              }
+              onChange={value => form.setFieldValue('phoneNumber', String(value))}
             />
           </Box>
 
-          {errorResponseRegister === 10 && (
-            <Text c={'red'}>{t('Register.error.account_not_axist')}</Text>
-          )}
+          {errorResponseRegister === 10 && <Text c={'red'}>{t('Register.error.account_not_axist')}</Text>}
 
           <PasswordInput
             icon={<IconLock />}
@@ -104,11 +85,7 @@ export function RegisterForm() {
           />
           <PasswordInput
             icon={<IconLock />}
-            label={
-              <Text size={'lg'}>
-                {t('Register.registerPage.confirm_password')}
-              </Text>
-            }
+            label={<Text size={'lg'}>{t('Register.registerPage.confirm_password')}</Text>}
             placeholder={t('Register.registerPage.confirm_your_Password')}
             {...form.getInputProps('confirm_password')}
             classNames={{
@@ -117,17 +94,11 @@ export function RegisterForm() {
             }}
           />
           <Stack mt="md">
-            <Button
-              loading={loading}
-              type={'submit'}
-              onClick={handleCLickButton}
-            >
+            <Button loading={loading} type={'submit'} onClick={handleCLickButton}>
               {t('Register.registerPage.button_title')}
             </Button>
             <Center>
-              <Anchor onClick={linkToLoginPage}>
-                {t('Register.registerPage.already_have_an_account')}
-              </Anchor>
+              <Anchor onClick={linkToLoginPage}>{t('Register.registerPage.already_have_an_account')}</Anchor>
             </Center>
           </Stack>
         </Stack>
@@ -138,8 +109,7 @@ export function RegisterForm() {
 
 const useStyle = createStyles(theme => ({
   labelPhone: {
-    fontFamily:
-      '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
+    fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
     color: 'black',
     fontSize: '18px',
     lineHeight: 1.55,

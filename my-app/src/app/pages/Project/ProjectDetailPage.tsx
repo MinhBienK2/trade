@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProjectSlice } from 'store/app/project';
 import { selectListProject } from 'store/app/project/selector';
-import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageQuote } from '../Account/Information/Components/PageQuote';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
@@ -12,20 +11,19 @@ import { getProjectData } from '../Trade/FormTrade';
 import { ProjectCard } from './ProjectCard';
 
 export function ProjectDetailPage() {
-  useUserSlice();
   useProjectSlice();
   const navitation = useNavigate();
-  const param = useParams();
 
   const userLanguage = useSelector(selectLanguage);
   const listProject = useSelector(selectListProject);
+  const params = useParams();
+  const projectId = params['project'] ? parseInt(params['project']) : 0;
+  const projectData = getProjectData(projectId, listProject);
 
   const moveToProjectPage = () => {
     navitation('/projects');
   };
-  const params = useParams();
-  const projectId = params['project'] ? parseInt(params['project']) : 0;
-  const projectData = getProjectData(projectId, listProject);
+
   return (
     <Center sx={{ height: '100vh' }}>
       <Paper
