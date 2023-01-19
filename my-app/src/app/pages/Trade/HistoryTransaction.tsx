@@ -13,8 +13,7 @@ import { selectLanguage } from 'store/app/user/selector';
 import { HistoryTransaction as HistoryTransactionResponse } from 'store/app/wallet/response';
 import { numberWithCommas } from 'helpers/formatNumberWithCommas';
 import { formatVND } from 'helpers/formatCurrencyVND';
-import { useWalletSlice, walletActions } from 'store/app/wallet';
-import { useUserSlice } from 'store/app/user';
+import { useWalletSlice } from 'store/app/wallet';
 
 const DislayTableData = (props: { data: HistoryTransactionResponse[]; largerThan576: boolean; value: string }) => {
   const navigation = useNavigate();
@@ -82,7 +81,6 @@ const RenderTable = (props: { data: HistoryTransactionResponse[]; largerThan576:
 };
 
 export const HistoryTransaction = () => {
-  useUserSlice();
   const walletSLice = useWalletSlice();
   const { t } = useTranslation();
   const navigation = useNavigate();

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Center, Group, Paper, Stack } from '@mantine/core';
+import { Center, Paper, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,13 +8,11 @@ import { WalletCard } from './Components/WalletCard';
 import { WalletData } from '../Data/WalletData';
 import { useWalletSlice } from 'store/app/wallet';
 import { selectBalance, selectESOP, selectStock } from 'store/app/wallet/selector';
-import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { useTranslation } from 'react-i18next';
 
 export function Assets() {
   const walletSlice = useWalletSlice();
-  useUserSlice();
   const navitation = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();

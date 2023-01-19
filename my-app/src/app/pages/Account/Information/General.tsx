@@ -16,18 +16,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useProfileSlice } from 'store/app/profile';
 import { selectNameTelegram, selectPathLinkTelegram } from 'store/app/profile/selector';
-import { useUserSlice } from 'store/app/user';
 import { selectLanguage, selectPhoneNumber } from 'store/app/user/selector';
 import { PageRow } from './Components/PageRow';
 import { PageRowButton } from './Components/PageRowButton';
 import { PageTitle } from './Components/PageTitle';
 import { useWalletSlice } from 'store/app/wallet';
 import { formatPhoneNumber } from 'helpers/formatPhoneNumber';
+import { userActions } from 'store/app/user';
 
 export function General() {
-  const { actions } = useUserSlice();
-  const profileSlice = useProfileSlice();
   useWalletSlice();
+  const profileSlice = useProfileSlice();
   const { t } = useTranslation();
 
   const phoneNumber = useSelector(selectPhoneNumber);
@@ -62,14 +61,12 @@ export function General() {
     navigation('/account/investment');
   }
   function handleLogout() {
-    dispatch(actions.requestLogout());
+    dispatch(userActions.requestLogout());
   }
   function handleLinkTelegram() {
     console.log('first');
     dispatch(profileSlice.actions.requestLinkThirdParty());
   }
-
-  console.log(formatPhoneNumber(String(phoneNumber)));
 
   return (
     <Center sx={{ height: '100vh' }}>

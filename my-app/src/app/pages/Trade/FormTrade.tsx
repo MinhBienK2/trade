@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Group, Text, NumberInput, Stack, Select, Title, Modal, Center, Divider } from '@mantine/core';
 import { useForm } from '@mantine/form';
-
-import { formatVND } from 'helpers/formatCurrencyVND';
-import { useWalletSlice } from 'store/app/wallet';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectError, selectLoading } from 'store/app/wallet/selector';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useWalletSlice } from 'store/app/wallet';
+import { selectError, selectLoading } from 'store/app/wallet/selector';
+import { selectInvestShares, selectInvestSharesESOP, selectListProject } from 'store/app/project/selector';
 import { GetPaymentMethodList } from './data/paymentMethod';
 import { useProjectSlice } from 'store/app/project';
-import { selectInvestShares, selectInvestSharesESOP, selectListProject } from 'store/app/project/selector';
 import { DataProject } from 'store/app/project/types';
 import { InvestShares } from 'store/app/project/types';
+import { formatVND } from 'helpers/formatCurrencyVND';
 
 interface Props {
   projectId?: string | undefined;
