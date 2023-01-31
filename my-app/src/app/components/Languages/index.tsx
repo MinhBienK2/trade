@@ -12,7 +12,7 @@ interface LanguageProps {
   userLanguage: string;
 }
 
-export const Language = (props: LanguageProps) => {
+export const Language = React.memo((props: LanguageProps) => {
   const { classes } = useStyles();
 
   return (
@@ -31,7 +31,7 @@ export const Language = (props: LanguageProps) => {
       <ListMenu dataLanguage={dataLanguage} />
     </Menu>
   );
-};
+});
 
 const useStyles = createStyles(theme => ({
   button: {

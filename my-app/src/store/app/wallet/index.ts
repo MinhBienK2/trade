@@ -58,7 +58,9 @@ const slice = createSlice({
     requestBuyStock(state: Wallet, action: PayloadAction<any>) {
       state.response.loading = true;
     },
-    requestUpdateBalance() {},
+    requestUpdateBalance(state: Wallet) {
+      state.response.loading = true;
+    },
 
     // response
     responseUpdateBalance(state: Wallet, action: PayloadAction<DataBalance>) {
@@ -86,7 +88,9 @@ const slice = createSlice({
     },
 
     // get history transaction
-    requestHistoryTransaction(state, action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>) {},
+    requestHistoryTransaction(state, action: PayloadAction<{ typeWallet: 'balance' | 'esop' }>) {
+      state.response.loading = true;
+    },
     updateHistoryTransaction(state: Wallet, action: PayloadAction<HistoryTransaction[]>) {
       state.history_transaction = action.payload;
     },

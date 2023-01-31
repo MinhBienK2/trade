@@ -1,8 +1,9 @@
-import { Card, Center, Divider, Group, Paper, Stack, Text } from '@mantine/core';
 import React from 'react';
+import { Card, Center, Divider, Group, Paper, Stack, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
 import { selectLanguage } from 'store/app/user/selector';
 import { selectHistoryTransaction, selectHistoryTransactionESOP } from 'store/app/wallet/selector';
 import convertDate from 'helpers/formatDate';
@@ -13,6 +14,7 @@ import { formatVND } from 'helpers/formatCurrencyVND';
 
 const RenderChildDetail = (props: { data: HistoryTransaction }) => {
   const { t } = useTranslation();
+
   return (
     <Card shadow="sm" p="md" radius="xs" withBorder>
       <Stack>

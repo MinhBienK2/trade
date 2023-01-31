@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Center, Paper, Stack } from '@mantine/core';
+import { Center, LoadingOverlay, Paper, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
 import { InvestCard } from './Components/InvestCard';
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectLanguage } from 'store/app/user/selector';
 import { useProfileSlice } from 'store/app/profile';
 import { useProjectSlice } from 'store/app/project';
-import { selectInvestedProject } from 'store/app/project/selector';
+import { selectInvestedProject, selectLoading } from 'store/app/project/selector';
 
 export function Investment() {
   useProfileSlice();
@@ -20,6 +20,7 @@ export function Investment() {
 
   const userLanguage = useSelector(selectLanguage);
   const investedProject = useSelector(selectInvestedProject);
+  const loadingProject = useSelector(selectLoading);
 
   React.useEffect(() => {
     if (investedProject.length === 0) {
@@ -31,21 +32,24 @@ export function Investment() {
     navigation('/account/general');
   };
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle text={t('Account.general.investment')} back={moveToGeneralPage} selectLanguage={userLanguage} />
-          <InvestCard data={investedProject} />
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle text={t('Account.general.investment')} back={moveToGeneralPage} selectLanguage={userLanguage} />
+            <InvestCard data={investedProject} />
+          </Stack>
+        </Paper>
+      </Center>
+      <LoadingOverlay visible={loadingProject} overlayBlur={2} />
+    </>
   );
 }

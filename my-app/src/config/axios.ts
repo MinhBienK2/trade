@@ -47,6 +47,7 @@ authAxios.interceptors.response.use(
       originalData.error === 2 &&
       originalData.message === 'unauthorized'
     ) {
+      console.log('re-unauthorized');
       Storage.remove('persist:state');
       window.location.reload();
     }

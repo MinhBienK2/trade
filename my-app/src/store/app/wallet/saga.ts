@@ -26,7 +26,8 @@ export function* fetchWalletBalance() {
 
     if (data.error === 0) {
       yield put(actions.responseUpdateBalance(data.data));
-    }
+      yield put(actions.resetLoading());
+    } else yield put(actions.resetLoading());
   } catch (error) {
     console.log(error);
   }
@@ -79,14 +80,16 @@ export function* fetchHistoryTransaction(action: PayloadAction<{ typeWallet: 'ba
 
     if (typeWallet === 'balance') url = url + '?type=0';
     else if (typeWallet === 'esop') url = url + '?type=1';
-    console.log(url);
 
     const { data }: { data: HistoryTransactionResponse } = yield call(apiGet, url, { userId });
 
-    console.log(data);
     if (data.error === 0 && typeWallet === 'balance') {
       yield put(actions.updateHistoryTransaction(data.data));
-    } else if (data.error === 0 && typeWallet === 'esop') yield put(actions.updateHistoryTransactionESOP(data.data));
+      yield put(actions.resetLoading());
+    } else if (data.error === 0 && typeWallet === 'esop') {
+      yield put(actions.updateHistoryTransactionESOP(data.data));
+      yield put(actions.resetLoading());
+    } else yield put(actions.resetLoading());
   } catch (error) {
     console.log(error);
   }

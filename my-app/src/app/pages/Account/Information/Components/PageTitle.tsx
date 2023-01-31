@@ -1,12 +1,4 @@
-import {
-  Card,
-  Text,
-  ActionIcon,
-  Flex,
-  Center,
-  Group,
-  Box,
-} from '@mantine/core';
+import { Card, Text, ActionIcon, Flex, Center, Group, Box } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
 import { Language } from 'app/components/Languages';
 import * as React from 'react';
@@ -19,14 +11,7 @@ export interface PageTitleProps {
 
 export function PageTitle(props: PageTitleProps) {
   return (
-    <Card
-      shadow="sm"
-      p="md"
-      radius="md"
-      withBorder
-      bg={'dark'}
-      sx={{ overflow: 'initial' }}
-    >
+    <Card shadow="sm" p="md" radius="md" withBorder bg={'dark'} sx={{ overflow: 'initial' }}>
       <Center pos={'relative'}>
         {props.back ? (
           <ActionIcon size="lg" variant="transparent" onClick={props.back}>

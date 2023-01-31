@@ -1,4 +1,4 @@
-import { Paper, Center, Stack } from '@mantine/core';
+import { Paper, Center, Stack, LoadingOverlay } from '@mantine/core';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { useProjectSlice } from 'store/app/project';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
-import { selectInvestShares } from 'store/app/project/selector';
+import { selectInvestShares, selectLoading } from 'store/app/project/selector';
 
 export function HomePage() {
   const projectSlice = useProjectSlice();
@@ -18,6 +18,7 @@ export function HomePage() {
 
   const investShares = useSelector(selectInvestShares);
   const userLanguage = useSelector(selectLanguage);
+  const loadingProject = useSelector(selectLoading);
 
   React.useEffect(() => {
     dispatch(projectSlice.actions.requestUpdateListProject());
@@ -37,23 +38,26 @@ export function HomePage() {
     navigate('/projects');
   };
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle text={t('Home.title')} selectLanguage={userLanguage} />
-          <PageRow text={t('Home.account')} next={moveToGeneralPage} />
-          <PageRow text={t('Home.projects')} next={moveToProjectPage} />
-          <PageRow text={t('Home.trade')} next={moveToTradePage} />
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle text={t('Home.title')} selectLanguage={userLanguage} />
+            <PageRow text={t('Home.account')} next={moveToGeneralPage} />
+            <PageRow text={t('Home.projects')} next={moveToProjectPage} />
+            <PageRow text={t('Home.trade')} next={moveToTradePage} />
+          </Stack>
+        </Paper>
+      </Center>
+      <LoadingOverlay visible={loadingProject} overlayBlur={2} />
+    </>
   );
 }

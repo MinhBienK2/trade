@@ -29,8 +29,6 @@ export function RegisterForm() {
     },
     validate: {
       phoneNumber: value => (value.length < 6 ? 'Account is at least 8 characters.' : null),
-      password: value => (value.length < 6 ? 'Password is at least 8 characters.' : null),
-      confirm_password: value => (value !== form.values.password ? 'Password is not match.' : null),
     },
   });
 
@@ -73,26 +71,6 @@ export function RegisterForm() {
 
           {errorResponseRegister === 10 && <Text c={'red'}>{t('Register.error.account_not_axist')}</Text>}
 
-          <PasswordInput
-            icon={<IconLock />}
-            label={<Text size={'lg'}>{t('Register.loginPage.password')}</Text>}
-            placeholder={t('Register.loginPage.placeholder_password')}
-            {...form.getInputProps('password')}
-            classNames={{
-              innerInput: classes.innerInput,
-              input: classes.input,
-            }}
-          />
-          <PasswordInput
-            icon={<IconLock />}
-            label={<Text size={'lg'}>{t('Register.registerPage.confirm_password')}</Text>}
-            placeholder={t('Register.registerPage.confirm_your_Password')}
-            {...form.getInputProps('confirm_password')}
-            classNames={{
-              innerInput: classes.innerInput,
-              input: classes.input,
-            }}
-          />
           <Stack mt="md">
             <Button loading={loading} type={'submit'} onClick={handleCLickButton}>
               {t('Register.registerPage.button_title')}

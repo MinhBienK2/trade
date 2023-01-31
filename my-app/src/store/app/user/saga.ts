@@ -9,7 +9,7 @@ import { selectId, selectToken } from './selector';
 
 import { RESPONSE_SUCCESS_ERROR } from 'constants/common';
 import { RESPONSE_ERROR_PASSWORD_NOT_AXISTS, RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS } from 'constants/register';
-import { checkProfile, handleResetProfile } from '../profile/saga';
+import { checkProfile, handleLinkThirdParty, handleResetProfile } from '../profile/saga';
 import { handleResetWallet } from '../wallet/saga';
 import { projectActions } from '../project';
 
@@ -21,10 +21,24 @@ export function* login(action) {
     };
 
     const { data }: { data: UserResponse } = yield call(apiPost, '/v1/login', body);
+    // const { data }: { data: UserResponse } = {
+    //   data: {
+    //     error: 0,
+    //     message: 'success',
+    //     data: {
+    //       id: 1,
+    //       role: 0,
+    //       createTime: 123,
+    //       status: 1,
+    //       token: '123213213',
+    //       username: '',
+    //     },
+    //   },
+    // };
 
     if (data.error === RESPONSE_SUCCESS_ERROR) {
       yield put(actions.response({ response: data, type: 'login' }));
-      yield checkProfile(data.data.id, data.data.token);
+      yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
     } else if (data.error === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS || data.error === RESPONSE_ERROR_PASSWORD_NOT_AXISTS) {
       yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
       yield put(actions.resetLoading());
@@ -48,7 +62,11 @@ export function* register(action) {
 
     console.log(data);
     if (data.error === 0) {
-      yield put(actions.response({ response: data, type: 'register' }));
+      const activatedTelegram = yield handleLinkThirdParty({ userId: data.data.id, token: data.data.token });
+      if (activatedTelegram) {
+        yield put(actions.setResponseRegister({ error: data.error, message: data.message }));
+      }
+      // yield put(actions.response({ response: data, type: 'register' }));
     } else if (data.error === 10) {
       yield put(
         actions.setResponseRegister({

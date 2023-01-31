@@ -27,7 +27,6 @@ export function LoginForm() {
     },
     validate: {
       phoneNumber: value => (value.length < 6 ? 'Account is at least 8 characters' : null),
-      password: value => (value.length < 6 ? 'Password is at least 8 characters' : null),
     },
   });
 
@@ -63,17 +62,6 @@ export function LoginForm() {
               onChange={value => form.setFieldValue('phoneNumber', String(value))}
             />
           </Box>
-
-          <PasswordInput
-            icon={<IconLock />}
-            label={<Text size={'lg'}>{t('Register.loginPage.password')}</Text>}
-            placeholder={t('Register.loginPage.placeholder_password')} //"Input your password"
-            {...form.getInputProps('password')}
-            classNames={{
-              innerInput: classes.innerInput,
-              input: classes.input,
-            }}
-          />
 
           {(errorResponseLogin === RESPONSE_ERROR_PASSWORD_NOT_AXISTS ||
             errorResponseLogin === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS) && (

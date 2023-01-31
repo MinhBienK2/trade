@@ -14,6 +14,7 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import { useProfileSlice } from 'store/app/profile';
 import { selectNameTelegram, selectPathLinkTelegram } from 'store/app/profile/selector';
 import { selectLanguage, selectPhoneNumber } from 'store/app/user/selector';
@@ -28,13 +29,13 @@ export function General() {
   useWalletSlice();
   const profileSlice = useProfileSlice();
   const { t } = useTranslation();
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const phoneNumber = useSelector(selectPhoneNumber);
   const nameTelegram = useSelector(selectNameTelegram);
   const language = useSelector(selectLanguage);
   const pathLinkTelegram = useSelector(selectPathLinkTelegram);
-  const dispatch = useDispatch();
-  const navigation = useNavigate();
 
   // checked link
   React.useEffect(() => {

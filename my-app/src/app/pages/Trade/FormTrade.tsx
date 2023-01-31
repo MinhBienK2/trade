@@ -52,7 +52,9 @@ export const FormTrade = (props: Props) => {
   const listProject = useSelector(selectListProject);
   const listInvestShares = useSelector(selectInvestShares);
   const listInvestSharesESOP = useSelector(selectInvestSharesESOP);
-  const maximum = GetMaximumShare(projectId, paymentMethods, listInvestShares, listInvestSharesESOP);
+  const maximum = React.useMemo(() => {
+    return GetMaximumShare(projectId, paymentMethods, listInvestShares, listInvestSharesESOP);
+  }, [projectId, paymentMethods, listInvestShares, listInvestSharesESOP]);
 
   const form = useForm({
     initialValues: {
@@ -272,6 +274,7 @@ export const GetMaximumShare = (
   investData: InvestShares[],
   investESOPData: InvestShares[],
 ): number => {
+  console.log('re-render');
   if (paymentMethod === 0) {
     for (let project of investData) {
       if (project.id === projectId) return project.canBuyShare;

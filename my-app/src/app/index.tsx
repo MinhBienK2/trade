@@ -25,6 +25,8 @@ import { useSelector } from 'react-redux';
 import { selectLanguage } from 'store/app/user/selector';
 import { useUserSlice } from 'store/app/user';
 import { useProfileSlice } from 'store/app/profile';
+import { Test } from './test';
+import { ConfirmationPage } from './pages/Account/Confirmation/Loadable';
 
 export function App() {
   useUserSlice();
@@ -66,6 +68,7 @@ export function App() {
             </PreventRouterLogin>
           }
         />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route
           path="/account/general"
           element={
@@ -167,6 +170,7 @@ export function App() {
             </PublicRouter>
           }
         />
+        <Route path="/test" element={<Test />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

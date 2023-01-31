@@ -21,6 +21,8 @@ export function* FetchListProject() {
     if (data.error === 0) {
       if (!!data.data?.length) yield put(actions.responseUpdateListProject(data.data));
       yield put(actions.resetLoading());
+    } else {
+      yield put(actions.resetLoading());
     }
   } catch (error) {
     if (error) {
@@ -39,7 +41,8 @@ export function* fetchInvestedProject() {
 
     if (data.error === 0) {
       yield put(actions.responseUpdateInvestedProject(data.data));
-    }
+      yield put(actions.resetLoading());
+    } else yield put(actions.resetLoading());
   } catch (error) {
     console.log(error);
   }

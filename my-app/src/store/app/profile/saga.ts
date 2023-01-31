@@ -37,7 +37,7 @@ export function* handleCheckedLinkTelegram() {
     const headers = { token: token, userid: userId };
 
     const { data }: { data: CheckLinkTelegramResponse } = yield call(apiGet, url, headers);
-    console.log(data.data);
+
     if (data.error === 0) {
       yield put(
         actions.setNameLinkThirdParty({
@@ -50,25 +50,24 @@ export function* handleCheckedLinkTelegram() {
   }
 }
 
-export function* handleLinkThirdParty(action) {
+export function* handleLinkThirdParty({ userId, token }) {
   try {
     const url = '/v1/tele-link';
-    const user: User = yield select(selectUser);
 
     const { data } = yield call(
       apiPost,
       url,
       {},
       {
-        userid: user.id,
-        token: user.token,
+        userid: userId,
+        token: token,
       },
     );
 
     if (data.error === 0) {
       yield put(actions.responseLinkThirdPartyTelegram(data as LinkTelegramResponse));
-      yield put(actions.resetLoading());
-    }
+      return true;
+    } else return false;
   } catch (err: any) {
     console.log(err);
   }
@@ -76,6 +75,4 @@ export function* handleLinkThirdParty(action) {
 
 export function* profileSaga() {
   yield takeLatest(actions.requestCheckedLinkTelegram.type, handleCheckedLinkTelegram);
-  //link third party
-  yield takeLatest(actions.requestLinkThirdParty.type, handleLinkThirdParty);
 }

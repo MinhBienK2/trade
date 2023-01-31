@@ -101,7 +101,7 @@ const slice = createSlice({
       state.createTime = action.payload.response.data.createTime;
       state.phoneNumber = action.payload.response.data.username;
 
-      state.isLogin = true;
+      // state.isLogin = true;
       state.response.loading = false;
     },
     responseLogout(state: User) {

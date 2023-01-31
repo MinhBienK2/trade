@@ -71,7 +71,9 @@ const slice = createSlice({
     },
 
     // invested project
-    requestUpdateInvestedProject() {},
+    requestUpdateInvestedProject(state: Project) {
+      state.response.loading = true;
+    },
     responseUpdateInvestedProject(state: Project, action: PayloadAction<InvestedProject[]>) {
       if (!!action.payload.length) {
         state.investedProject = action.payload;

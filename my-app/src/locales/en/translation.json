@@ -38,7 +38,7 @@
       "ButtonTitle": "Login"
     },
     "error": {
-      "wrong_error": "Wrong account or password",
+      "wrong_error": "Wrong phoneNumber",
       "account_not_axist": "Account had axist"
     },
     "registerPage": {
@@ -120,5 +120,14 @@
       "exceeding" : "Your money is not enough to make this transaction!",
       "maximum" : "You have bought all the shares you can buy!"
     }
+  },
+  "Confirmation": {
+    "title" : "Confirmation",
+    "button" : "Send",
+    "effect": "OTP code is valid for ",
+    "errorEffect": "Your OTP is incorrect!",
+    "resend": "resend",
+    "expire": "OTP has expired!",
+    "required" : "Please enter OTP"
   }
 }

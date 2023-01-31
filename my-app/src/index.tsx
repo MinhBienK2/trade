@@ -40,13 +40,15 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
     <HelmetProvider>
-      <MantineProvider>
-        <ModalsProvider>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-        </ModalsProvider>
-      </MantineProvider>
+      <React.StrictMode>
+        <MantineProvider>
+          <ModalsProvider>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </ModalsProvider>
+        </MantineProvider>
+      </React.StrictMode>
     </HelmetProvider>
   </Provider>,
 );

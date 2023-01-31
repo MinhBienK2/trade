@@ -29,7 +29,7 @@
   },
   "Register": {
     "loginPage": {
-      "title": "Đầu tư dễ dàng",
+      "title": "EASY INVEST",
       "label_phone_number": "Số điện thoại",
       "placeholder_phone_number": "Nhập số điện thoại",
       "password": "Mật khẩu",
@@ -38,7 +38,7 @@
       "ButtonTitle": "Đăng nhập"
     },
     "error": {
-      "wrong_error": "Sai tài khoản hoặc mật khẩu",
+      "wrong_error": "Số điện thoại không đúng",
       "account_not_axist": "Tài khoản đã tồn tại"
     },
     "registerPage": {
@@ -120,5 +120,14 @@
       "exceeding" : "Tiền của bạn không Đủ để thực hiện giao dịch này!",
       "maximum" : "Bạn đã mua hết số cổ phiếu có thể mua !"
     }
+  },
+  "Confirmation": {
+    "title" : "Xác thực ",
+    "button" : "Gửi",
+    "effect": "Mã OTP có hiệu lực trong ",
+    "errorEffect": "Mã OTP của bạn không đúng!",
+    "resend": "Gửi lại",
+    "expire": "Mã OTP hết hiệu lực!",
+    "required" : "Vui lòng nhập mã OTP"
   }
 }

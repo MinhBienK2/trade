@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Center, Paper, Stack, Table, Tabs } from '@mantine/core';
+import { ActionIcon, Card, Center, LoadingOverlay, Paper, Stack, Table, Tabs } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconSquareChevronsRight, IconWallet, IconGift } from '@tabler/icons';
 import React, { useState } from 'react';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { PageTitle } from '../Account/Information/Components/PageTitle';
 import convertDate from 'helpers/formatDate';
-import { selectHistoryTransaction, selectHistoryTransactionESOP } from 'store/app/wallet/selector';
+import { selectHistoryTransaction, selectHistoryTransactionESOP, selectLoading } from 'store/app/wallet/selector';
 import { useTranslation } from 'react-i18next';
 import { selectLanguage } from 'store/app/user/selector';
 import { HistoryTransaction as HistoryTransactionResponse } from 'store/app/wallet/response';
@@ -89,8 +89,11 @@ export const HistoryTransaction = () => {
   const [value, setValue] = useState<string>('invest');
   const largerThan576 = useMediaQuery('(min-width:576px)');
   const useLanguage = useSelector(selectLanguage);
+  const loadingWallet = useSelector(selectLoading);
   const dataHistory = useSelector(selectHistoryTransaction);
   const dataHistoryESOP = useSelector(selectHistoryTransactionESOP);
+  let reverseDataHistory = [...dataHistory].reverse();
+  let reverseDataHistoryESOP = [...dataHistoryESOP].reverse();
 
   React.useEffect(() => {
     dispatch(
@@ -115,44 +118,47 @@ export const HistoryTransaction = () => {
   };
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle text={t('Trade.title')} back={moveToTrade} selectLanguage={useLanguage} />
-          <Card shadow="sm" p="md" radius="md" withBorder>
-            <Tabs
-              defaultValue="invest"
-              onTabChange={(value: string) => {
-                handleGetValueTabs(value);
-              }}
-            >
-              <Tabs.List>
-                <Tabs.Tab value="invest" icon={<IconWallet color={'orange'} />}>
-                  {t('Trade.formTrade.investWallet')}
-                </Tabs.Tab>
-                <Tabs.Tab value="investOSOP" icon={<IconGift color={'cyan'} />}>
-                  {t('Trade.formTrade.investESOPWallet')}
-                </Tabs.Tab>
-              </Tabs.List>
+    <>
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle text={t('Trade.title')} back={moveToTrade} selectLanguage={useLanguage} />
+            <Card shadow="sm" p="md" radius="md" withBorder>
+              <Tabs
+                defaultValue="invest"
+                onTabChange={(value: string) => {
+                  handleGetValueTabs(value);
+                }}
+              >
+                <Tabs.List>
+                  <Tabs.Tab value="invest" icon={<IconWallet color={'orange'} />}>
+                    {t('Trade.formTrade.investWallet')}
+                  </Tabs.Tab>
+                  <Tabs.Tab value="investOSOP" icon={<IconGift color={'cyan'} />}>
+                    {t('Trade.formTrade.investESOPWallet')}
+                  </Tabs.Tab>
+                </Tabs.List>
 
-              <Tabs.Panel value="invest" pt="xs">
-                <RenderTable data={dataHistory} largerThan576={largerThan576} value={value} />
-              </Tabs.Panel>
-              <Tabs.Panel value="investOSOP" pt="xs">
-                <RenderTable data={dataHistoryESOP} largerThan576={largerThan576} value={value} />
-              </Tabs.Panel>
-            </Tabs>
-          </Card>
-        </Stack>
-      </Paper>
-    </Center>
+                <Tabs.Panel value="invest" pt="xs">
+                  <RenderTable data={reverseDataHistory} largerThan576={largerThan576} value={value} />
+                </Tabs.Panel>
+                <Tabs.Panel value="investOSOP" pt="xs">
+                  <RenderTable data={reverseDataHistoryESOP} largerThan576={largerThan576} value={value} />
+                </Tabs.Panel>
+              </Tabs>
+            </Card>
+          </Stack>
+        </Paper>
+      </Center>
+      <LoadingOverlay visible={loadingWallet} overlayBlur={2} />
+    </>
   );
 };

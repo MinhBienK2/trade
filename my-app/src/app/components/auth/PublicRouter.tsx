@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useUserSlice } from 'store/app/user';
-import { selectIsLogin } from 'store/app/user/selector';
+import { selectErrorLogin, selectErrorRegister, selectIsLogin } from 'store/app/user/selector';
 
 interface Props {
   children?: JSX.Element;
 }
 
 export const PublicRouter = (props: Props) => {
-  useUserSlice();
   const navigate = useNavigate();
   const isLogin = useSelector(selectIsLogin);
 
@@ -24,15 +22,28 @@ export const PublicRouter = (props: Props) => {
 };
 
 export const PreventRouterLogin = (props: Props) => {
-  useUserSlice();
-  const isLogin = useSelector(selectIsLogin);
+  const errorLogin = useSelector(selectErrorLogin);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogin) {
-      navigate('/');
+    if (errorLogin === 0) {
+      navigate('/confirmation');
     }
-  }, [isLogin]);
+  }, [errorLogin]);
 
   return <>{props.children}</>;
 };
+
+// export const PreventRouterConfirmation = (props: Props) => {
+//   const navigate = useNavigate();
+
+//   const ErrorUserRegister = useSelector(selectErrorRegister);
+
+//   useEffect(() => {
+//     if (ErrorUserRegister === 0) {
+//       navigate('/');
+//     }
+//   }, [isLogin]);
+
+//   return <>{props.children}</>;
+// };
