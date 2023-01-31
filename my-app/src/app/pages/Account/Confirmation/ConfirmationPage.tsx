@@ -10,6 +10,7 @@ import OtpInput from 'libs/OtpInput';
 import { PageTitle } from '../Information/Components/PageTitle';
 import { selectErrorLogin, selectLanguage } from 'store/app/user/selector';
 import { userActions } from 'store/app/user';
+import { selectNameTelegram } from 'store/app/profile/selector';
 
 export const ConfirmationPage = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export const ConfirmationPage = () => {
   const smallThan768 = useMediaQuery('(max-width:768px');
   const userLanguage = useSelector(selectLanguage);
   const ErrorUserLogin = useSelector(selectErrorLogin);
+  const nameTelegram = useSelector(selectNameTelegram);
 
   const [seconds, setSeconds] = useState(300);
   const interval = useInterval(() => setSeconds(s => s - 1), 1000);
@@ -44,10 +46,22 @@ export const ConfirmationPage = () => {
   };
 
   const handleConfirmOTP = () => {
-    console.log(otp);
+    const REQUIRED_INPUT_CHARACTERS = 6;
+
+    if (otp.length === REQUIRED_INPUT_CHARACTERS) {
+      dispatch(userActions.requestConfirmOTP({ otpCode: otp }));
+    }
   };
 
-  const fetchResendOTP = () => {};
+  const handleResendOTP = () => {
+    const url = '';
+
+    const { data } = { data: { error: 0, message: 'success' } };
+
+    if (data.error === 0) {
+      setSeconds(300);
+    }
+  };
 
   const moveToHomePage = () => {
     navigation('/login');
@@ -58,7 +72,9 @@ export const ConfirmationPage = () => {
       <PageTitle text={t('Confirmation.title')} back={moveToHomePage} selectLanguage={userLanguage} />
       <Center px={16}>
         <Stack className={classes.stack} spacing={smallThan768 ? 0 : 16}>
-          <Text mt={20}>{t('Confirmation.required')}</Text>
+          <Text mt={20}>
+            {t('Confirmation.required')}: <span style={{ fontWeight: 600 }}>{nameTelegram}</span>
+          </Text>
           <OtpInput
             value={otp}
             onChange={handleChange}
@@ -87,7 +103,7 @@ export const ConfirmationPage = () => {
               underline={true}
               className={classes.textResend}
               onClick={() => {
-                fetchResendOTP();
+                handleResendOTP();
               }}
             >
               {t('Confirmation.resend')}

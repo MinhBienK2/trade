@@ -24,12 +24,13 @@ import { PublicRouter, PreventRouterLogin } from 'app/components/auth/PublicRout
 import { useSelector } from 'react-redux';
 import { selectLanguage } from 'store/app/user/selector';
 import { useUserSlice } from 'store/app/user';
-import { useProfileSlice } from 'store/app/profile';
 import { Test } from './test';
-import { ConfirmationPage } from './pages/Account/Confirmation/Loadable';
+import { Auth } from 'app/pages/Account/Auth';
+import { useSystemSlice } from 'store/app/system';
 
 export function App() {
   useUserSlice();
+  useSystemSlice();
   const language = useSelector(selectLanguage);
   const { i18n } = useTranslation();
 
@@ -60,15 +61,9 @@ export function App() {
             </PreventRouterLogin>
           }
         />
-        <Route
-          path="/register"
-          element={
-            <PreventRouterLogin>
-              <RegisterPage />
-            </PreventRouterLogin>
-          }
-        />
-        <Route path="/confirmation" element={<ConfirmationPage />} />
+
+        <Route path="/auth" element={<Auth />} />
+
         <Route
           path="/account/general"
           element={

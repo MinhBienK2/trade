@@ -6,6 +6,7 @@ import { projectActions as actions } from '.';
 
 // mook data
 import { InvestedProjectResponse, ListProjectResponse, ProjectDetailResponse } from './response';
+import { handleErrorSystem } from '../system/saga';
 
 export function* handleResetWallet() {
   yield put(actions.resetProject());
@@ -29,6 +30,7 @@ export function* FetchListProject() {
       yield put(actions.resetLoading());
     }
     console.log(error);
+    yield handleErrorSystem();
   }
 }
 
@@ -44,7 +46,11 @@ export function* fetchInvestedProject() {
       yield put(actions.resetLoading());
     } else yield put(actions.resetLoading());
   } catch (error) {
+    if (error) {
+      yield put(actions.resetLoading());
+    }
     console.log(error);
+    yield handleErrorSystem();
   }
 }
 
@@ -64,6 +70,7 @@ export function* handleUpdateProjectDetail(action: PayloadAction<{ projectId: nu
     }
   } catch (error) {
     console.log(error);
+    yield handleErrorSystem();
   }
 }
 

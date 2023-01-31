@@ -6,7 +6,7 @@ import { Wallet } from './types';
 import { walletSaga } from './saga';
 import { DataBalance, HistoryTransaction } from './response';
 import { formValue } from 'app/pages/Trade/FormTrade';
-import { persistor } from 'index';
+// import { persistor } from 'index';
 
 export const initialState: Wallet = {
   balance: 0,
@@ -59,7 +59,7 @@ const slice = createSlice({
       state.response.loading = true;
     },
     requestUpdateBalance(state: Wallet) {
-      state.response.loading = true;
+      // state.response.loading = true;
     },
 
     // response
@@ -106,9 +106,9 @@ export const useWalletSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: walletSaga });
 
-  useEffect(() => {
-    persistor.persist();
-  }, []);
+  // useEffect(() => {
+  //   persistor.persist();
+  // }, []);
 
   return { actions: slice.actions };
 };

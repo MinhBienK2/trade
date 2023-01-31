@@ -1,7 +1,5 @@
 export interface User {
   isLogin: boolean;
-  phoneNumber: string;
-  password: string;
   id: number;
   token: string;
   role: number;

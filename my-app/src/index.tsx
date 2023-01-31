@@ -34,7 +34,7 @@ import { ErrorBoundary } from 'shared/ErrorBoudary';
 import persistStore from 'redux-persist/es/persistStore';
 
 const store = configureAppStore();
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

@@ -22,10 +22,10 @@ export function Assets() {
   const userLanguage = useSelector(selectLanguage);
   const stock = useSelector(selectStock);
   const sampleWallet: WalletData = {
-    balance,
-    esop,
-    stock,
-    total: balance + esop + stock,
+    balance: balance ?? 0,
+    esop: esop ?? 0,
+    stock: stock ?? 0,
+    total: Number(balance) + Number(esop) + Number(stock) ?? 0,
   };
 
   // update wallet

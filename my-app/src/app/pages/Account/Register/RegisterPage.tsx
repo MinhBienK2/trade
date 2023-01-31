@@ -16,8 +16,9 @@ export function RegisterPage() {
 
   React.useEffect(() => {
     if (ErrorUserRegister === 0 && LinkPartyThree) {
-      window.location.href = LinkPartyThree;
+      window.open(`${LinkPartyThree}`);
       dispatch(userActions.resetResponseError({ type: 'register' }));
+      dispatch(userActions.resetLoading());
     }
   }, [ErrorUserRegister, LinkPartyThree]);
 

@@ -2,6 +2,7 @@
 
 import { Profile } from 'store/app/profile/types';
 import { Project } from 'store/app/project/types';
+import { System } from 'store/app/system/types';
 import { User } from 'store/app/user/types';
 import { Wallet } from 'store/app/wallet/types';
 
@@ -15,4 +16,5 @@ export interface RootState {
   wallet?: Wallet;
   profile?: Profile;
   project?: Project;
+  system?: System;
 }

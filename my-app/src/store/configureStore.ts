@@ -36,5 +36,6 @@ export function configureAppStore() {
       process.env.NODE_ENV !== 'production' || process.env.PUBLIC_URL.length > 0,
     enhancers,
   });
+  persistStore(store);
   return store;
 }

@@ -7,6 +7,7 @@ import { projectActions } from '../project';
 import { formValue } from 'app/pages/Trade/FormTrade';
 import { selectId } from '../user/selector';
 import { HistoryTransactionResponse, walletBalanceResponse } from './response';
+import { handleErrorSystem } from '../system/saga';
 
 export function* handleResetWallet() {
   yield put(actions.resetWallet());
@@ -26,10 +27,10 @@ export function* fetchWalletBalance() {
 
     if (data.error === 0) {
       yield put(actions.responseUpdateBalance(data.data));
-      yield put(actions.resetLoading());
-    } else yield put(actions.resetLoading());
+    }
   } catch (error) {
     console.log(error);
+    yield handleErrorSystem();
   }
 }
 
@@ -68,6 +69,8 @@ export function* fetchBuyShares(action: PayloadAction<formValue>) {
     }
   } catch (error) {
     console.log(error);
+    yield put(actions.resetLoading());
+    yield handleErrorSystem();
   }
 }
 
@@ -92,6 +95,8 @@ export function* fetchHistoryTransaction(action: PayloadAction<{ typeWallet: 'ba
     } else yield put(actions.resetLoading());
   } catch (error) {
     console.log(error);
+    yield put(actions.resetLoading());
+    yield handleErrorSystem();
   }
 }
 

@@ -8,8 +8,6 @@ export const selectUser = createSelector([selectDomain], user => user);
 // profile
 export const selectIsLogin = createSelector([selectDomain], user => user.isLogin);
 export const selectToken = createSelector([selectDomain], user => user.token);
-export const selectPhoneNumber = createSelector([selectDomain], user => user.phoneNumber);
-export const selectPassword = createSelector([selectDomain], user => user.password);
 export const selectId = createSelector([selectDomain], user => user.id);
 export const selectRole = createSelector([selectDomain], user => user.role);
 

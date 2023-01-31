@@ -3,6 +3,7 @@ import { createTransform } from 'redux-persist';
 import { User } from './app/user/types';
 import { Profile } from './app/profile/types';
 import { Wallet } from './app/wallet/types';
+import { System } from './app/system/types';
 
 export const userTransform = createTransform(
   (inboundState: any, key) => {
@@ -66,4 +67,19 @@ export const walletTransform = createTransform(
     };
   },
   { whitelist: ['wallet'] },
+);
+
+export const systemTransform = createTransform(
+  (inboundState: any, key) => {
+    return {
+      ...inboundState,
+    };
+  },
+  (outboundState: any, key): {} => {
+    return {
+      ...(outboundState as System),
+      errorSystem: '',
+    };
+  },
+  { whitelist: ['system'] },
 );

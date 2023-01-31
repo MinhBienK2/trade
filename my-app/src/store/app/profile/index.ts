@@ -6,7 +6,7 @@ import { Profile } from './types';
 import { LinkTelegramResponse, ProfileInfoResponse } from './response';
 import { ErrorResponse } from 'utils/http/response';
 import { useEffect } from 'react';
-import { persistor } from 'index';
+// import { persistor } from 'index';
 
 export const initialState: Profile = {
   name: '',
@@ -79,9 +79,9 @@ const slice = createSlice({
 export const { actions: profileActions, reducer } = slice;
 
 export const useProfileSlice = () => {
-  useEffect(() => {
-    persistor.persist();
-  }, []);
+  // useEffect(() => {
+  //   persistor.persist();
+  // }, []);
 
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: profileSaga });

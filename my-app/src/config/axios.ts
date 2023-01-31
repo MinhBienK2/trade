@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import Storage from 'utils/Storage';
 import { BaseResponse } from 'utils/http/response';
@@ -13,12 +13,15 @@ export const authAxios = axios.create({
 
 // Add a request interceptor
 authAxios.interceptors.request.use(
-  config => {
+  (config: AxiosRequestConfig) => {
     const token = Storage.getFieldOfUser('token');
     if (!token) return config;
 
     if (token && config.headers) {
       // config.headers['Authorization'] = 'Bearer ' + token;
+      if (['/v1/register', '/v1/login', '/v1/tele/checklinktelegram', '/v1/tele-link'].includes(config?.url as string))
+        return config;
+
       config.headers['token'] = token;
     }
 
@@ -36,14 +39,9 @@ authAxios.interceptors.response.use(
     const originalData = res.data as BaseResponse;
 
     if (
-      ![
-        '/v1/register',
-        '/v1/login',
-        '/v1/logout',
-        '/v1/forgetpasswordsendusername',
-        '/v1/methodgetotp',
-        '/v1/otp/verifyotp',
-      ].includes(originalConfig?.url as string) &&
+      !['/v1/register', '/v1/login', '/v1/logout', '/v1/tele/checklinktelegram', '/v1/tele-link'].includes(
+        originalConfig?.url as string,
+      ) &&
       originalData.error === 2 &&
       originalData.message === 'unauthorized'
     ) {

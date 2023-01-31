@@ -39,7 +39,8 @@
     },
     "error": {
       "wrong_error": "Wrong phoneNumber",
-      "account_not_axist": "Account had axist"
+      "account_not_axist": "Account had axist",
+      "wrong_error_unlink" : "Unlinked account!"
     },
     "registerPage": {
       "confirm_password": "Confirm password",

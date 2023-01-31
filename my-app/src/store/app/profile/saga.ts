@@ -28,26 +28,32 @@ export function* checkProfile(userId, token) {
 }
 
 //link third party
-export function* handleCheckedLinkTelegram() {
+export function* handleCheckedLinkTelegram({ userId, token }) {
   try {
-    console.log('check telegram');
     const url = '/v1/tele/checklinktelegram';
-    const token = yield select(selectToken);
-    const userId = yield select(selectId);
     const headers = { token: token, userid: userId };
 
     const { data }: { data: CheckLinkTelegramResponse } = yield call(apiGet, url, headers);
 
+    console.log('check telegram :', data);
     if (data.error === 0) {
       yield put(
         actions.setNameLinkThirdParty({
           name: data.data.telegram_info,
         }),
       );
-    }
+      return true;
+    } else return false;
   } catch (err: any) {
     console.log(err);
   }
+}
+
+export function* getNameTelegram() {
+  const userId = yield select(selectId);
+  const token = yield select(selectToken);
+
+  yield handleCheckedLinkTelegram({ userId, token });
 }
 
 export function* handleLinkThirdParty({ userId, token }) {
@@ -74,5 +80,5 @@ export function* handleLinkThirdParty({ userId, token }) {
 }
 
 export function* profileSaga() {
-  yield takeLatest(actions.requestCheckedLinkTelegram.type, handleCheckedLinkTelegram);
+  yield takeLatest(actions.requestCheckedLinkTelegram.type, getNameTelegram);
 }

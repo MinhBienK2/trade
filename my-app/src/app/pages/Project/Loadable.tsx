@@ -15,5 +15,4 @@ export const ProjectPage = lazyLoad(
 export const ProjectDetailPage = lazyLoad(
   () => import('./ProjectDetailPage'),
   module => module.ProjectDetailPage,
-  { fallback: <LoadingOverlay /> },
 );

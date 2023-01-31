@@ -39,7 +39,8 @@
     },
     "error": {
       "wrong_error": "Số điện thoại không đúng",
-      "account_not_axist": "Tài khoản đã tồn tại"
+      "account_not_axist": "Tài khoản đã tồn tại",
+      "wrong_error_unlink" : "Tài khoản chưa được liên kết!"
     },
     "registerPage": {
       "confirm_password": "Xác nhận mật khẩu",

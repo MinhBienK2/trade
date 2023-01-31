@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useProfileSlice } from 'store/app/profile';
-import { selectInvestorType, selectName, selectPosition } from 'store/app/profile/selector';
+import { selectInvestorType, selectName, selectNameTelegram, selectPosition } from 'store/app/profile/selector';
 import { useUserSlice } from 'store/app/user';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageQuote } from './Components/PageQuote';
@@ -17,7 +17,7 @@ export function Profile() {
   const { t } = useTranslation();
   const navitation = useNavigate();
 
-  const name = useSelector(selectName);
+  const nameTelegram = useSelector(selectNameTelegram);
   const position = useSelector(selectPosition);
   const investorType = useSelector(selectInvestorType);
   const userLanguage = useSelector(selectLanguage);
@@ -63,9 +63,12 @@ export function Profile() {
       >
         <Stack>
           <PageTitle text="Profile" back={moveToGeneralPage} selectLanguage={userLanguage} />
-          <PageRow leftIcon={<IconUserCircle />} text={name || 'user01'} />
-          <PageRow leftIcon={<IconPigMoney />} text={t(renderInvestorType(investorType)) || 'Investor'} />
-          <PageRow leftIcon={<IconId />} text={t(renderPosition(position)) || 'position'} />
+          <PageRow leftIcon={<IconUserCircle />} text={nameTelegram || 'user01'} />
+          <PageRow
+            leftIcon={<IconPigMoney />}
+            text={renderInvestorType(investorType) ? t(renderInvestorType(investorType)) : 'Investor'}
+          />
+          <PageRow leftIcon={<IconId />} text={renderPosition(position) ? t(renderPosition(position)) : 'position'} />
           <PageQuote />
         </Stack>
       </Paper>

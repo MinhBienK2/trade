@@ -5,12 +5,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from './types';
 import { LoginData, UserResponse } from './response';
 import { userSaga } from './saga';
-import { persistor } from 'index';
+// import { persistor } from 'index';
 
 export const initialState: User = {
   isLogin: false,
-  phoneNumber: '',
-  password: '',
   token: '',
   status: 0,
   role: 0,
@@ -44,9 +42,10 @@ const slice = createSlice({
     setUserId(state: User, action: PayloadAction<{ id: number }>) {
       state.id = action.payload.id;
     },
-    setPhoneNumber(state: User, action: PayloadAction<{ phoneNumber: string }>) {
-      state.phoneNumber = action.payload.phoneNumber;
+    setToken(state: User, action: PayloadAction<{ token: string }>) {
+      state.token = action.payload.token;
     },
+
     setResponseRegister(state: User, action: PayloadAction<{ error: number; message: string }>) {
       state.response.register.error = action.payload.error;
       state.response.register.message = action.payload.message;
@@ -54,6 +53,11 @@ const slice = createSlice({
     setResponseLogin(state: User, action: PayloadAction<{ error: number; message: string }>) {
       state.response.login.error = action.payload.error;
       state.response.login.message = action.payload.message;
+    },
+    setLoginTelegram(state: User, action: PayloadAction<{ id: number; token: string }>) {
+      state.isLogin = true;
+      state.id = action.payload.id;
+      state.token = action.payload.token;
     },
 
     // reset simple property
@@ -86,6 +90,10 @@ const slice = createSlice({
     requestLanguage(state: User, action: PayloadAction<'vi' | 'en'>) {
       state.language = action.payload;
     },
+    // confirm otp
+    requestConfirmOTP(state: User, action: PayloadAction<{ otpCode: string }>) {
+      state.response.loading = true;
+    },
 
     // response
     response(
@@ -99,7 +107,6 @@ const slice = createSlice({
       state.token = action.payload.response.data.token;
       state.status = action.payload.response.data.status;
       state.createTime = action.payload.response.data.createTime;
-      state.phoneNumber = action.payload.response.data.username;
 
       // state.isLogin = true;
       state.response.loading = false;
@@ -121,9 +128,9 @@ export const useUserSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: userSaga });
 
-  useEffect(() => {
-    persistor.persist();
-  }, []);
+  // useEffect(() => {
+  //   persistor.persist();
+  // }, []);
 
   return { actions: slice.actions };
 };

@@ -1,27 +1,5 @@
-import {
-  Card,
-  Text,
-  Box,
-  Stack,
-  Group,
-  Flex,
-  Center,
-  Divider,
-  RingProgress,
-  ActionIcon,
-  createStyles,
-  Button,
-} from '@mantine/core';
-import {
-  IconChevronRight,
-  IconCircle,
-  IconCoin,
-  IconGift,
-  IconPigMoney,
-  IconReportMoney,
-  IconZoomMoney,
-  TablerIcon,
-} from '@tabler/icons';
+import { Card, Text, Stack, Group, Center, Divider, RingProgress, ActionIcon, createStyles, Button } from '@mantine/core';
+import { IconCoin, IconGift, IconPigMoney, IconReportMoney } from '@tabler/icons';
 import * as React from 'react';
 import { formatVND } from 'helpers/formatCurrencyVND';
 import { WalletData } from '../../Data/WalletData';
@@ -34,9 +12,9 @@ export interface WalletCardProps {
 export function WalletCard(props: WalletCardProps) {
   const { t } = useTranslation();
   const { classes } = useStyle();
-  const p1 = (props.data.balance * 100) / props.data.total;
-  const p2 = (props.data.esop * 100) / props.data.total;
-  const p3 = 100 - p1 - p2;
+  const p1 = props.data.balance && props.data.total && (props.data.balance * 100) / props.data.total;
+  const p2 = props.data.esop && props.data.total && (props.data.esop * 100) / props.data.total;
+  const p3 = p1 && p2 && 100 - p1 - p2;
 
   return (
     <Card shadow="sm" p="md" radius="xs" withBorder>

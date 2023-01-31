@@ -5,40 +5,39 @@ import { userActions as actions } from '.';
 
 import { apiPost } from '../../../utils/http/request';
 import { UserResponse } from './response';
-import { selectId, selectToken } from './selector';
+import { selectId } from './selector';
 
 import { RESPONSE_SUCCESS_ERROR } from 'constants/common';
-import { RESPONSE_ERROR_PASSWORD_NOT_AXISTS, RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS } from 'constants/register';
-import { checkProfile, handleLinkThirdParty, handleResetProfile } from '../profile/saga';
+import {
+  RESPONSE_ERROR_NOT_LINK,
+  RESPONSE_ERROR_PASSWORD_NOT_AXISTS,
+  RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS,
+} from 'constants/register';
+import { handleCheckedLinkTelegram, handleLinkThirdParty, handleResetProfile } from '../profile/saga';
 import { handleResetWallet } from '../wallet/saga';
 import { projectActions } from '../project';
+import { handleErrorSystem } from '../system/saga';
 
 export function* login(action) {
   try {
+    const RESPONSE_MESSAGE_NOT_LINK = 'unlinked account';
     const body: any = {
       username: action.payload.phoneNumber,
       password: action.payload.password,
     };
 
     const { data }: { data: UserResponse } = yield call(apiPost, '/v1/login', body);
-    // const { data }: { data: UserResponse } = {
-    //   data: {
-    //     error: 0,
-    //     message: 'success',
-    //     data: {
-    //       id: 1,
-    //       role: 0,
-    //       createTime: 123,
-    //       status: 1,
-    //       token: '123213213',
-    //       username: '',
-    //     },
-    //   },
-    // };
 
     if (data.error === RESPONSE_SUCCESS_ERROR) {
-      yield put(actions.response({ response: data, type: 'login' }));
-      yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
+      const checkLinked = yield handleCheckedLinkTelegram({ userId: data.data.id, token: data.data.token });
+      console.log(checkLinked);
+      if (checkLinked) {
+        yield put(actions.response({ response: data, type: 'login' }));
+        yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
+      } else {
+        yield put(actions.setResponseLogin({ error: RESPONSE_ERROR_NOT_LINK, message: RESPONSE_MESSAGE_NOT_LINK }));
+        yield put(actions.resetLoading());
+      }
     } else if (data.error === RESPONSE_ERROR_PHONE_NUMBER_NOT_AXISTS || data.error === RESPONSE_ERROR_PASSWORD_NOT_AXISTS) {
       yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
       yield put(actions.resetLoading());
@@ -98,6 +97,25 @@ export function* Logout() {
     }
   } catch (err: any) {
     console.log(err);
+    yield handleErrorSystem();
+  }
+}
+
+export function* handleConfirmOTP(action: PayloadAction<{ otpCode: string }>) {
+  try {
+    const url = '';
+    const optCode = action.payload.otpCode;
+    const { data } = {
+      data: {
+        error: 0,
+        message: 'success',
+      },
+    };
+    if (data.error === 0) {
+      yield put(actions.setIsLogin(true));
+    } else yield put(actions.setResponseLogin({ error: data.error, message: data.message }));
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -106,4 +124,6 @@ export function* userSaga() {
   yield takeLatest(actions.requestLogin.type, login);
   yield takeLatest(actions.requestRegister.type, register);
   yield takeLatest(actions.requestLogout.type, Logout);
+  // confirm otp
+  yield takeLatest(actions.requestConfirmOTP.type, handleConfirmOTP);
 }
