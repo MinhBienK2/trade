@@ -8,7 +8,8 @@ import { useProjectSlice } from 'store/app/project';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
-import { selectInvestShares, selectLoading } from 'store/app/project/selector';
+import { selectInvestShares, selectListProject, selectLoading, selectProject } from 'store/app/project/selector';
+import { Helmet } from 'react-helmet-async';
 
 export function HomePage() {
   const projectSlice = useProjectSlice();
@@ -19,8 +20,10 @@ export function HomePage() {
   const investShares = useSelector(selectInvestShares);
   const userLanguage = useSelector(selectLanguage);
   const loadingProject = useSelector(selectLoading);
+  const projects = useSelector(selectListProject);
 
   React.useEffect(() => {
+    if (projects.length !== 0) return;
     dispatch(projectSlice.actions.requestUpdateListProject());
   }, []);
 
@@ -39,6 +42,11 @@ export function HomePage() {
   };
   return (
     <>
+      <Helmet>
+        <title>Home</title>
+        <meta name="home" content="Share Inverst" />
+      </Helmet>
+
       <Center sx={{ height: '100vh' }}>
         <Paper
           withBorder

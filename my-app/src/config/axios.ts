@@ -46,8 +46,13 @@ authAxios.interceptors.response.use(
       originalData.message === 'unauthorized'
     ) {
       console.log('re-unauthorized');
-      Storage.remove('persist:state');
-      window.location.reload();
+      // window.location.href = process.env.REACT_APP_LOCAL_URL + '/login' || 'localhost:3000';
+      // // Storage.remove('persist:state');
+      // setTimeout(() => {
+      //   Storage.remove('persist:state');
+      //   window.location.reload();
+      // }, 1000);
+      return res;
     }
     return res;
   },

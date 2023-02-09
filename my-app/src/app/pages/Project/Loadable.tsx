@@ -9,7 +9,7 @@ import { lazyLoad } from 'utils/loadable';
 export const ProjectPage = lazyLoad(
   () => import('./ProjectPage'),
   module => module.ProjectPage,
-  { fallback: <LoadingOverlay /> },
+  // { fallback: <LoadingOverlay /> },
 );
 
 export const ProjectDetailPage = lazyLoad(

@@ -1,5 +1,6 @@
 import { Paper, Center, Stack } from '@mantine/core';
 import * as React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProjectSlice } from 'store/app/project';
@@ -25,25 +26,32 @@ export function ProjectDetailPage() {
   };
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle
-            text={projectData ? projectData.nameProject : 'Project Not Found'}
-            back={moveToProjectPage}
-            selectLanguage={userLanguage}
-          />
-          {projectData ? <ProjectCard data={projectData} /> : <PageQuote />}
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>Project Detail</title>
+        <meta name="ProjectDetail" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle
+              text={projectData ? projectData.nameProject : 'Project Not Found'}
+              back={moveToProjectPage}
+              selectLanguage={userLanguage}
+            />
+            {projectData ? <ProjectCard data={projectData} /> : <PageQuote />}
+          </Stack>
+        </Paper>
+      </Center>
+    </>
   );
 }

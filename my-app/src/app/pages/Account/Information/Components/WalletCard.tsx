@@ -61,12 +61,11 @@ export function WalletCard(props: WalletCardProps) {
           </Group>
         </Stack>
       </Center>
-      <Center mt={40}>
+      {/* <Center mt={40}>
         <Group>
           <Button>Recharge Balance</Button>
-          <Button>Recharge ESOP</Button>
         </Group>
-      </Center>
+      </Center> */}
     </Card>
   );
 }

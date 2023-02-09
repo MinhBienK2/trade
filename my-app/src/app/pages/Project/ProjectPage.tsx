@@ -9,6 +9,7 @@ import { selectListProject } from 'store/app/project/selector';
 import { selectLanguage } from 'store/app/user/selector';
 import { PageRow } from '../Account/Information/Components/PageRow';
 import { PageTitle } from '../Account/Information/Components/PageTitle';
+import { Helmet } from 'react-helmet-async';
 
 export function ProjectPage() {
   const { t } = useTranslation();
@@ -24,29 +25,36 @@ export function ProjectPage() {
     navitation('/projects/detail/' + projectId);
   }
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle text={t('Account.detailCard.project')} back={moveToHomePage} selectLanguage={userLanguage} />
-          {projects.map(item => (
-            <PageRow
-              key={item.projectId}
-              leftIcon={<Badge>{item.projectId}</Badge>}
-              rightIcon={<IconChevronRight />}
-              text={item.nameProject}
-              next={() => moveToProjectDetail(item.projectId)}
-            />
-          ))}
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>Project</title>
+        <meta name="Project" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle text={t('Account.detailCard.project')} back={moveToHomePage} selectLanguage={userLanguage} />
+            {projects.map(item => (
+              <PageRow
+                key={item.projectId}
+                leftIcon={<Badge>{item.projectId}</Badge>}
+                rightIcon={<IconChevronRight />}
+                text={item.nameProject}
+                next={() => moveToProjectDetail(item.projectId)}
+              />
+            ))}
+          </Stack>
+        </Paper>
+      </Center>
+    </>
   );
 }

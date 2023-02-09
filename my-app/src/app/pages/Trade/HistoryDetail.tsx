@@ -10,6 +10,7 @@ import { PageTitle } from '../Account/Information/Components/PageTitle';
 import { HistoryTransaction } from 'store/app/wallet/response';
 import { numberWithCommas } from 'helpers/formatNumberWithCommas';
 import { formatVND } from 'helpers/formatCurrencyVND';
+import { Helmet } from 'react-helmet-async';
 
 const RenderChildDetail = (props: { data: HistoryTransaction }) => {
   const { t } = useTranslation();
@@ -75,35 +76,42 @@ export const HistoryDetail = () => {
   };
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          {/history-esop/.test(location.pathname) ? (
-            <>
-              <PageTitle
-                text={t('Trade.historyDetail.title_transaction_detail')}
-                back={moveToHistoryPage}
-                selectLanguage={userLanguage}
-              />
-              <RenderChildDetail data={detailESOP} />
-            </>
-          ) : (
-            <>
-              <PageTitle text={t('Trade.historyDetail.detail_trade')} back={moveToHistoryPage} selectLanguage={userLanguage} />
-              <RenderChildDetail data={detail} />
-            </>
-          )}
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>Trade</title>
+        <meta name="Trade" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            {/history-esop/.test(location.pathname) ? (
+              <>
+                <PageTitle
+                  text={t('Trade.historyDetail.title_transaction_detail')}
+                  back={moveToHistoryPage}
+                  selectLanguage={userLanguage}
+                />
+                <RenderChildDetail data={detailESOP} />
+              </>
+            ) : (
+              <>
+                <PageTitle text={t('Trade.historyDetail.detail_trade')} back={moveToHistoryPage} selectLanguage={userLanguage} />
+                <RenderChildDetail data={detail} />
+              </>
+            )}
+          </Stack>
+        </Paper>
+      </Center>
+    </>
   );
 };
 

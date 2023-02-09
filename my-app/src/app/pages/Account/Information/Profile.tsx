@@ -1,6 +1,7 @@
 import { Center, Paper, Stack } from '@mantine/core';
 import { IconUserCircle, IconPigMoney, IconId } from '@tabler/icons';
 import * as React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -51,27 +52,34 @@ export function Profile() {
   };
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle text="Profile" back={moveToGeneralPage} selectLanguage={userLanguage} />
-          <PageRow leftIcon={<IconUserCircle />} text={nameTelegram || 'user01'} />
-          <PageRow
-            leftIcon={<IconPigMoney />}
-            text={renderInvestorType(investorType) ? t(renderInvestorType(investorType)) : 'Investor'}
-          />
-          <PageRow leftIcon={<IconId />} text={renderPosition(position) ? t(renderPosition(position)) : 'position'} />
-          <PageQuote />
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>Inverstment</title>
+        <meta name="Inverstment" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle text="Profile" back={moveToGeneralPage} selectLanguage={userLanguage} />
+            <PageRow leftIcon={<IconUserCircle />} text={nameTelegram || 'user01'} />
+            <PageRow
+              leftIcon={<IconPigMoney />}
+              text={renderInvestorType(investorType) ? t(renderInvestorType(investorType)) : 'Investor'}
+            />
+            <PageRow leftIcon={<IconId />} text={renderPosition(position) ? t(renderPosition(position)) : 'position'} />
+            <PageQuote />
+          </Stack>
+        </Paper>
+      </Center>
+    </>
   );
 }

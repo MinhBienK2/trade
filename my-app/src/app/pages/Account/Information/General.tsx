@@ -24,6 +24,7 @@ import { PageTitle } from './Components/PageTitle';
 import { useWalletSlice } from 'store/app/wallet';
 import { formatPhoneNumber } from 'helpers/formatPhoneNumber';
 import { userActions } from 'store/app/user';
+import { Helmet } from 'react-helmet-async';
 
 export function General() {
   useWalletSlice();
@@ -56,40 +57,47 @@ export function General() {
   }
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle text={t('Account.general.title')} back={moveToHomePage} selectLanguage={language} />
-          <PageRow leftIcon={<IconUserCircle />} text={nameTelegram} />
-          <PageRow
-            leftIcon={<IconUserCircle />}
-            text={t('Account.detailCard.profile')}
-            rightIcon={<IconChevronRight />}
-            next={moveToProfilePage}
-          />
-          <PageRow
-            leftIcon={<IconMoneybag />}
-            text={t('Account.general.assets')}
-            rightIcon={<IconChevronRight />}
-            next={moveToAssetsPage}
-          />
-          <PageRow
-            leftIcon={<IconPigMoney />}
-            text={t('Account.general.investment')}
-            rightIcon={<IconChevronRight />}
-            next={moveToInvestmentPage}
-          />
-          <PageRow leftIcon={<IconLogout />} text={t('Account.general.logout')} next={handleLogout} />
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>General</title>
+        <meta name="General" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle text={t('Account.general.title')} back={moveToHomePage} selectLanguage={language} />
+            <PageRow leftIcon={<IconUserCircle />} text={nameTelegram} />
+            <PageRow
+              leftIcon={<IconUserCircle />}
+              text={t('Account.detailCard.profile')}
+              rightIcon={<IconChevronRight />}
+              next={moveToProfilePage}
+            />
+            <PageRow
+              leftIcon={<IconMoneybag />}
+              text={t('Account.general.assets')}
+              rightIcon={<IconChevronRight />}
+              next={moveToAssetsPage}
+            />
+            <PageRow
+              leftIcon={<IconPigMoney />}
+              text={t('Account.general.investment')}
+              rightIcon={<IconChevronRight />}
+              next={moveToInvestmentPage}
+            />
+            <PageRow leftIcon={<IconLogout />} text={t('Account.general.logout')} next={handleLogout} />
+          </Stack>
+        </Paper>
+      </Center>
+    </>
   );
 }

@@ -14,6 +14,7 @@ import { HistoryTransaction as HistoryTransactionResponse } from 'store/app/wall
 import { numberWithCommas } from 'helpers/formatNumberWithCommas';
 import { formatVND } from 'helpers/formatCurrencyVND';
 import { useWalletSlice } from 'store/app/wallet';
+import { Helmet } from 'react-helmet-async';
 
 const DislayTableData = (props: { data: HistoryTransactionResponse[]; largerThan576: boolean; value: string }) => {
   const navigation = useNavigate();
@@ -96,17 +97,18 @@ export const HistoryTransaction = () => {
   let reverseDataHistoryESOP = [...dataHistoryESOP].reverse();
 
   React.useEffect(() => {
-    dispatch(
-      walletSLice.actions.requestHistoryTransaction({
-        typeWallet: 'balance',
-      }),
-    );
-
-    dispatch(
-      walletSLice.actions.requestHistoryTransaction({
-        typeWallet: 'esop',
-      }),
-    );
+    if (dataHistory.length === 0)
+      dispatch(
+        walletSLice.actions.requestHistoryTransaction({
+          typeWallet: 'balance',
+        }),
+      );
+    if (dataHistory.length === 0)
+      dispatch(
+        walletSLice.actions.requestHistoryTransaction({
+          typeWallet: 'esop',
+        }),
+      );
   }, []);
 
   function moveToTrade() {
@@ -119,6 +121,11 @@ export const HistoryTransaction = () => {
 
   return (
     <>
+      <Helmet>
+        <title>History</title>
+        <meta name="History" content="Share Inverst" />
+      </Helmet>
+
       <Center sx={{ height: '100vh' }}>
         <Paper
           withBorder

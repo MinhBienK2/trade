@@ -1,5 +1,6 @@
 import { Paper, Center, Stack } from '@mantine/core';
 import * as React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProfileSlice } from 'store/app/profile';
@@ -34,25 +35,32 @@ export function InvestDetail() {
   };
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper
-        withBorder
-        sx={{
-          height: '100%',
-          width: '100%',
-          minWidth: '300px',
-          padding: '5px',
-        }}
-      >
-        <Stack>
-          <PageTitle
-            text={investData ? investData.project : 'Project Not Found'}
-            back={moveToGeneralPage}
-            selectLanguage={userLanguage}
-          />
-          {investData ? <DetailCard data={investData} /> : <PageQuote />}
-        </Stack>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>Inverst Detail</title>
+        <meta name="InverstDetail" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper
+          withBorder
+          sx={{
+            height: '100%',
+            width: '100%',
+            minWidth: '300px',
+            padding: '5px',
+          }}
+        >
+          <Stack>
+            <PageTitle
+              text={investData ? investData.project : 'Project Not Found'}
+              back={moveToGeneralPage}
+              selectLanguage={userLanguage}
+            />
+            {investData ? <DetailCard data={investData} /> : <PageQuote />}
+          </Stack>
+        </Paper>
+      </Center>
+    </>
   );
 }

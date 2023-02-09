@@ -57,7 +57,7 @@ export function* fetchInvestedProject() {
 export function* handleUpdateProjectDetail(action: PayloadAction<{ projectId: number; type: number }>) {
   try {
     const userId = yield select(selectId);
-    let url = '/v1/invest/seeshareproject1';
+    let url = '/v1/invest/seeallshareproject';
 
     const { data }: { data: ProjectDetailResponse } = yield call(apiGet, url, { userId });
 

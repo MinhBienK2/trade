@@ -10,6 +10,7 @@ import { selectLanguage } from 'store/app/user/selector';
 import { useProfileSlice } from 'store/app/profile';
 import { useProjectSlice } from 'store/app/project';
 import { selectInvestedProject, selectLoading } from 'store/app/project/selector';
+import { Helmet } from 'react-helmet-async';
 
 export function Investment() {
   useProfileSlice();
@@ -33,6 +34,11 @@ export function Investment() {
   };
   return (
     <>
+      <Helmet>
+        <title>Inverstment</title>
+        <meta name="Inverstment" content="Share Inverst" />
+      </Helmet>
+
       <Center sx={{ height: '100vh' }}>
         <Paper
           withBorder

@@ -8,23 +8,23 @@ import { LoadingOverlay } from 'app/components/poppup/LoadingOverlay';
 export const TradePage = lazyLoad(
   () => import('./TradePage'),
   module => module.TradePage,
-  { fallback: <LoadingOverlay /> },
+  // { fallback: <LoadingOverlay /> },
 );
 
 export const FormTrade = lazyLoad(
   () => import('./FormTrade'),
   module => module.FormTrade,
-  { fallback: <LoadingOverlay /> },
+  // { fallback: <LoadingOverlay /> },
 );
 
 export const HistoryTransaction = lazyLoad(
   () => import('./HistoryTransaction'),
   module => module.HistoryTransaction,
-  { fallback: <LoadingOverlay /> },
+  // { fallback: <LoadingOverlay /> },
 );
 
 export const HistoryDetail = lazyLoad(
   () => import('./HistoryDetail'),
   module => module.HistoryDetail,
-  { fallback: <LoadingOverlay /> },
+  // { fallback: <LoadingOverlay /> },
 );

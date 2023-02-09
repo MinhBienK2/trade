@@ -6,6 +6,7 @@ import { selectPathLinkTelegram } from 'store/app/profile/selector';
 import { selectErrorRegister } from 'store/app/user/selector';
 import { RegisterForm } from './RegisterForm';
 import { userActions } from 'store/app/user';
+import { Helmet } from 'react-helmet-async';
 
 export function RegisterPage() {
   useProfileSlice();
@@ -23,10 +24,17 @@ export function RegisterPage() {
   }, [ErrorUserRegister, LinkPartyThree]);
 
   return (
-    <Center sx={{ height: '100vh' }}>
-      <Paper shadow="sm" p="lg" radius="md" withBorder>
-        <RegisterForm></RegisterForm>
-      </Paper>
-    </Center>
+    <>
+      <Helmet>
+        <title>Login</title>
+        <meta name="Login" content="Share Inverst" />
+      </Helmet>
+
+      <Center sx={{ height: '100vh' }}>
+        <Paper shadow="sm" p="lg" radius="md" withBorder>
+          <RegisterForm></RegisterForm>
+        </Paper>
+      </Center>
+    </>
   );
 }

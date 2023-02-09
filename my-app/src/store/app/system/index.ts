@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { systemSaga } from './saga';
 import { System } from './types';
-// import { persistor } from 'index';
+import { persistor } from 'index';
+import { useEffect } from 'react';
 
 export const initialState: System = {
   errorSystem: false,
@@ -23,9 +24,9 @@ const slice = createSlice({
 export const { actions: systemActions, reducer } = slice;
 
 export const useSystemSlice = () => {
-  // useEffect(() => {
-  //   persistor.persist();
-  // }, []);
+  useEffect(() => {
+    persistor.persist();
+  }, []);
 
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: systemSaga });

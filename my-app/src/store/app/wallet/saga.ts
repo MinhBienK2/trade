@@ -8,6 +8,7 @@ import { formValue } from 'app/pages/Trade/FormTrade';
 import { selectId } from '../user/selector';
 import { HistoryTransactionResponse, walletBalanceResponse } from './response';
 import { handleErrorSystem } from '../system/saga';
+import { FetchListProject } from '../project/saga';
 
 export function* handleResetWallet() {
   yield put(actions.resetWallet());
@@ -48,6 +49,20 @@ export function* fetchBuyShares(action: PayloadAction<formValue>) {
     const { data } = yield call(apiPost, url, body, { userId });
 
     if (data.error === 0) {
+      // update wallet history
+      yield put(
+        actions.requestHistoryTransaction({
+          typeWallet: 'balance',
+        }),
+      );
+      yield put(
+        actions.requestHistoryTransaction({
+          typeWallet: 'esop',
+        }),
+      );
+      // update project
+      yield FetchListProject();
+
       const totalValue = action.payload.price * action.payload.quantity;
 
       yield put(actions.setResponseError({ error: data.error, message: data.message }));

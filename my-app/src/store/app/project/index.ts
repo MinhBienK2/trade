@@ -5,7 +5,7 @@ import { DataProject, InvestedProject, Project, InvestShares } from './types';
 import { projectSaga } from './saga';
 import { SimpleProjectResponse } from './response';
 import { useEffect } from 'react';
-// import { persistor } from 'index';
+import { persistor } from 'index';
 
 export const initialState: Project = {
   projects: [],
@@ -134,9 +134,9 @@ export const useProjectSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
   useInjectSaga({ key: slice.name, saga: projectSaga });
 
-  // useEffect(() => {
-  //   persistor.persist();
-  // }, []);
+  useEffect(() => {
+    persistor.persist();
+  }, []);
 
   return { actions: slice.actions };
 };
